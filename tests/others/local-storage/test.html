@@ -1,0 +1,43 @@
+<script src="/modulex/build/loader.js"></script>
+<script>
+    var mx = modulex;
+    (function () {
+        function xhr(url, success) {
+            var req = new XMLHttpRequest();
+            req.open('get', url, true);
+            req.onload = function () {
+                success(req.responseText);
+            };
+            req.send();
+        }
+
+        modulex.config('loadModsFn', function (rs, config) {
+            var path = rs.url, code;
+            if (code = localStorage.getItem(path)) {
+                eval(code);
+                config.success();
+            } else {
+                xhr(path, function (code) {
+                        try{
+                    localStorage.setItem(path, code);
+                    }catch (e){
+                        // QUOTA_EXCEEDED_ERR
+                        modulex.log(e,'error');
+                    }
+                    eval(code);
+                    config.success();
+                });
+            }
+        });
+    })();
+
+    mx.config('packages', {
+        test: {
+            base: './'
+        }
+    });
+    var start = mx.Loader.Utils.now();
+    mx.use('test/t', function (mx, t) {
+        alert('load ' + t + ' in ' + (mx.Loader.Utils.now() - start) + ' ms');
+    });
+</script>

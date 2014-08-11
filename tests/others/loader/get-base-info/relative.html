@@ -1,0 +1,13 @@
+<script type="text/javascript"
+        src="../../../../../../build/loader.js"
+        id="t"
+        ></script>
+<script>
+    window.onload = function () {
+        modulex.log(document.getElementById('t').src);
+        modulex.log(modulex.config('base'));
+        modulex.use('dom', function (mx, Dom) {
+            alert(Dom);
+        })
+    };
+</script>

@@ -6,6 +6,17 @@
     "node": "~0.10"
   },
   "main": "build/modulex.js",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "combo-handler": "^1.0.0",
+    "express": "^3.3.4",
+    "gulp": "^3.8.7",
+    "gulp-concat": "^2.3.4",
+    "gulp-util": "^3.0.0",
+    "jquery": "^1.11.1",
+    "mocha": "^1.21.4",
+    "q": "^1.0.1"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",

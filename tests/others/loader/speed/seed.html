@@ -1,0 +1,9 @@
+<script type="text/javascript">
+    var start = new Date().valueOf();
+</script>
+<script src="/modulex/build/loader.js"></script>
+<script type="text/javascript">
+    modulex.use('node',function(){
+        alert(new Date().valueOf() - start);
+    });
+</script>

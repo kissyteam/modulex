@@ -1,0 +1,18 @@
+<script src="/modulex/build/modulex.js"></script>
+<script src="../../../../node_modules/jquery/dist/jquery.js"></script>
+<div id="id">
+    my
+</div>
+<script>
+    modulex.config({
+        packages: {
+            core: {
+                filter: ''
+            }
+        },
+        base: "./"
+    });
+    modulex.use(['a', 'a.css'], function () {
+        alert($('#id').css('color'));
+    });
+</script>

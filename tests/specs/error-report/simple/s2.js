@@ -1,0 +1,3 @@
+modulex.add(function(){
+    return '!';
+});
