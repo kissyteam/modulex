@@ -42,10 +42,19 @@ modulex.use(['x','u'],function(X,U){
 
 ### prepare development environment
 
-execute the following commands at project folder:
-
 * npm install
 * npm install -g gulp
 * gulp server
+
+### modify code
+
 * modify source file inside lib
-* open http://localhost:8000/modulex/tests/runner.html to test
+
+### run test cases
+
+* open [http://localhost:8000/modulex/tests/runner.html](http://localhost:8000/modulex/tests/runner.html) to test
+
+### pull request
+
+* file an issue: [https://github.com/kissyteam/modulex/issues/new](https://github.com/kissyteam/modulex/issues/new)
+* then pull request
