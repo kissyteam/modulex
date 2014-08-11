@@ -1,0 +1,14 @@
+{
+  "name": "modulex",
+  "version": "1.0.0",
+  "author": "yiminghe <yiminghe@gmail.com>",
+  "engines": {
+    "node": "~0.10"
+  },
+  "main": "build/modulex.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/kissyteam/modulex.git"
+  }
+}
