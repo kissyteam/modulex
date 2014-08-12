@@ -25,6 +25,14 @@ modulex.add(function(require,exports,module){
 });
 ```
 
+or use define function
+
+``` javascript
+var defined = modulex.add;
+define(function(require,exports,module){
+});
+```
+
 #### amd style
 
 ```javascript
