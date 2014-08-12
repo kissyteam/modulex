@@ -1585,7 +1585,7 @@ var modulex = (function (undefined) {
     function checkKISSYRequire(config, factory) {
         // use require primitive statement
         // function(mx, require){ require('node') }
-        if (!config && typeof factory === 'function' && factory.length > 1) {
+        if (!config && typeof factory === 'function' && factory.length) {
             var requires = Utils.getRequiresFromFn(factory);
             if (requires.length) {
                 config = config || {};
@@ -2163,6 +2163,7 @@ var modulex = (function (undefined) {
         add: function (name, factory, cfg) {
             ComboLoader.add(name, factory, cfg, arguments.length);
         },
+
         /**
          * Attached one or more modules to global modulex instance.
          * @param {String|String[]} modNames moduleNames. 1-n modules to bind(use comma to separate)
@@ -2203,8 +2204,10 @@ var modulex = (function (undefined) {
                 var unloadModsLen = unloadedMods.length;
                 logger.debug(tryCount + ' check duration ' + (+new Date() - start));
                 if (errorList.length) {
-                    mx.log(errorList, 'error');
-                    mx.log('loader: load above modules error', 'error');
+                    mx.log('loader: load the following modules error', 'error');
+                    mx.log(Utils.map(errorList, function (e) {
+                        return e.name;
+                    }), 'error');
                     if (error) {
                         if ('@DEBUG@') {
                             error.apply(mx, errorList);

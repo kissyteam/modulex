@@ -1,5 +1,7 @@
 # modulex
 
+[![Build Status](https://secure.travis-ci.org/kissyteam/modulex.png?branch=master)](https://travis-ci.org/kissyteam/modulex)
+
 A module registration and load library used by kissy
 
 ## api

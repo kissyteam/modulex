@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var gutil = require('gulp-util');
 
-gulp.task('default', function () {
+gulp.task('build', function () {
     var files = ['modulex.js', 'logger.js',
         'utils.js', 'data-structure.js',
         'css-onload.js', 'get-script.js',
@@ -21,14 +21,23 @@ gulp.task('default', function () {
         .pipe(gulp.dest('./build'));
 });
 
+gulp.task('default',['server'], function () {
+    gulp.watch('./lib/**/*.js', ['build']);
+});
+
 var express = require('express');
 var comboHandler = require('combo-handler');
 var path = require('path');
-
+var jscoverHandler = require('node-jscover-handler');
 gulp.task('server', function () {
     var app = express();
     app.use('/modulex/', comboHandler({
         base: __dirname
+    }));
+    app.use('/modulex/', jscoverHandler({
+        paths:{
+            '/lib/':path.join(__dirname,'lib/')
+        }
     }));
     app.use('/modulex/', function (req, res, next) {
         if (path.extname(req.path) === '.jss') {

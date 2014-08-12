@@ -1256,8 +1256,8 @@ var modulex = (function (undefined) {
         if (css) {
             node.href = url;
             node.rel = 'stylesheet';
-            // set media to something non-matching to ensure it'll fetch without blocking render
-            node.media = 'async';
+            // can not set, else test fail
+            // node.media = 'async';
         } else {
             node.src = url;
             node.async = true;
@@ -1267,11 +1267,6 @@ var modulex = (function (undefined) {
             var index = error;
             var fn;
             clearTimer();
-            // set media back to `all` so that the stylesheet applies once it loads
-            // https://github.com/filamentgroup/loadCSS
-            if (css) {
-                node.media = 'all';
-            }
             Utils.each(jsCssCallbacks[url], function (callback) {
                 if ((fn = callback[index])) {
                     fn.call(node);
@@ -1590,7 +1585,7 @@ var modulex = (function (undefined) {
     function checkKISSYRequire(config, factory) {
         // use require primitive statement
         // function(mx, require){ require('node') }
-        if (!config && typeof factory === 'function' && factory.length > 1) {
+        if (!config && typeof factory === 'function' && factory.length) {
             var requires = Utils.getRequiresFromFn(factory);
             if (requires.length) {
                 config = config || {};
@@ -2168,6 +2163,7 @@ var modulex = (function (undefined) {
         add: function (name, factory, cfg) {
             ComboLoader.add(name, factory, cfg, arguments.length);
         },
+
         /**
          * Attached one or more modules to global modulex instance.
          * @param {String|String[]} modNames moduleNames. 1-n modules to bind(use comma to separate)
@@ -2208,8 +2204,10 @@ var modulex = (function (undefined) {
                 var unloadModsLen = unloadedMods.length;
                 logger.debug(tryCount + ' check duration ' + (+new Date() - start));
                 if (errorList.length) {
-                    mx.log(errorList, 'error');
-                    mx.log('loader: load above modules error', 'error');
+                    mx.log('loader: load the following modules error', 'error');
+                    mx.log(Utils.map(errorList, function (e) {
+                        return e.name;
+                    }), 'error');
                     if (error) {
                         if ('@DEBUG@') {
                             error.apply(mx, errorList);
@@ -2370,21 +2368,18 @@ var modulex = (function (undefined) {
         module.exports = mx;
     }
     mx.config({
-        charset: 'utf-8',
-        /*global __dirname*/
-        base: __dirname.replace(/\\/g, '/').replace(/\/$/, '') + '/'
+        charset: 'utf-8'
     });
+
     // require synchronously in node js
     mx.nodeRequire = function (modName) {
         var ret = [];
-        mx.use([modName], {
-            success: function () {
-                ret = [].slice.call(arguments, 1);
-            },
-            sync: true
+        mx.use([modName], function () {
+            ret = arguments;
         });
         return ret[0];
     };
+
     mx.config('packages', {
         core: {
             filter: ''
