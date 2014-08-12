@@ -208,6 +208,6 @@ describe("modules and groups", function () {
         expect(c.js.length).to.be.equal(2);
         var js = c.js;
         expect(js[0].url).to.be.equal('http://localhost:9999/src/loader/tests/specs/packages-groups/pkg-b/??b.js');
-        expect(js[1].url).to.be.equal('http://localhost:8000/modulex/tests/specs/packages-groups/??pkg-a/a.js,pkg-c/c.js');
+        expect(js[1].url).to.be.equal('http://localhost:8000/tests/specs/packages-groups/??pkg-a/a.js,pkg-c/c.js');
     });
 });

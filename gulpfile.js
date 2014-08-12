@@ -16,12 +16,12 @@ gulp.task('build', function () {
         .pipe(concat('modulex.js'))
         .pipe(gulp.dest('./build'));
 
-    gulp.src(['./build/modulex.js','./lib/nodejs.js'])
+    gulp.src(['./build/modulex.js', './lib/nodejs.js'])
         .pipe(concat('modulex-nodejs.js'))
         .pipe(gulp.dest('./build'));
 });
 
-gulp.task('default',['server'], function () {
+gulp.task('default', ['server'], function () {
     gulp.watch('./lib/**/*.js', ['build']);
 });
 
@@ -29,27 +29,32 @@ var express = require('express');
 var comboHandler = require('combo-handler');
 var path = require('path');
 var jscoverHandler = require('node-jscover-handler');
+var nodeJsCoverCoveralls = require('node-jscover-coveralls');
 gulp.task('server', function () {
     var app = express();
-    app.use('/modulex/', comboHandler({
+    app.use(express.bodyParser());
+    app.use(comboHandler({
         base: __dirname
     }));
-    app.use('/modulex/', jscoverHandler({
-        paths:{
-            '/lib/':path.join(__dirname,'lib/')
+    app.use(nodeJsCoverCoveralls({
+        base: path.join(__dirname, 'lib/')
+    }));
+    app.use(jscoverHandler({
+        paths: {
+            '/lib/': path.join(__dirname, 'lib/')
         }
     }));
-    app.use('/modulex/', function (req, res, next) {
+    app.use(function (req, res, next) {
         if (path.extname(req.path) === '.jss') {
             require(path.resolve(__dirname, req.path.substring(1)))(req, res);
         } else {
             next();
         }
     });
-    app.use('/modulex/', express.directory(__dirname, {
+    app.use(express.directory(__dirname, {
         hidden: true
     }));
-    app.use('/modulex/', express['static'](__dirname, {
+    app.use(express['static'](__dirname, {
         hidden: true
     }));
     app.listen(8000);

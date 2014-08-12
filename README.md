@@ -1,6 +1,7 @@
 # modulex
 
 [![Build Status](https://secure.travis-ci.org/kissyteam/modulex.png?branch=master)](https://travis-ci.org/kissyteam/modulex)
+[![Coverage Status](https://coveralls.io/repos/kissyteam/modulex/badge.png?branch=master)](https://coveralls.io/r/kissyteam/modulex?branch=master)
 
 A module registration and load library used by kissy
 
@@ -54,7 +55,7 @@ modulex.use(['x','u'],function(X,U){
 
 ### run test cases
 
-* open [http://localhost:8000/modulex/tests/runner.html](http://localhost:8000/modulex/tests/runner.html) to test
+* open [http://localhost:8000/tests/runner.html](http://localhost:8000/tests/runner.html) to test
 
 ### pull request
 

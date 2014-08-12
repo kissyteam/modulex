@@ -16,6 +16,8 @@
         "jquery": "^1.11.1",
         "mocha": "^1.21.4",
         "node-jscover": "^0.6.0",
+        "node-jscover-coveralls": "^1.0.0",
+        "node-jscover-handler": "^1.0.0",
         "q": "^1.0.1"
     },
     "scripts": {
@@ -25,8 +27,5 @@
     "repository": {
         "type": "git",
         "url": "http://github.com/kissyteam/modulex.git"
-    },
-    "dependencies": {
-        "node-jscover-handler": "^1.0.0"
     }
 }

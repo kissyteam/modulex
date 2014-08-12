@@ -209,7 +209,7 @@ describe('ComboLoader', function () {
         var host = location.host;
 
         expect(urls.js[0].url)
-            .to.be.equal('http://' + host + '/modulex/tests/specs/combo/' +
+            .to.be.equal('http://' + host + '/tests/specs/combo/' +
                 'tests/??a.js,b.js,c.js');
 
         // remote fetch
@@ -309,9 +309,9 @@ describe('ComboLoader', function () {
 
         var jss = comboUrls.js;
 
-        expect(jss[0].url).to.be.equal('http://' + host + '/modulex/tests/specs/timestamp/y.js');
-        expect(jss[1].url).to.be.equal('http://' + host + '/modulex/tests/specs/timestamp/x.js');
-        expect(jss[2].url).to.be.equal('http://' + host + '/modulex/tests/specs/timestamp/z.js');
+        expect(jss[0].url).to.be.equal('http://' + host + '/tests/specs/timestamp/y.js');
+        expect(jss[1].url).to.be.equal('http://' + host + '/tests/specs/timestamp/x.js');
+        expect(jss[2].url).to.be.equal('http://' + host + '/tests/specs/timestamp/z.js');
     });
 
     it('should load mod not config', function (done) {
