@@ -6,7 +6,7 @@ node_js:
 - 0.10
 before_script:
 - npm install gulp -g
-- gulp
+- gulp &
 script:
 - npm test
 - ./phantomjs.sh
