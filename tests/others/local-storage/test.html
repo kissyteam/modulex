@@ -1,4 +1,4 @@
-<script src="/build/loader.js"></script>
+<script src="/build/modulex.js"></script>
 <script>
     var mx = modulex;
     (function () {
@@ -13,16 +13,16 @@
 
         modulex.config('loadModsFn', function (rs, config) {
             var path = rs.url, code;
-            if (code = localStorage.getItem(path)) {
+            if (false && (code = localStorage.getItem(path))) {
                 eval(code);
                 config.success();
             } else {
                 xhr(path, function (code) {
-                        try{
-                    localStorage.setItem(path, code);
-                    }catch (e){
+                    try {
+                        localStorage.setItem(path, code);
+                    } catch (e) {
                         // QUOTA_EXCEEDED_ERR
-                        modulex.log(e,'error');
+                        modulex.log(e, 'error');
                     }
                     eval(code);
                     config.success();
@@ -36,8 +36,8 @@
             base: './'
         }
     });
-    var start = mx.Loader.Utils.now();
-    mx.use('test/t', function (mx, t) {
-        alert('load ' + t + ' in ' + (mx.Loader.Utils.now() - start) + ' ms');
+    var start = +new Date();
+    mx.use(['test/t'], function (t) {
+        alert('load ' + t + ' in ' + (+new Date() - start) + ' ms');
     });
 </script>

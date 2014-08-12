@@ -1,3 +1,0 @@
-modulex.add("b",function(){
-
-});

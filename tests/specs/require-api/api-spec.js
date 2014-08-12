@@ -1,4 +1,10 @@
 describe('support require api in modulex.add', function () {
+    beforeEach(function () {
+        modulex.config({
+            combine: false
+        });
+    });
+
     afterEach(function () {
         modulex.clearLoader();
     });
