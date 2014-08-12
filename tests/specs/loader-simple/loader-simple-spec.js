@@ -44,24 +44,27 @@
                 $(document.body).append('<div id="k12"/>');
 
                 mx.use(['1.2/mod'], function (Mod) {
-                    expect(Mod).to.be.equal(2);
-                    expect(mx.require('1.2/mod')).to.be.equal(Mod);
-                    var mod12;
-                    var flag = mx.config('combine') ? '1.2/??mod.js' : '1.2/mod.js';
-                    var scripts = document.getElementsByTagName('script');
-                    for (var i = 0; i < scripts.length; i++) {
-                        var script = scripts[i];
-                        if (script.src.indexOf(flag) > -1) {
-                            mod12 = script;
-                            break;
+                    var ee;
+                    try {
+                        expect(Mod).to.be.equal(2);
+                        expect(mx.require('1.2/mod')).to.be.equal(Mod);
+                        var mod12;
+                        var flag = mx.config('combine') ? '1.2/??mod.js' : '1.2/mod.js';
+                        var scripts = document.getElementsByTagName('script');
+                        for (var i = 0; i < scripts.length; i++) {
+                            var script = scripts[i];
+                            if (script.src.indexOf(flag) > -1) {
+                                mod12 = script;
+                                break;
+                            }
                         }
+                        expect(mod12.async).to.be.equal(true);
+                        expect(mod12.charset).to.be.equal('utf-8');
+                        expect($('#k12').css('width')).to.be.equal('111px');
+                    } catch (e) {
+                        ee = e;
                     }
-                    expect(mod12.async).to.be.equal(true);
-                    expect(mod12.charset).to.be.equal('utf-8');
-
-                    expect($('#k12').css('width')).to.be.equal('111px');
-                    done();
-
+                    done(ee);
                 });
             });
         });
