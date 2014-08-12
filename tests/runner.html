@@ -20,12 +20,12 @@
     var expect = chai.expect;
 </script>
 <script>
+    var isCoverage = location.search.indexOf('coverage') !== -1;
     (function () {
-        var coverage = location.search.indexOf('coverage') !== -1;
         var build = location.search.indexOf('build') !== -1;
         var files;
         if (build) {
-            files = ['../build/modulex.js']
+            files = ['../build/modulex.js'];
         } else {
             files = ['modulex', 'logger',
                 'utils', 'data-structure',
@@ -33,7 +33,7 @@
                 'configs', 'combo-loader',
                 'init', 'i18n'];
             files.forEach(function (f, i) {
-                files[i] = '../lib/' + f + (coverage ? '-coverage' : '') + '.js';
+                files[i] = '../lib/' + f + (isCoverage ? '-coverage' : '') + '.js';
             });
         }
         files = files.concat([
@@ -76,7 +76,10 @@
         } else {
             runner = mocha.run();
         }
-        window.nodeJsCoverCoveralls(runner);
+        if (isCoverage) {
+            window.nodeJsCoverCoveralls(runner);
+        }
+
     })();
 
 </script>
