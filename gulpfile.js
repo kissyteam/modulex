@@ -22,7 +22,7 @@ gulp.task('build', function () {
         .pipe(concat('modulex-debug.js'))
         .pipe(gulp.dest('./build'));
     var concatFile2 = concatFile.pipe(clone());
-    
+
     concatFile.pipe(replace(/@DEBUG@/g, ''))
         .pipe(replace(/@TIMESTAMP@/g, new Date().toUTCString()))
         .pipe(uglify())
