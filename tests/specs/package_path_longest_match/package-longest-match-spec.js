@@ -18,10 +18,10 @@ describe('loader package', function () {
         mx.config({
             packages: {
                 test: {
-                    base: './specs/package_path_longest_match/test'
+                    base: '/tests/specs/package_path_longest_match/test'
                 },
                 test2: {
-                    base: './specs/package_path_longest_match/test/test2'
+                    base: '/tests/specs/package_path_longest_match/test/test2'
                 }
             }
         });
@@ -40,10 +40,10 @@ describe('loader package', function () {
         mx.config({
             packages: {
                 com: {
-                    base: './specs/package_path_longest_match/com'
+                    base: '/tests/specs/package_path_longest_match/com'
                 },
                 'com/c': {
-                    base: './specs/package_path_longest_match/com/c'
+                    base: '/tests/specs/package_path_longest_match/com/c'
                 }
             }
         });

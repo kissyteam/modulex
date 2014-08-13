@@ -14,8 +14,3 @@ script:
 - mocha-phantomjs http://localhost:8000/tests/runner.html
 - mocha-phantomjs http://localhost:8000/tests/runner.html?build
 - mocha-phantomjs -R node_modules/node-jscover/lib/reporters/mocha/console http://localhost:8000/tests/runner.html?coverage
-- gulp saucelabs
-env:
-  global:
-  - secure: nOi6LtLDsNfTAXSZeEBVdee03kpK0vnf5eoS7gnVX5LGVa8WTRIEV5IawvtjKxVxn6JrJgf9XjwI36mXhAwhpFgwi01LLpjXDK3WT9GmPxMF+RBHD9BN56wvoK5D1E0hEEmV0I2C+NbrdZZ9ha/XeSf74AKQRu3TQVFqL1vvDEk=
-  - secure: gRnv9nD1ALd8sUkZj8jf1ArACk24UEp5pIfbFyObmdHrSgr10vtKNzRjVA6rO6wbe12IO6RJNQee6yf7M8wifHHVxWsH24RtwWxcf1ThBRdY7dfMsM3U5IsmODoqrixqNk73ldHuxFmO5f0qTf6sxxb653iFbkvafQWvqViuGDg=

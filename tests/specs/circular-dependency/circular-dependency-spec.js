@@ -18,7 +18,7 @@
                 modulex.config({
                     packages: {
                         'circular-dependency': {
-                            base: './specs/circular-dependency'
+                            base: '/tests/specs/circular-dependency'
                         }
                     }
                 });
@@ -34,7 +34,7 @@
                 modulex.config({
                     packages: {
                         'circular-dependency': {
-                            base: './specs/circular-dependency'
+                            base: '/tests/specs/circular-dependency'
                         }
                     }
                 });

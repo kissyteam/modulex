@@ -27,7 +27,7 @@ describe('modules and packages', function () {
 
         modulex.config('packages', {
             x: {
-                base: './specs/packages-modules/x'
+                base: '/tests/specs/packages-modules/x'
             }
         });
 
@@ -41,10 +41,10 @@ describe('modules and packages', function () {
         modulex.config({
             packages: {
                 y: {
-                    base: './specs/packages-modules/y'
+                    base: '/tests/specs/packages-modules/y'
                 },
                 z: {
-                    base: './specs/packages-modules/z'
+                    base: '/tests/specs/packages-modules/z'
                 }
             }
         });

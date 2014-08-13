@@ -14,7 +14,7 @@ var run = function (combine) {
             modulex.config({
                 'packages': {
                     'report': {
-                        base: './specs/error-report/' +
+                        base: '/tests/specs/error-report/' +
                             (combine ? 'combo' : 'simple')
                     }
                 }

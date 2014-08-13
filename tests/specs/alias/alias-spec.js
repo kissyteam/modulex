@@ -17,7 +17,7 @@ var run = function (combine) {
             modulex.config({
                 packages: {
                     'alias-a': {
-                        base: './specs/alias/alias-a',
+                        base: '/tests/specs/alias/alias-a',
                         alias: function (name) {
                             return modules[name];
                         }
@@ -25,8 +25,13 @@ var run = function (combine) {
                 }
             });
             modulex.use(['alias-a/x'], function (X) {
-                expect(X).to.be.equal('alias-a/b');
-                done();
+                var ee;
+                try {
+                    expect(X).to.be.equal('alias-a/b');
+                } catch (e) {
+                    ee = e;
+                }
+                done(ee);
             });
         });
 
@@ -39,7 +44,7 @@ var run = function (combine) {
                 alias: modules,
                 packages: {
                     'alias-a': {
-                        base: './specs/alias/alias-a'
+                        base: '/tests/specs/alias/alias-a'
                     }
                 }
             });
@@ -53,7 +58,7 @@ var run = function (combine) {
             modulex.config({
                 packages: {
                     'alias-a': {
-                        base: './specs/alias/alias-a'
+                        base: '/tests/specs/alias/alias-a'
                     }
                 },
                 modules: {

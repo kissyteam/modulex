@@ -19,7 +19,7 @@ describe('ComboLoader', function () {
             packages: {
                 tests3: {
                     combine: true,
-                    base: './specs/combo/tests3'
+                    base: '/tests/specs/combo/tests3'
                 }
             }
         });
@@ -45,7 +45,7 @@ describe('ComboLoader', function () {
             packages: {
                 'no-combo': {
                     combine: false,
-                    base: './specs/combo/no-combo'
+                    base: '/tests/specs/combo/no-combo'
                 }
             }
         });
@@ -59,7 +59,7 @@ describe('ComboLoader', function () {
         mx.config({
             packages: {
                 tests3: {
-                    base: './specs/combo/tests3'
+                    base: '/tests/specs/combo/tests3'
                 }
 
             }
@@ -189,7 +189,7 @@ describe('ComboLoader', function () {
         mx.config({
             packages: {
                 tests: {
-                    base: './specs/combo/tests'
+                    base: '/tests/specs/combo/tests'
                 }
 
             }
@@ -217,7 +217,7 @@ describe('ComboLoader', function () {
         mx.config({
             packages: {
                 tests: {
-                    base: './specs/combo/tests'
+                    base: '/tests/specs/combo/tests'
                 }
 
             }
@@ -242,7 +242,7 @@ describe('ComboLoader', function () {
         mx.config({
             packages: {
                 tests2: {
-                    base: './specs/combo/tests2'
+                    base: '/tests/specs/combo/tests2'
                 }
 
             }
@@ -288,7 +288,7 @@ describe('ComboLoader', function () {
             packages: {
                 'timestamp': {
                     combine: false,
-                    base: './specs/timestamp'
+                    base: '/tests/specs/timestamp'
                 }
             },
             modules: {
@@ -318,7 +318,7 @@ describe('ComboLoader', function () {
         mx.config({
             packages: {
                 tests4: {
-                    base: './specs/combo/tests4'
+                    base: '/tests/specs/combo/tests4'
                 }
             }
         });
@@ -331,7 +331,7 @@ describe('ComboLoader', function () {
         mx.config({
             packages: {
                 test5: {
-                    base: './specs/combo/test5'
+                    base: '/tests/specs/combo/test5'
                 }
             }
         });

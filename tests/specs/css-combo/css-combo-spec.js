@@ -19,7 +19,7 @@ describe('css-combo', function () {
         modulex.config({
             packages: {
                 x: {
-                    base: './specs/css-combo/x'
+                    base: '/tests/specs/css-combo/x'
                 }
             },
             modules: {
@@ -56,7 +56,7 @@ describe('css-combo', function () {
             packages: {
                 x: {
                     tag: mx.Loader.Utils.now(),
-                    base: './specs/css-combo/x'
+                    base: '/tests/specs/css-combo/x'
                 }
             },
             modules: {

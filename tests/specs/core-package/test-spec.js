@@ -9,14 +9,14 @@ describe('core package', function () {
 
     it('can set individually', function (done) {
         mx.config({
-            base: './specs/core-package',
+            base: '/tests/specs/core-package',
             packages: {
                 core: {
                     filter: ''
                 },
                 'core-package-test': {
                     filter: 'min',
-                    base: './specs/core-package/core-package-test'
+                    base: '/tests/specs/core-package/core-package-test'
                 }
             }
         });

@@ -9,10 +9,10 @@ describe('filter', function () {
             packages: {
                 'pkg-a': {
                     filter: 'debug',
-                    base: './specs/packages-groups/pkg-a'
+                    base: '/tests/specs/packages-groups/pkg-a'
                 },
                 'pkg-b': {
-                    base: './specs/packages-groups/pkg-b'
+                    base: '/tests/specs/packages-groups/pkg-b'
                 }
             }
         });

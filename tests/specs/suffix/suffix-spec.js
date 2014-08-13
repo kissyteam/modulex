@@ -12,7 +12,7 @@ if(!window.callPhantom) {
             modulex.config({
                 packages: {
                     suffix: {
-                        base: './specs/suffix'
+                        base: '/tests/specs/suffix'
                     }
                 }
             });

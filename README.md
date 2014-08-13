@@ -2,9 +2,8 @@
 
 [![Build Status](https://secure.travis-ci.org/kissyteam/modulex.png?branch=master)](https://travis-ci.org/kissyteam/modulex)
 [![Coverage Status](https://coveralls.io/repos/kissyteam/modulex/badge.png?branch=master)](https://coveralls.io/r/kissyteam/modulex?branch=master)
-[![Sauce Test Status](https://saucelabs.com/buildstatus/modulex)](https://saucelabs.com/u/modulex)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/modulex.svg)](https://saucelabs.com/u/modulex)
+[![browser support](https://ci.testling.com/kissyteam/modulex.png)](https://ci.testling.com/kissyteam/modulex)
 
 A module registration and load library used by kissy
 

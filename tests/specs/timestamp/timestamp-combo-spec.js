@@ -26,7 +26,7 @@ describe("timestamp for individual module works in combine mode", function () {
             packages: {
                 'timestamp': {
                     tag: 'a',
-                    base: './specs/timestamp'
+                    base: '/tests/specs/timestamp'
                 }
             },
             modules: {
@@ -62,7 +62,7 @@ describe("timestamp for individual module works in combine mode", function () {
             packages: {
                 'timestamp': {
                     tag: 'a',
-                    base: './specs/timestamp'
+                    base: '/tests/specs/timestamp'
                 }
             },
             modules: {
@@ -95,7 +95,7 @@ describe("timestamp for individual module works in combine mode", function () {
                 'timestamp': {
                     combine: false,
                     tag: 'a',
-                    base: './specs/timestamp'
+                    base: '/tests/specs/timestamp'
                 }
             },
             modules: {
@@ -135,7 +135,7 @@ describe("timestamp for individual module works in combine mode", function () {
                 'timestamp': {
                     combine: false,
                     tag: 'a',
-                    base: './specs/timestamp'
+                    base: '/tests/specs/timestamp'
                 }
             },
             modules: {

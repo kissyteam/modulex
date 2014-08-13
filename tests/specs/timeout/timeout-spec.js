@@ -22,7 +22,7 @@ describe('timeout', function () {
         mx.config({
             modules: {
                 'timeout/use': {
-                    url: './specs/timeout/use.jss?' + mx.Loader.Utils.now()
+                    url: '/tests/specs/timeout/use.jss?' + mx.Loader.Utils.now()
                 }
             }
         });
@@ -42,12 +42,12 @@ describe('timeout', function () {
         mx.config({
             packages: {
                 timeout: {
-                    base: './specs/timeout'
+                    base: '/tests/specs/timeout'
                 }
             },
             modules: {
                 'timeout/r2': {
-                    url: './specs/timeout/r2.jss?' + mx.Loader.Utils.now()
+                    url: '/tests/specs/timeout/r2.jss?' + mx.Loader.Utils.now()
                 }
             }
         });

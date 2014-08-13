@@ -18,7 +18,7 @@ describe('timestamp for individual module works', function () {
             packages: {
                 'timestamp': {
                     tag: 'a',
-                    base: './specs/timestamp'
+                    base: '/tests/specs/timestamp'
                 }
             },
             modules: {
@@ -73,7 +73,7 @@ describe('timestamp for individual module works', function () {
             packages: {
                 'timestamp': {
                     tag: 'a',
-                    base: './specs/timestamp'
+                    base: '/tests/specs/timestamp'
                 }
             },
             modules: {

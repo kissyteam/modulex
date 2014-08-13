@@ -6,7 +6,7 @@
 /*global $*/
 
 (function (mx) {
-    var d = './specs/loader-simple';
+    var d = '/tests/specs/loader-simple';
     var run = function (combine) {
         describe('loader-simple ' + (combine ? 'at combo mode' : ''), function () {
             beforeEach(function () {

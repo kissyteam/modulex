@@ -19,7 +19,7 @@ var run = function (combine) {
                 packages: {
                     t: {
                         debug: true,
-                        base: './specs/package/t'
+                        base: '/tests/specs/package/t'
                     }
                 }
             });
@@ -38,7 +38,7 @@ var run = function (combine) {
             mx.config({
                 packages: {
                     t: {
-                        base: './specs/package/t'
+                        base: '/tests/specs/package/t'
                     }
                 }
             });

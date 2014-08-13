@@ -15,14 +15,14 @@ describe('support system.ondemand', function () {
     it('provide similar functionality', function (done) {
         modulex.config('packages', {
             'p-c': {
-                base: './specs/system-ondemand/'
+                base: '/tests/specs/system-ondemand/'
             }
         });
 
         modulex.config('modules', {
             'p-c/b': {
                 requires: ['./c'],
-                url: './specs/system-ondemand/a.js'
+                url: '/tests/specs/system-ondemand/a.js'
             }
         });
 

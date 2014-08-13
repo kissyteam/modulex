@@ -13,7 +13,7 @@ describe('support require api in modulex.add', function () {
         modulex.config('packages', {
             't': {
                 tag: 2,
-                base: './specs/require-api'
+                base: '/tests/specs/require-api'
             }
         });
         var ret1 = Q.defer();

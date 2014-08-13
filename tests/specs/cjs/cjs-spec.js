@@ -23,7 +23,7 @@ describe('it support commonjs require', function () {
         var mx = modulex;
         mx.config('packages', {
             amd: {
-                base: './specs/cjs/amd'
+                base: '/tests/specs/cjs/amd'
             }
         });
         mx.use(['amd/a'], function (a) {
@@ -37,7 +37,7 @@ describe('it support commonjs require', function () {
         var mx = modulex;
         mx.config('packages', {
             cjs: {
-                base: './specs/cjs'
+                base: '/tests/specs/cjs'
             }
         });
         mx.use(['cjs/a'], function (a) {
