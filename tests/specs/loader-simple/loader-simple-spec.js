@@ -17,17 +17,15 @@
                 modulex.clearLoader();
             });
 
-            describe('modulex.require', function () {
-                it('not to attach', function () {
-                    var runned = 0;
-                    mx.add('z', ['d'], function (require) {
-                        require('d');
-                        runned = 1;
-                        return 1;
-                    });
-                    expect(mx.require('z')).to.be.equal(undefined);
-                    expect(runned).to.be.equal(0);
+            it(' modulex.requirenot to attach', function () {
+                var runned = 0;
+                mx.add('z', ['d'], function (require) {
+                    require('d');
+                    runned = 1;
+                    return 1;
                 });
+                expect(mx.require('z')).to.be.equal(undefined);
+                expect(runned).to.be.equal(0);
             });
 
             it('should load and attach custom mods correctly', function (done) {
@@ -69,7 +67,9 @@
             });
         });
     };
-    run();
-    run(1);
+    if (!window.callPhantom) {
+        run();
+        run(1);
+    }
 })(modulex);
 
