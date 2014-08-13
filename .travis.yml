@@ -3,7 +3,7 @@ notifications:
   email:
   - yiminghe@gmail.com
 node_js:
-- 0.10
+- 0.1
 before_script:
 - phantomjs --version
 - npm install gulp -g
@@ -16,5 +16,4 @@ script:
 - mocha-phantomjs -R node_modules/node-jscover/lib/reporters/mocha/console http://localhost:8000/tests/runner.html?coverage
 env:
   global:
-  - secure: LgCBGS7ziPvoXkgOk/ilmDuPadR7m+2uHIByrSwPQEIuYkmB1Yk7OFuNaFr41zWiQUTAvOxG8rwqnvs6bxPvLlQb8WHJuVSQM6YZ+1gG+rjZV3QQcElBGhF4FXEm6KDKWBHj7HxjgQrrkV9LA0S6ZtynY1xxXBClG3G1v0Bzb0c=
-  - secure: TQ26n+hMLQ8b3RW3djT35kimmihLU5vlusNPrF01HpfgTNDUCZC/81BRz0gVl4jB+H1vMjhaekATIRA15Z7ky+gX6ypExfiMRQqQizOrDRmZ9cFTGic8Wo7aXpr3VQxEbnlxrFq8PY/U+c835YV1H//w3IsFPKbYmv26w96CSlI=
+    secure: hAzXO/8rQbcpVCav2fVPLOVunr5PrSBttFQkzlGveAdtNnxe39th1h8drLRVCA7+k2hKLmpIdX4eHXyg8FNkbDf2qN4e0G5ZLXGZ7o8Cfhq9qLMqXT2qcyd/AlcZbMuuBBWacPujM/JVMT8wksF03ZidxfbK0gdYSoV5JVuTsQI=

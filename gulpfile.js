@@ -33,17 +33,9 @@ var nodeJsCoverCoveralls = require('node-jscover-coveralls');
 gulp.task('server', function () {
     var app = express();
     app.use(express.bodyParser());
-    app.use(comboHandler({
-        base: __dirname
-    }));
-    app.use(nodeJsCoverCoveralls({
-        base: path.join(__dirname, 'lib/')
-    }));
-    app.use(jscoverHandler({
-        paths: {
-            '/lib/': path.join(__dirname, 'lib/')
-        }
-    }));
+    app.use(comboHandler());
+    app.use(nodeJsCoverCoveralls());
+    app.use(jscoverHandler());
     app.use(function (req, res, next) {
         if (path.extname(req.path) === '.jss') {
             require(path.resolve(__dirname, req.path.substring(1)))(req, res);
