@@ -1,6 +1,12 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var gutil = require('gulp-util');
+var express = require('express');
+var comboHandler = require('combo-handler');
+var path = require('path');
+var jscoverHandler = require('node-jscover-handler');
+var nodeJsCoverCoveralls = require('node-jscover-coveralls');
+var saucelabsRunner = require('saucelabs-runner');
 
 gulp.task('build', function () {
     var files = ['modulex.js', 'logger.js',
@@ -25,11 +31,15 @@ gulp.task('default', ['server'], function () {
     gulp.watch('./lib/**/*.js', ['build']);
 });
 
-var express = require('express');
-var comboHandler = require('combo-handler');
-var path = require('path');
-var jscoverHandler = require('node-jscover-handler');
-var nodeJsCoverCoveralls = require('node-jscover-coveralls');
+gulp.task('saucelabs', function () {
+    saucelabsRunner([
+        {
+            testname: 'modulex',
+            urls: ['http://localhost:8000/tests/runner.html']
+        }
+    ],'mocha');
+});
+
 gulp.task('server', function () {
     var app = express();
     app.use(express.bodyParser());
