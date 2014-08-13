@@ -5,10 +5,10 @@ notifications:
 node_js:
 - 0.1
 before_script:
-- phantomjs --version
 - npm install gulp -g
-- npm install mocha-phantomjs -g
 - gulp &
+- phantomjs --version
+- npm install mocha-phantomjs -g
 script:
 - npm test
 - mocha-phantomjs http://localhost:8000/tests/runner.html
