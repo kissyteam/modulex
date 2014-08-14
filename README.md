@@ -66,6 +66,7 @@ modulex.use(['x','u'],function(X,U){
 ### run test cases
 
 * open [http://localhost:8000/tests/runner.html](http://localhost:8000/tests/runner.html) to test
+* open [http://localhost:8000/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage](http://localhost:8000/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage) to check test coverage
 
 ### pull request
 
