@@ -355,7 +355,12 @@ var modulex = (function (undefined) {
     var ua = (host.navigator || {}).userAgent || '';
 
     // https://github.com/kissyteam/modulex/issues/545
-    if (((m = ua.match(/AppleWebKit\/([\d.]*)/)) || (m = ua.match(/Safari\/([\d.]*)/))) && m[1]) {
+    // AppleWebKit/535.19
+    // AppleWebKit534.30
+    // appleWebKit/534.30
+    // ApplelWebkit/534.30 （SAMSUNG-GT-S6818）
+    // AndroidWebkit/534.30
+    if (((m = ua.match(/Web[Kk]it[\/]{0,1}([\d.]*)/)) || (m = ua.match(/Safari[\/]{0,1}([\d.]*)/))) && m[1]) {
         Utils.webkit = numberify(m[1]);
     }
     if ((m = ua.match(/Trident\/([\d.]*)/))) {
