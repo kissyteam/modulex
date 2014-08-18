@@ -1,11 +1,15 @@
 # modulex
 
+[![modulex](https://nodei.co/npm/modulex.png)](https://npmjs.org/package/modulex)
+[![NPM downloads](http://img.shields.io/npm/dm/modulex.svg)](https://npmjs.org/package/modulex)
 [![Build Status](https://secure.travis-ci.org/kissyteam/modulex.png?branch=master)](https://travis-ci.org/kissyteam/modulex)
 [![Coverage Status](https://coveralls.io/repos/kissyteam/modulex/badge.png?branch=master)](https://coveralls.io/r/kissyteam/modulex?branch=master)
+[![Dependency Status](https://gemnasium.com/kissyteam/modulex.png)](https://gemnasium.com/kissyteam/modulex)
+[![Bower version](https://badge.fury.io/bo/modulex.svg)](http://badge.fury.io/bo/modulex)
 
 [![browser support](https://ci.testling.com/kissyteam/modulex.png)](https://ci.testling.com/kissyteam/modulex)
 
-A module registration and load library used by kissy
+A module registration and load library
 
 ## api
 
