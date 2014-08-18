@@ -1582,10 +1582,10 @@ var modulex = (function (undefined) {
     var startLoadModName;
     var startLoadModTime;
 
-    function checkKISSYRequire(config, factory) {
+    function checkRequire(config, factory) {
         // use require primitive statement
         // function(mx, require){ require('node') }
-        if (!config && typeof factory === 'function' && factory.length) {
+        if (!config && typeof factory === 'function') {
             var requires = Utils.getRequiresFromFn(factory);
             if (requires.length) {
                 config = config || {};
@@ -1614,7 +1614,7 @@ var modulex = (function (undefined) {
         if (typeof name === 'function' || argsLen === 1) {
             config = factory;
             factory = name;
-            config = checkKISSYRequire(config, factory);
+            config = checkRequire(config, factory);
             if (oldIE) {
                 // http://groups.google.com/group/commonjs/browse_thread/thread/5a3358ece35e688e/43145ceccfb1dc02#43145ceccfb1dc02
                 name = findModuleNameByInteractive();
@@ -1637,7 +1637,7 @@ var modulex = (function (undefined) {
             } else {
                 currentMod = undefined;
             }
-            config = checkKISSYRequire(config, factory);
+            config = checkRequire(config, factory);
             addModule(name, factory, config);
         }
     };
