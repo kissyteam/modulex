@@ -13,7 +13,7 @@ gulp.task('build', function () {
         'utils.js', 'data-structure.js',
         'css-onload.js', 'get-script.js',
         'configs.js', 'combo-loader.js',
-        'init.js', 'i18.js'];
+        'init.js', 'i18n.js'];
     files.forEach(function (f, i) {
         files[i] = './lib/' + f;
     });
