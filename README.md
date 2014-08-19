@@ -1,5 +1,7 @@
 # modulex
 
+A module registration and load library
+
 [![modulex](https://nodei.co/npm/modulex.png)](https://npmjs.org/package/modulex)
 [![NPM downloads](http://img.shields.io/npm/dm/modulex.svg)](https://npmjs.org/package/modulex)
 [![Build Status](https://secure.travis-ci.org/kissyteam/modulex.png?branch=master)](https://travis-ci.org/kissyteam/modulex)
@@ -9,7 +11,6 @@
 
 [![browser support](https://ci.testling.com/kissyteam/modulex.png)](https://ci.testling.com/kissyteam/modulex)
 
-A module registration and load library
 
 ## api
 
