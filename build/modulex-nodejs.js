@@ -2180,6 +2180,9 @@ var modulex = (function (undefined) {
         use: function (modNames, success) {
             var loader, error;
             var tryCount = 0;
+            if (typeof modNames === 'string') {
+                modNames = modNames.split(/\s*,\s*/);
+            }
             if (typeof success === 'object') {
                 //noinspection JSUnresolvedVariable
                 error = success.error;
