@@ -7,6 +7,9 @@ var rename = require('gulp-rename');
 var footer = require('gulp-footer');
 var fs = require('fs');
 var clone = require('gulp-clone');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
+var jscs = require('gulp-jscs');
 
 gulp.task('build', function () {
     var files = ['modulex.js', 'logger.js',
@@ -19,6 +22,10 @@ gulp.task('build', function () {
     });
 
     var concatFile = gulp.src(files)
+        .pipe(jshint())
+        .pipe(jshint.reporter(stylish))
+        .pipe(jshint.reporter('fail'))
+        .pipe(jscs())
         .pipe(concat('modulex-debug.js'))
         .pipe(gulp.dest('./build'));
     var concatFile2 = concatFile.pipe(clone());
