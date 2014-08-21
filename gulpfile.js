@@ -42,7 +42,7 @@ gulp.task('build', function () {
         .pipe(gulp.dest('./build'));
 });
 
-gulp.task('default', ['server'], function () {
+gulp.task('default',function () {
     gulp.watch('./lib/**/*.js', ['build']);
 });
 
@@ -53,8 +53,4 @@ gulp.task('saucelabs', function () {
             urls: ['http://localhost:8000/tests/runner.html']
         }
     ], 'mocha');
-});
-
-gulp.task('server', function () {
-    require('./server');
 });
