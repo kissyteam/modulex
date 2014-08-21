@@ -17,15 +17,11 @@
         "beforeAlternate": true
     },
     "requireSpaceAfterBinaryOperators": ["/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
-    "disallowSpaceAfterPrefixUnaryOperators": [ "!" ],
-    "disallowSpaceBeforePostfixUnaryOperators": [ "," ],
     "disallowKeywords": [ "with" ],
-    "disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~"],
-    "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
-    "requireSpaceBeforeBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
-    "requireSpaceAfterBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
+    "disallowSpaceAfterPrefixUnaryOperators": [ "!" , "++", "--", "+", "-", "~"],
+    "disallowSpaceBeforePostfixUnaryOperators": ["++", "--" ","],
     "disallowMultipleLineBreaks": true,
     "disallowKeywordsOnNewLine": ["else"],
     "safeContextKeyword": "self",
-    "excludeFiles": ["**/*-tpl.js", "**/*-xtpl.js", "**/parser.js", "**/parser.js","**/modules.js"]
+    "excludeFiles": ["**/*-tpl.js", "**/*-xtpl.js", "**/parser.js", "**/parser.js", "**/modules.js"]
 }
