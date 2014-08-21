@@ -19,7 +19,7 @@
     "requireSpaceAfterBinaryOperators": ["/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
     "disallowKeywords": [ "with" ],
     "disallowSpaceAfterPrefixUnaryOperators": [ "!" , "++", "--", "+", "-", "~"],
-    "disallowSpaceBeforePostfixUnaryOperators": ["++", "--" ","],
+    "disallowSpaceBeforePostfixUnaryOperators": ["++", "--", ","],
     "disallowMultipleLineBreaks": true,
     "disallowKeywordsOnNewLine": ["else"],
     "safeContextKeyword": "self",

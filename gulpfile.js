@@ -2,11 +2,12 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var saucelabsRunner = require('saucelabs-runner');
 var replace = require('gulp-replace');
-var uglify = require('gulp-uglify');
+
 var rename = require('gulp-rename');
 var footer = require('gulp-footer');
 var fs = require('fs');
 var clone = require('gulp-clone');
+var uglify = require('gulp-uglify');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 var jscs = require('gulp-jscs');
