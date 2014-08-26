@@ -1489,6 +1489,7 @@ var modulex = (function (undefined) {
         }
         if (location) {
             if (Utils.startsWith(base, 'http:') ||
+                Utils.startsWith(base, '//') ||
                 Utils.startsWith(base, 'https:') ||
                 Utils.startsWith(base, 'file:')) {
                 return base;

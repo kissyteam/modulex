@@ -21,17 +21,16 @@ var files = ['modulex.js', 'logger.js',
         files[i] = './lib/' + f;
     });
     
-var sources = gulp.src(files);
 gulp.task('lint',function(){
-    return sources
+    return gulp.src(files)
         .pipe(jshint())
         .pipe(jshint.reporter(stylish))
         .pipe(jshint.reporter('fail'))
         .pipe(jscs());
 });
 
-gulp.task('build', ['lint'], function () {
-    var concatFile = sources
+gulp.task('default', ['lint'], function () {
+    var concatFile = gulp.src(files)
         .pipe(concat('modulex-debug.js'))
         .pipe(gulp.dest('./build'));
     var concatFile2 = concatFile.pipe(clone());
@@ -47,7 +46,7 @@ gulp.task('build', ['lint'], function () {
         .pipe(gulp.dest('./build'));
 });
 
-gulp.task('default',function () {
+gulp.task('watch',function () {
     gulp.watch('./lib/**/*.js', ['build']);
 });
 
