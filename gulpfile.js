@@ -12,8 +12,7 @@ var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 var jscs = require('gulp-jscs');
 
-gulp.task('build', function () {
-    var files = ['modulex.js', 'logger.js',
+var files = ['modulex.js', 'logger.js',
         'utils.js', 'data-structure.js',
         'css-onload.js', 'get-script.js',
         'configs.js', 'combo-loader.js',
@@ -21,12 +20,18 @@ gulp.task('build', function () {
     files.forEach(function (f, i) {
         files[i] = './lib/' + f;
     });
-
-    var concatFile = gulp.src(files)
+    
+var sources = gulp.src(files);
+gulp.task('lint',function(){
+    return sources
         .pipe(jshint())
         .pipe(jshint.reporter(stylish))
         .pipe(jshint.reporter('fail'))
-        .pipe(jscs())
+        .pipe(jscs());
+});
+
+gulp.task('build', ['lint'], function () {
+    var concatFile = sources
         .pipe(concat('modulex-debug.js'))
         .pipe(gulp.dest('./build'));
     var concatFile2 = concatFile.pipe(clone());
