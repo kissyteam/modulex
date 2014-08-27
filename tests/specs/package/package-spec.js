@@ -15,10 +15,8 @@ var run = function (combine) {
         it('works', function (done) {
             var mods = modulex.Env.mods;
             modulex.config({
-                debug: false,
                 packages: {
                     t: {
-                        debug: true,
                         base: '/tests/specs/package/t'
                     }
                 }
@@ -27,9 +25,6 @@ var run = function (combine) {
             modulex.use(['t/t'], function (t) {
                 expect(t).to.be.equal(1);
                 expect(mods['t/t'].exports).to.be.equal(1);
-                modulex.config({
-                    debug: true
-                });
                 done();
             });
         });

@@ -31,7 +31,6 @@ gulp.task('lint', function () {
 
 gulp.task('default', ['lint'], function () {
     var concatFile = gulp.src(files)
-        .pipe(replace(/@DEBUG@/g, ''))
         .pipe(replace(/@VERSION@/g, packageInfo.version))
         .pipe(replace(/@TIMESTAMP@/g, new Date().toUTCString()))
         .pipe(concat('modulex-debug.js'))
@@ -39,7 +38,7 @@ gulp.task('default', ['lint'], function () {
 
     var concatFile2 = concatFile.pipe(clone());
 
-    concatFile
+    concatFile.pipe(replace(/@DEBUG@/g, ''))
         .pipe(uglify())
         .pipe(rename('modulex.js'))
         .pipe(gulp.dest('./build'));
@@ -50,7 +49,7 @@ gulp.task('default', ['lint'], function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch('./lib/**/*.js', ['build']);
+    gulp.watch('./lib/**/*.js', ['default']);
 });
 
 gulp.task('saucelabs', function () {

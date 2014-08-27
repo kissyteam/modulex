@@ -6,7 +6,6 @@ modulex.clearLoader = function () {
     self.config({
         alias: false,
         tag: false,
-        debug: true,
         group: false,
         packages: false
     });

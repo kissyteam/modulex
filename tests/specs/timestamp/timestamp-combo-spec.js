@@ -20,9 +20,6 @@ describe("timestamp for individual module works in combine mode", function () {
 
     it("works theoretically", function () {
         modulex.config({
-            base: '',
-            tag: '',
-            debug: true,
             packages: {
                 'timestamp': {
                     tag: 'a',
@@ -41,13 +38,9 @@ describe("timestamp for individual module works in combine mode", function () {
                 }
             }
         });
-
         var loader = new mx.Loader.ComboLoader();
-
         var allMods = loader.calculate(Utils.createModules(["timestamp/y"]));
-
         var comboUrls = loader.getComboUrls(allMods);
-
         expect(comboUrls.js[0].url)
             .to.be.equal("http://" + host +
                 "/tests/specs/timestamp/??y.js,x.js,z.js?t=a.js");
@@ -56,9 +49,6 @@ describe("timestamp for individual module works in combine mode", function () {
     it("works practically", function (done) {
         window.TIMESTAMP_X = 0;
         modulex.config({
-            base: '',
-            tag: '',
-            debug: true,
             packages: {
                 'timestamp': {
                     tag: 'a',
@@ -88,9 +78,6 @@ describe("timestamp for individual module works in combine mode", function () {
     it("works theoretically when package has no combo", function () {
         window.TIMESTAMP_X = 0;
         modulex.config({
-            base: '',
-            tag: '',
-            debug: true,
             packages: {
                 'timestamp': {
                     combine: false,
@@ -128,9 +115,6 @@ describe("timestamp for individual module works in combine mode", function () {
     it("works practically when package has no combo", function (done) {
         window.TIMESTAMP_X = 0;
         modulex.config({
-            base: '',
-            tag: '',
-            debug: true,
             packages: {
                 'timestamp': {
                     combine: false,

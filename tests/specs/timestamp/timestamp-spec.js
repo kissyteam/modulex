@@ -14,7 +14,6 @@ describe('timestamp for individual module works', function () {
         var mods = modulex.Env.mods;
 
         modulex.config({
-            debug: true,
             packages: {
                 'timestamp': {
                     tag: 'a',
@@ -69,7 +68,6 @@ describe('timestamp for individual module works', function () {
         var mods = modulex.Env.mods;
 
         modulex.config({
-            debug: true,
             packages: {
                 'timestamp': {
                     tag: 'a',

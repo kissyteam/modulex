@@ -154,7 +154,8 @@ describe('ComboLoader', function () {
     it('should trunk url by comboMaxUrlLength automatically', function () {
         mx.config('comboMaxFileNum', 9999);
 
-        var x = {}, k = 3000;
+        var x = {};
+        var k = 3000;
 
         for (var i = 0; i < 100; i++) {
             var r2 = [];
@@ -179,7 +180,6 @@ describe('ComboLoader', function () {
         var c = l.getComboUrls(r);
         var cjs = c.js;
         expect(cjs.length).to.be.equal(5);
-
         mx.Loader.Utils.each(cjs, function (j) {
             expect(j.url.length).not.to.above(mx.Config.comboMaxUrlLength);
         });
@@ -282,9 +282,6 @@ describe('ComboLoader', function () {
         window.TIMESTAMP_X = 0;
 
         mx.config({
-            base: '',
-            tag: '',
-            debug: true,
             packages: {
                 'timestamp': {
                     combine: false,
