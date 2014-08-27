@@ -31,7 +31,7 @@
     "q": "^1.0.1",
     "saucelabs-runner": "^1.0.1"
   },
-  "precommit": ["lint","test","browser-test"],
+  "precommit": ["lint"],
   "scripts": {
     "lint": "gulp lint",
     "test": "node ./node_modules/mocha/bin/mocha tests/node/specs",
