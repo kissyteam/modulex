@@ -10,8 +10,6 @@ modulex.clearLoader = function () {
         packages: false
     });
     for (m in modules) {
-        if (m !== 'logger') {
-            delete modules[m];
-        }
+        delete modules[m];
     }
 };

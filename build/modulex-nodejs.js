@@ -16,14 +16,21 @@
 /* exported modulex */
 /* jshint -W079 */
 var modulex = (function (undefined) {
+    function noop() {
+    }
+
+    if (typeof console === 'undefined') {
+        this.console = {log: noop, error: noop, warn: noop};
+    }
+
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Wed, 27 Aug 2014 06:33:37 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Mon, 01 Sep 2014 10:00:01 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Wed, 27 Aug 2014 06:33:37 GMT',
+        __BUILD_TIME: 'Mon, 01 Sep 2014 10:00:01 GMT',
 
         /**
          * modulex Environment.
@@ -63,17 +70,6 @@ var modulex = (function (undefined) {
          * @param {String} configName.tag modulex 's timestamp for native module. Default: modulex 's build time.
          * @param {Boolean} configName.debug whether to enable debug mod.
          * @param {Boolean} configName.combine whether to enable combo.
-         * @param {Object} configName.logger logger config
-         * @param {Object[]} configName.logger.excludes  exclude configs
-         * @param {Object} configName.logger.excludes.0 a single exclude config
-         * @param {RegExp} configName.logger.excludes.0.logger  matched logger will be excluded from logging
-         * @param {String} configName.logger.excludes.0.minLevel  minimum logger level (enum of debug info warn error)
-         * @param {String} configName.logger.excludes.0.maxLevel  maximum logger level (enum of debug info warn error)
-         * @param {Object[]} configName.logger.includes include configs
-         * @param {Object} configName.logger.includes.0 a single include config
-         * @param {RegExp} configName.logger.includes.0.logger  matched logger will be included from logging
-         * @param {String} configName.logger.excludes.0.minLevel  minimum logger level (enum of debug info warn error)
-         * @param {String} configName.logger.excludes.0.maxLevel  maximum logger level (enum of debug info warn error)
          * @param {Object} configName.packages Packages definition with package name as the key.
          * @param {String} configName.packages.base Package base path.
          * @param {String} configName.packages.tag  Timestamp for this package's module file.
@@ -157,162 +153,6 @@ var modulex = (function (undefined) {
 
     return mx;
 })();
-/**
- * logger utils
- * @author yiminghe@gmail.com
- */
-(function (mx) {
-    function getLogger(logger) {
-        var obj = {};
-        for (var cat in loggerLevel) {
-            /*jshint loopfunc: true*/
-            (function (obj, cat) {
-                obj[cat] = function (msg) {
-                    return LoggerManager.log(msg, cat, logger);
-                };
-            })(obj, cat);
-        }
-        return obj;
-    }
-
-    var config = {};
-    if ('@DEBUG@') {
-        config = {
-            excludes: [
-                {
-                    logger: /^modulex.*/,
-                    maxLevel: 'info',
-                    minLevel: 'debug'
-                }
-            ]
-        };
-    }
-
-    var loggerLevel = {
-        debug: 10,
-        info: 20,
-        warn: 30,
-        error: 40
-    };
-
-    var LoggerManager = {
-        config: function (cfg) {
-            config = cfg || config;
-            return config;
-        },
-        /**
-         * Prints debug info.
-         * @param msg {String} the message to log.
-         * @param {String} [cat] the log category for the message. Default
-         *        categories are 'info', 'warn', 'error', 'time' etc.
-         * @param {String} [logger] the logger of the the message (opt)
-         */
-        log: function (msg, cat, logger) {
-            if ('@DEBUG@') {
-                var matched = 1;
-                if (logger) {
-                    var list, i, l, level, minLevel, maxLevel, reg;
-                    cat = cat || 'debug';
-                    level = loggerLevel[cat] || loggerLevel.debug;
-                    if ((list = config.includes)) {
-                        matched = 0;
-                        for (i = 0; i < list.length; i++) {
-                            l = list[i];
-                            reg = l.logger;
-                            maxLevel = loggerLevel[l.maxLevel] || loggerLevel.error;
-                            minLevel = loggerLevel[l.minLevel] || loggerLevel.debug;
-                            if (minLevel <= level && maxLevel >= level && logger.match(reg)) {
-                                matched = 1;
-                                break;
-                            }
-                        }
-                    } else if ((list = config.excludes)) {
-                        matched = 1;
-                        for (i = 0; i < list.length; i++) {
-                            l = list[i];
-                            reg = l.logger;
-                            maxLevel = loggerLevel[l.maxLevel] || loggerLevel.error;
-                            minLevel = loggerLevel[l.minLevel] || loggerLevel.debug;
-                            if (minLevel <= level && maxLevel >= level && logger.match(reg)) {
-                                matched = 0;
-                                break;
-                            }
-                        }
-                    }
-                    if (matched) {
-                        msg = logger + ': ' + msg;
-                    }
-                }
-                /*global console*/
-                if (matched) {
-                    if (typeof console !== 'undefined' && console.log) {
-                        console[cat && console[cat] ? cat : 'log'](msg);
-                    }
-                    return msg;
-                }
-            }
-            return undefined;
-        },
-
-        /**
-         * get log instance for specified logger
-         * @param {String} logger logger name
-         * @returns {modulex.LoggerManager} log instance
-         */
-        getLogger: function (logger) {
-            return getLogger(logger);
-        },
-
-        /**
-         * Throws error message.
-         */
-        error: function (msg) {
-            if ('@DEBUG@') {
-                // with stack info!
-                throw msg instanceof  Error ? msg : new Error(msg);
-            }
-        }
-    };
-
-    /**
-     * Log class for specified logger
-     * @class modulex.LoggerManager
-     * @private
-     */
-    /**
-     * print debug log
-     * @method debug
-     * @member modulex.LoggerManager
-     * @param {String} str log str
-     */
-
-    /**
-     * print info log
-     * @method info
-     * @member modulex.LoggerManager
-     * @param {String} str log str
-     */
-
-    /**
-     * print warn log
-     * @method log
-     * @member modulex.LoggerManager
-     * @param {String} str log str
-     */
-
-    /**
-     * print error log
-     * @method error
-     * @member modulex.LoggerManager
-     * @param {String} str log str
-     */
-
-    mx.LoggerMangaer = LoggerManager;
-    mx.getLogger = LoggerManager.getLogger;
-    mx.log = LoggerManager.log;
-    mx.error = LoggerManager.error;
-    mx.Config.fns.logger = LoggerManager.config;
-})(modulex);
 /**
  * Utils for modulex loader
  * @author yiminghe@gmail.com
@@ -604,7 +444,7 @@ var modulex = (function (undefined) {
         addModule: function (name, factory, config) {
             var module = mods[name];
             if (module && module.factory !== undefined) {
-                mx.log(name + ' is defined more than once', 'warn');
+                console.warn(name + ' is defined more than once');
                 return;
             }
             Utils.createModule(name, mix({
@@ -1073,7 +913,6 @@ var modulex = (function (undefined) {
  * @author yiminghe@gmail.com
  */
 (function (mx) {
-    var logger = mx.getLogger('modulex/getScript');
     var CSS_POLL_INTERVAL = 30;
     var Utils = mx.Loader.Utils;
     // central poll for link node
@@ -1083,34 +922,29 @@ var modulex = (function (undefined) {
 
     function startCssTimer() {
         if (!timer) {
-            logger.debug('start css poll timer');
             cssPoll();
         }
     }
 
-    function isCssLoaded(node, url) {
+    function isCssLoaded(node) {
         var loaded = 0;
         if (Utils.webkit) {
             // http://www.w3.org/TR/Dom-Level-2-Style/stylesheets.html
             if (node.sheet) {
-                logger.debug('webkit css poll loaded: ' + url);
                 loaded = 1;
             }
         } else if (node.sheet) {
             try {
                 var cssRules = node.sheet.cssRules;
                 if (cssRules) {
-                    logger.debug('same domain css poll loaded: ' + url);
                     loaded = 1;
                 }
             } catch (ex) {
                 var exName = ex.name;
-                logger.debug('css poll exception: ' + exName + ' ' + ex.code + ' ' + url);
                 // http://www.w3.org/TR/dom/#dom-domexception-code
                 if (// exName == 'SecurityError' ||
                 // for old firefox
                     exName === 'NS_ERROR_DOM_SECURITY_ERR') {
-                    logger.debug('css poll exception: ' + exName + 'loaded : ' + url);
                     loaded = 1;
                 }
             }
@@ -1123,7 +957,7 @@ var modulex = (function (undefined) {
         for (var url in monitors) {
             var callbackObj = monitors[url];
             var node = callbackObj.node;
-            if (isCssLoaded(node, url)) {
+            if (isCssLoaded(node)) {
                 if (callbackObj.callback) {
                     callbackObj.callback.call(node);
                 }
@@ -1131,7 +965,6 @@ var modulex = (function (undefined) {
             }
         }
         if (Utils.isEmptyObject(monitors)) {
-            logger.debug('clear css poll timer');
             timer = 0;
         } else {
             timer = setTimeout(cssPoll, CSS_POLL_INTERVAL);
@@ -1226,10 +1059,10 @@ var modulex = (function (undefined) {
         }
         if (css && Utils.ieMode < 10) {
             if (doc.getElementsByTagName('style').length + doc.getElementsByTagName('link').length >= 31) {
-                if (win.console) {
-                    win.console.error('style and link\'s number is more than 31.' +
+                setTimeout(function () {
+                    throw new Error('style and link\'s number is more than 31.' +
                         'ie < 10 can not insert link: ' + url);
-                }
+                }, 0);
                 if (error) {
                     error();
                 }
@@ -1300,6 +1133,7 @@ var modulex = (function (undefined) {
                 end(0);
             }
         }
+
         //标准浏览器 css and all script
         if (useNative) {
             node.onload = onload;
@@ -1506,7 +1340,6 @@ var modulex = (function (undefined) {
  * @author yiminghe@gmail.com
  */
 (function (mx, undefined) {
-    var logger = mx.getLogger('modulex');
     var Loader = mx.Loader;
     var Config = mx.Config;
     var Status = Loader.Status;
@@ -1538,7 +1371,6 @@ var modulex = (function (undefined) {
                     successList.push(rs);
                     if (mod && currentMod) {
                         // standard browser(except ie9) fire load after modulex.add immediately
-                        logger.debug('standard browser get mod name after load: ' + mod.name);
                         addModule(mod.name, currentMod.factory, currentMod.config);
                         currentMod = undefined;
                     }
@@ -1622,7 +1454,6 @@ var modulex = (function (undefined) {
             if (oldIE) {
                 // http://groups.google.com/group/commonjs/browse_thread/thread/5a3358ece35e688e/43145ceccfb1dc02#43145ceccfb1dc02
                 name = findModuleNameByInteractive();
-                // mx.log('oldIE get modName by interactive: ' + name);
                 addModule(name, factory, config);
                 startLoadModName = null;
                 startLoadModTime = 0;
@@ -1666,8 +1497,6 @@ var modulex = (function (undefined) {
             // module code is executed right after inserting into dom
             // i has to preserve module name before insert module script into dom,
             // then get it back here
-            logger.debug('can not find interactive script,time diff : ' + (+new Date() - startLoadModTime));
-            logger.debug('old_ie get mod name from cache : ' + startLoadModName);
             name = startLoadModName;
         }
         return name;
@@ -1684,9 +1513,6 @@ var modulex = (function (undefined) {
                         ms.push(m.name);
                     }
                 });
-                if (ms.length) {
-                    logger.info('load remote modules: "' + ms.join(', ') + '" from: "' + rs.url + '"');
-                }
             });
         };
     }
@@ -1755,7 +1581,7 @@ var modulex = (function (undefined) {
                     each(error, function (one) {
                         each(one.mods, function (mod) {
                             var msg = mod.name + ' is not loaded! can not find module in url: ' + one.url;
-                            mx.log(msg, 'error');
+                            console.error(msg);
                             mod.status = ERROR;
                             // notify all loader instance
                             mod.flush();
@@ -1779,7 +1605,7 @@ var modulex = (function (undefined) {
                                 var msg = mod.name +
                                     ' is not loaded! can not find module in url: ' +
                                     one.url;
-                                mx.log(msg, 'error');
+                                console.error(msg);
                                 mod.status = ERROR;
                             }
                             // notify all loader instance
@@ -1839,7 +1665,7 @@ var modulex = (function (undefined) {
                 if ('@DEBUG@') {
                     // do not use indexOf, poor performance in ie8
                     if (stack[m]) {
-                        mx.log('find cyclic dependency between mods: ' + stack, 'warn');
+                        console.warn('find cyclic dependency between mods: ' + stack);
                         cache[m] = 1;
                         continue;
                     } else {
@@ -2132,7 +1958,6 @@ var modulex = (function (undefined) {
     var Utils = Loader.Utils;
     var createModule = Utils.createModule;
     var ComboLoader = Loader.ComboLoader;
-    var logger = mx.getLogger('modulex');
 
     Utils.mix(mx, {
         // internal usage
@@ -2209,12 +2034,11 @@ var modulex = (function (undefined) {
                 }
                 unloadedMods = loader.calculate(unloadedMods, errorList);
                 var unloadModsLen = unloadedMods.length;
-                logger.debug(tryCount + ' check duration ' + (+new Date() - start));
                 if (errorList.length) {
-                    mx.log('loader: load the following modules error', 'error');
-                    mx.log(Utils.map(errorList, function (e) {
+                    console.error('loader: load the following modules error');
+                    console.error(Utils.map(errorList, function (e) {
                         return e.name;
-                    }), 'error');
+                    }));
                     if (error) {
                         if ('@DEBUG@') {
                             error.apply(mx, errorList);
@@ -2249,7 +2073,6 @@ var modulex = (function (undefined) {
                     // in case all of its required mods is loading by other loaders
                     loader.callback = loadReady;
                     if (unloadModsLen) {
-                        logger.debug(tryCount + ' reload ');
                         loader.use(unloadedMods);
                     }
                 }
@@ -2297,7 +2120,7 @@ var modulex = (function (undefined) {
     });
     mx.config('packages', {
         core: {
-            filter: mx.Config.debug ? 'debug' : '',
+            filter: '@DEBUG@' ? 'debug' : '',
             base: '.'
         }
     });
@@ -2311,9 +2134,6 @@ var modulex = (function (undefined) {
             comboMaxFileNum: 40
         }));
     }
-    mx.add('logger-manager', function () {
-        return mx.LoggerMangaer;
-    });
 })(modulex);
 /**
  * @ignore
@@ -2343,7 +2163,7 @@ modulex.add('i18n', {
             success = success.success;
         }
         if (Utils.endsWith(url, '.css')) {
-            mx.log('node js can not load css: ' + url, 'warn');
+            console.warn('node js can not load css: ' + url);
             if (success) {
                 success();
             }
@@ -2351,7 +2171,7 @@ modulex.add('i18n', {
         }
         if (!fs.existsSync(url)) {
             var e = 'can not find file ' + url;
-            mx.log(e, 'error');
+            console.error(e);
             if (error) {
                 error(e);
             }
@@ -2372,8 +2192,8 @@ modulex.add('i18n', {
                 success();
             }
         } catch (e) {
-            mx.log('in file: ' + url, 'error');
-            mx.log(e.stack, 'error');
+            console.error('in file: ' + url);
+            console.error(e.stack);
             if (error) {
                 error(e);
             }

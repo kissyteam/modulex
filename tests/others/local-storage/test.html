@@ -22,7 +22,7 @@
                         localStorage.setItem(path, code);
                     } catch (e) {
                         // QUOTA_EXCEEDED_ERR
-                        modulex.log(e, 'error');
+                        console.log(e, 'error');
                     }
                     eval(code);
                     config.success();

@@ -14,6 +14,8 @@ A module registration and load library
 
 ## api
 
+http://docs.kissyui.com/5.0/api/classes/Loader.html
+
 ### config environment
 
 ```javascript
@@ -55,6 +57,10 @@ modulex.add(function(X){
 modulex.use(['x','u'],function(X,U){
 });
 ```
+
+## guide
+
+http://docs.kissyui.com/5.0/guides/loader/index.html
 
 ## contribution
 

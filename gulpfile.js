@@ -12,7 +12,7 @@ var stylish = require('jshint-stylish');
 var jscs = require('gulp-jscs');
 var packageInfo = require('./package.json');
 
-var files = ['modulex.js', 'logger.js',
+var files = ['modulex.js',
     'utils.js', 'data-structure.js',
     'css-onload.js', 'get-script.js',
     'configs.js', 'combo-loader.js',
