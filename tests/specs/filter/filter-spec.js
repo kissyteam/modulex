@@ -1,9 +1,10 @@
-
 describe('filter', function () {
     var mx = modulex;
-    afterEach(function () {
+
+    beforeEach(function () {
         mx.clearLoader();
     });
+
     it('works', function () {
         mx.config({
             packages: {

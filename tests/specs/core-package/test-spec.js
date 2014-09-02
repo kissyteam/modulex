@@ -2,6 +2,7 @@ describe('core package', function () {
     var mx = modulex;
 
     beforeEach(function () {
+        mx.clearLoader();
         mx.config({
             combine: false
         });

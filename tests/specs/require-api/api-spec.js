@@ -1,12 +1,9 @@
 describe('support require api in modulex.add', function () {
     beforeEach(function () {
+        modulex.clearLoader();
         modulex.config({
             combine: false
         });
-    });
-
-    afterEach(function () {
-        modulex.clearLoader();
     });
 
     it('async and toUrl works', function (done) {

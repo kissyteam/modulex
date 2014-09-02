@@ -3,11 +3,8 @@
 
 describe('css-combo', function () {
     beforeEach(function () {
-        modulex.config('combine', true);
-    });
-
-    afterEach(function () {
         modulex.clearLoader();
+        modulex.config('combine', true);
     });
 
     it('works for css and js', function (done) {

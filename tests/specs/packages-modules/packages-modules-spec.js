@@ -5,11 +5,8 @@
 
 describe('modules and packages', function () {
     beforeEach(function () {
-        modulex.config('combine', true);
-    });
-
-    afterEach(function () {
         modulex.clearLoader();
+        modulex.config('combine', true);
     });
 
     it('does not depend on order', function (done) {

@@ -1,10 +1,10 @@
 describe('module init error', function () {
     beforeEach(function () {
+        modulex.clearLoader();
         modulex.Config.debug = 0;
         modulex.config({
             onModInitError: function () {
             },
-
             'packages': {
                 err: {
                     base: '/tests/specs/catch-init-error/mods'
@@ -12,7 +12,6 @@ describe('module init error', function () {
             }});
     });
     afterEach(function () {
-        modulex.clearLoader();
         modulex.Config.debug = 1;
     });
     it('will catch module initialize error', function (done) {

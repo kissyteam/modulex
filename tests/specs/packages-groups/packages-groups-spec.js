@@ -10,11 +10,8 @@ describe('modules and groups', function () {
         ComboLoader = mx.Loader.ComboLoader;
 
     beforeEach(function () {
-        modulex.config('combine', true);
-    });
-
-    afterEach(function () {
         modulex.clearLoader();
+        modulex.config('combine', true);
     });
 
     it('combo packages', function () {

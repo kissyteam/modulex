@@ -5,12 +5,10 @@
 
 describe('support system.ondemand', function () {
     beforeEach(function () {
+        modulex.clearLoader();
         modulex.config('combine', false);
     });
 
-    afterEach(function () {
-        modulex.clearLoader();
-    });
     // https://gist.github.com/wycats/51c96e3adcdb3a68cbc3
     it('provide similar functionality', function (done) {
         modulex.config('packages', {

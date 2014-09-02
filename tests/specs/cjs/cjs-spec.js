@@ -6,12 +6,12 @@
 describe('it support commonjs require', function () {
     /*jshint quotmark:false*/
     beforeEach(function () {
+        modulex.clearLoader();
         window.cjsTest = [];
         modulex.config('combine', false);
     });
 
     afterEach(function () {
-        modulex.clearLoader();
         try {
             delete window.cjsTest;
         } catch (e) {

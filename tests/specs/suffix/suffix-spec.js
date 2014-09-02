@@ -1,13 +1,12 @@
 if(!window.callPhantom) {
     describe('mod with suffix', function () {
         var mx = modulex;
+
         beforeEach(function () {
+            modulex.clearLoader();
             modulex.config('combine', false);
         });
 
-        afterEach(function () {
-            modulex.clearLoader();
-        });
         it('can load mod with a suffix when simple loader', function (done) {
             modulex.config({
                 packages: {

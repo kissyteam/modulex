@@ -10,11 +10,8 @@
     var run = function (combine) {
         describe('loader-simple ' + (combine ? 'at combo mode' : ''), function () {
             beforeEach(function () {
-                modulex.config('combine', !!combine);
-            });
-
-            afterEach(function () {
                 modulex.clearLoader();
+                modulex.config('combine', !!combine);
             });
 
             it(' modulex.requirenot to attach', function () {

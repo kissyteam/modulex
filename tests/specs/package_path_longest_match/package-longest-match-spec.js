@@ -5,11 +5,8 @@ describe('loader package', function () {
     var Loader = mx.Loader;
 
     beforeEach(function () {
-        modulex.config('combine', false);
-    });
-
-    afterEach(function () {
         modulex.clearLoader();
+        modulex.config('combine', false);
     });
 
     it('longest match works', function (done) {

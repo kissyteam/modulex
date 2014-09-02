@@ -3,11 +3,8 @@ var run = function (combine) {
         var mx = modulex;
 
         beforeEach(function () {
-            modulex.config('combine', !!combine);
-        });
-
-        afterEach(function () {
             modulex.clearLoader();
+            modulex.config('combine', !!combine);
         });
 
         it('should works', function (done) {

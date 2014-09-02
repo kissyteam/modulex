@@ -5,12 +5,12 @@ describe("timestamp for individual module works in combine mode", function () {
     var host = location.host;
 
     beforeEach(function () {
+        mx.clearLoader();
         window.TIMESTAMP_X = 0;
         mx.config('combine', true);
     });
 
     afterEach(function () {
-        mx.clearLoader();
         try {
             delete window.TIMESTAMP_X;
         } catch (e) {

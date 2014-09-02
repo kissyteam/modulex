@@ -3,11 +3,8 @@ describe('timestamp for individual module works', function () {
     var mx = modulex;
 
     beforeEach(function () {
-        modulex.config('combine', false);
-    });
-
-    afterEach(function () {
         modulex.clearLoader();
+        modulex.config('combine', false);
     });
 
     it('works and avoid repeated loading', function (done) {

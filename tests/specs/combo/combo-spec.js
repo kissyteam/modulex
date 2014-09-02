@@ -6,11 +6,8 @@ describe('ComboLoader', function () {
         host = location.host;
 
     beforeEach(function () {
-        mx.config('combine', true);
-    });
-
-    afterEach(function () {
         mx.clearLoader();
+        mx.config('combine', true);
     });
 
     it('can combo test and not combo modulex', function (done) {

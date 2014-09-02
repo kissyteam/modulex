@@ -6,7 +6,6 @@
 </head>
 <body>
 <h1 style="text-align: center">modulex tests</h1>
-
 <div id='mocha'></div>
 <script src="/node_modules/node-jscover/lib/front-end/header.js"></script>
 <script src="/node_modules/node-jscover/lib/front-end/jscoverage-branch.js"></script>
@@ -35,13 +34,14 @@
                 'utils', 'data-structure',
                 'css-onload', 'get-script',
                 'configs', 'combo-loader',
-                'init', 'i18n'];
+                'init', 'i18n', 'import-style'];
             files.forEach(function (f, i) {
                 files[i] = '../lib/' + f + (isCoverage ? '-coverage' : '') + '.js';
             });
         }
         files = files.concat([
             '/tests/others/clear.js',
+            '/tests/specs/import-style/import-style-spec.js',
             '/tests/specs/catch-init-error/catch-init-error-spec.js',
             '/tests/specs/add_require/add-require-spec.js',
             '/tests/specs/alias/alias-spec.js',

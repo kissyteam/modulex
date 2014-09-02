@@ -3,11 +3,8 @@ var run = function (combine) {
     describe("modulex.config('modules', {x:{requires:[]}}) " + (combine ? 'at combo mode' : ''), function () {
         var mx = modulex;
         beforeEach(function () {
-            modulex.config('combine', !!combine);
-        });
-
-        afterEach(function () {
             modulex.clearLoader();
+            modulex.config('combine', !!combine);
         });
         it("should solve index", function () {
             modulex.config("modules", {

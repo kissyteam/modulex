@@ -4,6 +4,7 @@ describe('timeout', function () {
     var timeout;
 
     beforeEach(function () {
+        mx.clearLoader();
         timeout = mx.config('timeout') || 0;
         mx.config({
             combine: false,
@@ -15,7 +16,6 @@ describe('timeout', function () {
         mx.config({
             timeout: timeout
         });
-        mx.clearLoader();
     });
 
     it('works for use', function (done) {

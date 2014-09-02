@@ -17,12 +17,13 @@ var files = ['modulex.js',
     'css-onload.js', 'get-script.js',
     'configs.js', 'combo-loader.js',
     'init.js', 'i18n.js'];
+
 files.forEach(function (f, i) {
     files[i] = './lib/' + f;
 });
 
 gulp.task('lint', function () {
-    return gulp.src(files)
+    return gulp.src('lib/**/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter(stylish))
         .pipe(jshint.reporter('fail'))
@@ -45,6 +46,13 @@ gulp.task('default', ['lint'], function () {
 
     concatFile2.pipe(footer(fs.readFileSync('./lib/nodejs.js', 'utf-8')))
         .pipe(concat('modulex-nodejs.js'))
+        .pipe(gulp.dest('./build'));
+
+    gulp.src('lib/import-style.js')
+        .pipe(rename('import-style-debug.js'))
+        .pipe(gulp.dest('./build'))
+        .pipe(uglify())
+        .pipe(rename('import-style.js'))
         .pipe(gulp.dest('./build'));
 });
 

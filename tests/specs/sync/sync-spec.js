@@ -1,11 +1,8 @@
 var run = function (combine) {
     describe('sync loading ' + (combine ? 'at combo mode' : ''), function () {
         beforeEach(function () {
-            modulex.config('combine', !!combine);
-        });
-
-        afterEach(function () {
             modulex.clearLoader();
+            modulex.config('combine', !!combine);
         });
 
         it('is sync', function () {

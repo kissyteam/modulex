@@ -4,11 +4,8 @@
 describe('mod with suffix combo', function () {
     var mx = modulex;
     beforeEach(function () {
-        modulex.config('combine', true);
-    });
-
-    afterEach(function () {
         modulex.clearLoader();
+        modulex.config('combine', true);
     });
 
     it('can load mod with a suffix when combo loader', function (done) {

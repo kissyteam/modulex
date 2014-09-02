@@ -8,12 +8,10 @@
     var run = function (combine) {
         describe('loader-cyclic ' + (combine ? 'at combo mode' : ''), function () {
             beforeEach(function () {
+                modulex.clearLoader();
                 modulex.config('combine', !!combine);
             });
 
-            afterEach(function () {
-                modulex.clearLoader();
-            });
             it('can load indirect circular dependency', function (done) {
                 modulex.config({
                     packages: {
