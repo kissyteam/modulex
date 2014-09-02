@@ -16,24 +16,11 @@ var run = function (combine) {
                 }
             });
 
-            expect(modulex.Env.mods["add_require/x/"]).to.be.equal(undefined);
-            expect(modulex.Env.mods["add_require/x/index"]).to.not.be.equal(undefined);
-            expect(modulex.Env.mods["add_require/y/"]).to.be.equal(undefined);
-            expect(modulex.Env.mods["add_require/y/index"]).to.be.equal(undefined);
-            expect(modulex.Env.mods["add_require/x/index"].requires).to.deep.equal(['add_require/y/']);
-
             modulex.config('modules', {
                 "add_require/a/": {
                     requires: ['add_require/b/']
                 }
             });
-
-            expect(modulex.Env.mods["add_require/a/"]).to.be.equal(undefined);
-            expect(modulex.Env.mods["add_require/a/index"]).to.not.be.equal(undefined);
-            expect(modulex.Env.mods["add_require/b/"]).to.be.equal(undefined);
-            expect(modulex.Env.mods["add_require/b/index"]).to.be.equal(undefined);
-            expect(modulex.Env.mods["add_require/a/index"].requires)
-                .to.deep.equal(['add_require/b/']);
 
             modulex.add('add_require/a/', '2', {
                 requires: ['add_require/b/']

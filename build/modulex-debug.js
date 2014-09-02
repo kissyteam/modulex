@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Mon, 01 Sep 2014 10:00:01 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Tue, 02 Sep 2014 10:39:03 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Mon, 01 Sep 2014 10:00:01 GMT',
+        __BUILD_TIME: 'Tue, 02 Sep 2014 10:39:03 GMT',
 
         /**
          * modulex Environment.
@@ -58,10 +58,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.1.3' will replace with current version when compressing.
+         * NOTICE: '1.2.0' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.1.3',
+        version: '1.2.0',
 
         /**
          * set modulex configuration
@@ -139,16 +139,16 @@ var modulex = (function (undefined) {
     Loader.Status = {
         /** error */
         ERROR: -1,
-        /** init */
-        INIT: 0,
+        /** unloaded */
+        UNLOADED: 0,
         /** loading */
         LOADING: 1,
         /** loaded */
         LOADED: 2,
-        /** attaching */
-        ATTACHING: 3,
-        /** attached */
-        ATTACHED: 4
+        /** initializing */
+        INITIALIZING: 3,
+        /** initialized */
+        INITIALIZED: 4
     };
 
     return mx;
@@ -404,11 +404,7 @@ var modulex = (function (undefined) {
             }
             if (module) {
                 if (cfg) {
-                    mix(module, cfg);
-                    // module definition changes requires
-                    if (cfg.requires) {
-                        module.setRequiresModules(cfg.requires);
-                    }
+                    module.config(cfg);
                 }
                 return module;
             }
@@ -425,11 +421,14 @@ var modulex = (function (undefined) {
             });
         },
 
-        attachModules: function (mods) {
-            var l = mods.length, i;
+        initModules: function (modsToInit) {
+            var l = modsToInit.length;
+            var i;
+            var success = 1;
             for (i = 0; i < l; i++) {
-                mods[i].attachRecursive();
+                success &= modsToInit[i].initRecursive();
             }
+            return success;
         },
 
         getModulesExports: function (mods) {
@@ -464,8 +463,9 @@ var modulex = (function (undefined) {
     var Loader = mx.Loader;
     var Config = mx.Config;
     var Status = Loader.Status;
-    var ATTACHED = Status.ATTACHED;
-    var ATTACHING = Status.ATTACHING;
+    var INITIALIZED = Status.INITIALIZED;
+    var INITIALIZING = Status.INITIALIZING;
+    var ERROR = Status.ERROR;
     var Utils = Loader.Utils;
     var startsWith = Utils.startsWith;
     var createModule = Utils.createModule;
@@ -558,7 +558,7 @@ var modulex = (function (undefined) {
         /**
          * status of current modules
          */
-        self.status = Status.INIT;
+        self.status = Status.UNLOADED;
 
         /**
          * name of this module
@@ -580,7 +580,7 @@ var modulex = (function (undefined) {
         var require = self._require = function (moduleName) {
             if (typeof moduleName === 'string') {
                 var requiresModule = self.resolve(moduleName);
-                Utils.attachModules(requiresModule.getNormalizedModules());
+                Utils.initModules(requiresModule.getNormalizedModules());
                 return requiresModule.getExports();
             } else {
                 require.async.apply(require, arguments);
@@ -623,6 +623,15 @@ var modulex = (function (undefined) {
         modulex: 1,
 
         constructor: Module,
+
+        config: function (cfg) {
+            var self = this;
+            mix(self, cfg);
+            // module definition changes requires
+            if (cfg.requires) {
+                self.setRequiresModules(cfg.requires);
+            }
+        },
 
         require: function (moduleName) {
             return this.resolve(moduleName).getExports();
@@ -803,60 +812,103 @@ var modulex = (function (undefined) {
             return self.requiredModules;
         },
 
-        attachSelf: function () {
+        callFactory: function () {
             var self = this;
-            var status = self.status;
+            return self.factory.apply(self,
+                (
+                    self.cjs ?
+                        [self._require, self.exports, self] :
+                        Utils.map(self.getRequiredModules(), function (m) {
+                            return m.getExports();
+                        })
+                    )
+            );
+        },
+
+        initSelf: function () {
+            var self = this;
             var factory = self.factory;
             var exports;
-            if (status === Status.ATTACHED || status < Status.LOADED) {
-                return true;
-            }
             if (typeof factory === 'function') {
                 self.exports = {};
-                exports = factory.apply(self,
-                    (
-                        self.cjs ?
-                            [self._require, self.exports, self] :
-                            Utils.map(self.getRequiredModules(), function (m) {
-                                return m.getExports();
-                            })
-                        )
-                );
+
+                if (Config.debug) {
+                    exports = self.callFactory();
+                } else {
+                    try {
+                        exports = self.callFactory();
+                    } catch (e) {
+                        self.status = ERROR;
+                        if (self.onInitError || Config.onModInitError) {
+                            if (self.onInitError) {
+                                self.onInitError(e, self);
+                            }
+                            if (Config.onModInitError) {
+                                Config.onModInitError(e, self);
+                            }
+                        } else {
+                            setTimeout(function () {
+                                throw e;
+                            }, 0);
+                        }
+                        return 0;
+                    }
+                    var success = 1;
+                    Utils.each(self.getNormalizedRequiredModules(), function (m) {
+                        if (m.status === ERROR) {
+                            success = 0;
+                            return false;
+                        }
+                    });
+                    if (!success) {
+                        return 0;
+                    }
+                }
+
                 if (exports !== undefined) {
                     self.exports = exports;
                 }
             } else {
                 self.exports = factory;
             }
-            self.status = ATTACHED;
-            if (self.afterAttach) {
-                self.afterAttach(self.exports);
+            self.status = INITIALIZED;
+            if (self.afterInit) {
+                self.afterInit(self);
             }
+            if (Config.afterModInit) {
+                Config.afterModInit(self);
+            }
+            return 1;
         },
 
-        attachRecursive: function () {
+        initRecursive: function () {
             var self = this;
-            var status;
-            status = self.status;
-            // attached or circular dependency
-            if (status >= ATTACHING || status < Status.LOADED) {
-                return self;
+            var success = 1;
+            var status = self.status;
+            if (status === ERROR) {
+                return 0;
             }
-            self.status = ATTACHING;
+            // initialized or circular dependency
+            if (status >= INITIALIZING) {
+                return success;
+            }
+            self.status = INITIALIZING;
             if (self.cjs) {
                 // commonjs format will call require in module code again
-                self.attachSelf();
+                success = self.initSelf();
             } else {
                 Utils.each(self.getNormalizedRequiredModules(), function (m) {
-                    m.attachRecursive();
+                    success = success && m.initRecursive();
                 });
-                self.attachSelf();
+                if (success) {
+                    self.initSelf();
+                }
             }
-            return self;
+            return success;
         },
 
         undef: function () {
-            this.status = Status.INIT;
+            this.status = Status.UNLOADED;
             delete this.factory;
             delete this.exports;
         }
@@ -867,7 +919,7 @@ var modulex = (function (undefined) {
         if (index !== -1) {
             var pluginName = name.substring(0, index);
             name = name.substring(index + 1);
-            var Plugin = createModule(pluginName).attachRecursive().exports || {};
+            var Plugin = createModule(pluginName).initRecursive().exports || {};
             if (Plugin.alias) {
                 name = Plugin.alias(mx, name, pluginName);
             }
@@ -1248,7 +1300,6 @@ var modulex = (function (undefined) {
     configFns.alias = shortcut('alias');
 
     configFns.packages = function (config) {
-        var Config = this.Config;
         var packages = Config.packages;
         if (config) {
             Utils.each(config, function (cfg, key) {
@@ -1265,7 +1316,7 @@ var modulex = (function (undefined) {
                 }
             });
             return undefined;
-        } else if (config === false) {
+        } else if (!config) {
             Config.packages = {
                 core: packages.core
             };
@@ -1282,11 +1333,7 @@ var modulex = (function (undefined) {
                 if (url) {
                     modCfg.url = normalizePath(url);
                 }
-                var mod = Utils.createModule(modName, modCfg);
-                // #485, invalid after add
-                if (mod.status === Loader.Status.INIT) {
-                    Utils.mix(mod, modCfg);
-                }
+                Utils.createModule(modName, modCfg);
             });
         }
     };
@@ -1941,9 +1988,9 @@ var modulex = (function (undefined) {
 
  2012-02-20 yiminghe@gmail.com
  - three status
- 0: initialized
+ UNLOADED
  LOADED: load into page
- ATTACHED: factory executed
+ INITIALIZED: factory executed
  */
 /**
  * @ignore
@@ -1956,6 +2003,7 @@ var modulex = (function (undefined) {
     var defaultComboSep = ',';
     var Loader = mx.Loader;
     var Utils = Loader.Utils;
+    var Status = Loader.Status;
     var createModule = Utils.createModule;
     var ComboLoader = Loader.ComboLoader;
 
@@ -1994,7 +2042,7 @@ var modulex = (function (undefined) {
         },
 
         /**
-         * Attached one or more modules to global modulex instance.
+         * initialize one or more modules
          * @param {String|String[]} modNames moduleNames. 1-n modules to bind(use comma to separate)
          * @param {Function} success callback function executed
          * when modulex has the required functionality.
@@ -2003,7 +2051,7 @@ var modulex = (function (undefined) {
          * @member modulex
          *
          *
-         *      // loads and attached overlay,dd and its dependencies
+         *      // loads and initialize overlay dd and its dependencies
          *      modulex.use(['overlay','dd'], function(mx, Overlay){});
          */
         use: function (modNames, success) {
@@ -2025,37 +2073,48 @@ var modulex = (function (undefined) {
             });
             var normalizedMods = unloadedMods;
 
+            function processError(errorList, action) {
+                console.error('modulex: ' + action + ' the following modules error');
+                console.error(Utils.map(errorList, function (e) {
+                    return e.name;
+                }));
+                if (error) {
+                    if ('@DEBUG@') {
+                        error.apply(mx, errorList);
+                    } else {
+                        try {
+                            error.apply(mx, errorList);
+                        } catch (e) {
+                            /*jshint loopfunc:true*/
+                            setTimeout(function () {
+                                throw e;
+                            }, 0);
+                        }
+                    }
+                }
+            }
+
+            var allUnLoadedMods = [];
+
             function loadReady() {
                 ++tryCount;
                 var errorList = [];
-                var start;
-                if ('@DEBUG@') {
-                    start = +new Date();
-                }
                 unloadedMods = loader.calculate(unloadedMods, errorList);
+                allUnLoadedMods = allUnLoadedMods.concat(unloadedMods);
                 var unloadModsLen = unloadedMods.length;
                 if (errorList.length) {
-                    console.error('loader: load the following modules error');
-                    console.error(Utils.map(errorList, function (e) {
-                        return e.name;
-                    }));
-                    if (error) {
-                        if ('@DEBUG@') {
-                            error.apply(mx, errorList);
-                        } else {
-                            try {
-                                error.apply(mx, errorList);
-                            } catch (e) {
-                                /*jshint loopfunc:true*/
-                                setTimeout(function () {
-                                    throw e;
-                                }, 0);
-                            }
-                        }
-                    }
+                    processError(errorList, 'load');
                 } else if (loader.isCompleteLoading()) {
-                    Utils.attachModules(normalizedMods);
-                    if (success) {
+                    var isInitSuccess = Utils.initModules(normalizedMods);
+                    if (!isInitSuccess) {
+                        errorList = [];
+                        Utils.each(allUnLoadedMods, function (m) {
+                            if (m.status === Status.ERROR) {
+                                errorList.push(m);
+                            }
+                        });
+                        processError(errorList, 'initialize');
+                    } else if (success) {
                         if ('@DEBUG@') {
                             success.apply(mx, Utils.getModulesExports(mods));
                         } else {

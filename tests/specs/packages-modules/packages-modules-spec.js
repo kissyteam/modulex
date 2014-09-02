@@ -4,10 +4,6 @@
  */
 
 describe('modules and packages', function () {
-    var locationPrefix = location.protocol + '//' + location.host;
-    var build = (location.href.indexOf('build') !== -1) ||
-        (location.href.indexOf('min') !== -1);
-
     beforeEach(function () {
         modulex.config('combine', true);
     });

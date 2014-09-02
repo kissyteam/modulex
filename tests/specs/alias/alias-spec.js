@@ -1,6 +1,6 @@
 var run = function (combine) {
     /*jshint quotmark:false*/
-    describe("modulex Loader alias" + (combine ? 'at combo mode' : ''), function () {
+    describe("modulex Loader alias" + (combine ? ' at combo mode' : ''), function () {
         beforeEach(function () {
             modulex.config('combine', !!combine);
         });

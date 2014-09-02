@@ -1,15 +1,21 @@
 modulex.clearLoader = function () {
     var self = this;
-    var Env = self.Env;
-    var modules = Env.mods;
-    var m;
-    self.config({
-        alias: false,
-        tag: false,
-        group: false,
-        packages: false
-    });
-    for (m in modules) {
-        delete modules[m];
+    var mods = self.Env.mods;
+    var keys = [];
+    for (var m in mods) {
+        if (m !== 'i18n') {
+            keys.push(m);
+        }
     }
+    for (var i = 0, l = keys.length; i < l; i++) {
+        delete mods[keys[i]];
+    }
+    self.config({
+        onModInitError: 0,
+        afterModInit: 0,
+        // global config
+        tag: 0,
+        group: 0,
+        packages: 0
+    });
 };
