@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Thu, 04 Sep 2014 04:27:41 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Thu, 04 Sep 2014 04:47:57 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Thu, 04 Sep 2014 04:27:41 GMT',
+        __BUILD_TIME: 'Thu, 04 Sep 2014 04:47:57 GMT',
 
         /**
          * modulex Environment.
@@ -58,10 +58,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.2.0' will replace with current version when compressing.
+         * NOTICE: '1.3.1' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.2.0',
+        version: '1.3.1',
 
         /**
          * set modulex configuration
@@ -2067,6 +2067,8 @@ var modulex = (function (undefined) {
          * @param {String|String[]} modIds 1-n modules to bind(use comma to separate)
          * @param {Function} success callback function executed
          * when modulex has the required functionality.
+         * @param {Function} error callback function executed
+         * when modulex has the required functionality.
          * @param {modulex} success.mx modulex instance
          * @param success.x... modules exports
          * @member modulex
@@ -2075,8 +2077,8 @@ var modulex = (function (undefined) {
          *      // loads and initialize overlay dd and its dependencies
          *      modulex.use(['overlay','dd'], function(mx, Overlay){});
          */
-        use: function (modIds, success) {
-            var loader, error;
+        use: function (modIds, success, error) {
+            var loader;
             var tryCount = 0;
             if (typeof modIds === 'string') {
                 modIds = modIds.split(/\s*,\s*/);
