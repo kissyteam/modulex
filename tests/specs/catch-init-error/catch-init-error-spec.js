@@ -3,7 +3,7 @@ describe('module init error', function () {
         modulex.clearLoader();
         modulex.Config.debug = 0;
         modulex.config({
-            onModInitError: function () {
+            onModuleError: function () {
             },
             'packages': {
                 err: {
@@ -19,8 +19,8 @@ describe('module init error', function () {
             success: function () {
 
             }, error: function (e1, e2) {
-                expect(e2.name).to.equal('err/a-b-c');
-                expect(e1.name).to.equal('err/a-d');
+                expect(e2.id).to.equal('err/a-b-c');
+                expect(e1.id).to.equal('err/a-d');
                 done();
             }});
     });

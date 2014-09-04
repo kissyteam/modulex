@@ -46,58 +46,50 @@ describe('loader package', function () {
         });
 
         var m1 = new Loader.Module({
-            name: 'component',
-            runtime: mx
+            id: 'component'
         });
 
         expect(m1.getPackage().name).to.be.equal('core');
 
 
         m1 = new Loader.Module({
-            name: 'component/a',
-            runtime: mx
+            id: 'component/a'
         });
 
         expect(m1.getPackage().name).to.be.equal('core');
 
         m1 = new Loader.Module({
-            name: 'component/a/c',
-            runtime: mx
+            id: 'component/a/c'
         });
 
         expect(m1.getPackage().name).to.be.equal('core');
 
         m1 = new Loader.Module({
-            name: 'com',
-            runtime: mx
+            id: 'com'
         });
 
         expect(m1.getPackage().name).to.be.equal('com');
 
         m1 = new Loader.Module({
-            name: 'com/a',
-            runtime: mx
+            id: 'com/a'
         });
 
         expect(m1.getPackage().name).to.be.equal('com');
 
         m1 = new Loader.Module({
-            name: 'com/a/a',
-            runtime: mx
+            id: 'com/a/a'
         });
 
         expect(m1.getPackage().name).to.be.equal('com');
 
         m1 = new Loader.Module({
-            name: 'com/c',
-            runtime: mx
+            id: 'com/c'
         });
 
         expect(m1.getPackage().name).to.be.equal('com/c');
 
         m1 = new Loader.Module({
-            name: 'com/c/a',
-            runtime: mx
+            id: 'com/c/a'
         });
 
         expect(m1.getPackage().name).to.be.equal('com/c');

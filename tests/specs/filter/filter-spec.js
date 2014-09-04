@@ -17,7 +17,7 @@ describe('filter', function () {
                 }
             }
         });
-        expect(mx.getModule('pkg-a/a').getUrl()).to.be.equal(mx.getPackage('pkg-a').getBase() + 'a-debug.js');
-        expect(mx.getModule('pkg-b/b').getUrl()).to.be.equal(mx.getPackage('pkg-b').getBase() + 'b.js');
+        expect(mx.getModule('pkg-a/a').getUri()).to.be.equal(mx.getPackage('pkg-a').getBase() + 'a-debug.js');
+        expect(mx.getModule('pkg-b/b').getUri()).to.be.equal(mx.getPackage('pkg-b').getBase() + 'b.js');
     });
 });

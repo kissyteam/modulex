@@ -23,11 +23,11 @@ describe('importStyle', function () {
                 }
             }
         });
-        var urls = modulex.importStyle(['a/a1.css', 'b/b1.css'], true).css;
-        expect(urls.length).to.equal(3);
-        expect(urls[0].url).to.equal('http://localhost:8000/a/??a1.css,a2.css');
-        expect(urls[1].url).to.equal('http://localhost:8000/b/b1.css');
-        expect(urls[2].url).to.equal('http://localhost:8000/b/b2.css');
+        var uris = modulex.importStyle(['a/a1.css', 'b/b1.css'], true).css;
+        expect(uris.length).to.equal(3);
+        expect(uris[0].uri).to.equal('http://localhost:8000/a/??a1.css,a2.css');
+        expect(uris[1].uri).to.equal('http://localhost:8000/b/b1.css');
+        expect(uris[2].uri).to.equal('http://localhost:8000/b/b2.css');
         expect(modulex.Env.mods['a/a3'].status).to.equal(modulex.Loader.Status.UNLOADED);
         expect(modulex.Env.mods['a/a1.css'].status).to.equal(modulex.Loader.Status.INITIALIZED);
     });

@@ -40,8 +40,8 @@ describe("timestamp for individual module works in combine mode", function () {
         });
         var loader = new mx.Loader.ComboLoader();
         var allMods = loader.calculate(Utils.createModules(["timestamp/y"]));
-        var comboUrls = loader.getComboUrls(allMods);
-        expect(comboUrls.js[0].url)
+        var comboUris = loader.getComboUris(allMods);
+        expect(comboUris.js[0].uri)
             .to.be.equal("http://" + host +
                 "/tests/specs/timestamp/??y.js,x.js,z.js?t=a.js");
     });
@@ -103,13 +103,13 @@ describe("timestamp for individual module works in combine mode", function () {
 
         var allMods = loader.calculate(Utils.createModules(["timestamp/y"]));
 
-        var comboUrls = loader.getComboUrls(allMods);
+        var comboUris = loader.getComboUris(allMods);
 
-        var jss = comboUrls.js;
+        var jss = comboUris.js;
 
-        expect(jss[0].url).to.be.equal("http://" + host + "/tests/specs/timestamp/y.js?t=a.js");
-        expect(jss[1].url).to.be.equal("http://" + host + "/tests/specs/timestamp/x.js?t=b.js");
-        expect(jss[2].url).to.be.equal("http://" + host + "/tests/specs/timestamp/z.js?t=z.js");
+        expect(jss[0].uri).to.be.equal("http://" + host + "/tests/specs/timestamp/y.js?t=a.js");
+        expect(jss[1].uri).to.be.equal("http://" + host + "/tests/specs/timestamp/x.js?t=b.js");
+        expect(jss[2].uri).to.be.equal("http://" + host + "/tests/specs/timestamp/z.js?t=z.js");
     });
 
     it("works practically when package has no combo", function (done) {

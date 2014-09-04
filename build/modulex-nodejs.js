@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Tue, 02 Sep 2014 11:10:13 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Thu, 04 Sep 2014 04:27:41 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Tue, 02 Sep 2014 11:10:13 GMT',
+        __BUILD_TIME: 'Thu, 04 Sep 2014 04:27:41 GMT',
 
         /**
          * modulex Environment.
@@ -219,20 +219,20 @@ var modulex = (function (undefined) {
         Utils.trident = Utils.trident || 1;
     }
 
-    var urlReg = /http(s)?:\/\/([^/]+)(?::(\d+))?/;
+    var uriReg = /http(s)?:\/\/([^/]+)(?::(\d+))?/;
     var commentRegExp = /(\/\*([\s\mx]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
     var requireRegExp = /[^.'"]\s*require\s*\((['"])([^)]+)\1\)/g;
 
-    function normalizeName(name) {
+    function normalizeId(id) {
         // 'x/' 'x/y/z/'
-        if (name.charAt(name.length - 1) === '/') {
-            name += 'index';
+        if (id.charAt(id.length - 1) === '/') {
+            id += 'index';
         }
         // x.js === x
-        if (Utils.endsWith(name, '.js')) {
-            name = name.slice(0, -3);
+        if (Utils.endsWith(id, '.js')) {
+            id = id.slice(0, -3);
         }
-        return name;
+        return id;
     }
 
     function each(obj, fn) {
@@ -360,10 +360,10 @@ var modulex = (function (undefined) {
             return parts.join('/').replace(/\/+/, '/');
         },
 
-        isSameOriginAs: function (url1, url2) {
-            var urlParts1 = url1.match(urlReg);
-            var urlParts2 = url2.match(urlReg);
-            return urlParts1[0] === urlParts2[0];
+        isSameOriginAs: function (uri1, uri2) {
+            var uriParts1 = uri1.match(uriReg);
+            var uriParts2 = uri2.match(uriReg);
+            return uriParts1[0] === uriParts2[0];
         },
 
         // get document head
@@ -396,28 +396,28 @@ var modulex = (function (undefined) {
         },
 
         // get a module from cache or create a module instance
-        createModule: function (name, cfg) {
-            var module = mods[name];
+        createModule: function (id, cfg) {
+            var module = mods[id];
             if (!module) {
-                name = normalizeName(name);
-                module = mods[name];
+                id = normalizeId(id);
+                module = mods[id];
             }
             if (module) {
                 if (cfg) {
-                    module.config(cfg);
+                    module.reset(cfg);
                 }
                 return module;
             }
-            mods[name] = module = new Loader.Module(mix({
-                name: name
+            mods[id] = module = new Loader.Module(mix({
+                id: id
             }, cfg));
 
             return module;
         },
 
-        createModules: function (names) {
-            return Utils.map(names, function (name) {
-                return Utils.createModule(name);
+        createModules: function (ids) {
+            return Utils.map(ids, function (id) {
+                return Utils.createModule(id);
             });
         },
 
@@ -440,14 +440,14 @@ var modulex = (function (undefined) {
             return ret;
         },
 
-        addModule: function (name, factory, config) {
-            var module = mods[name];
+        addModule: function (id, factory, config) {
+            var module = mods[id];
             if (module && module.factory !== undefined) {
-                console.warn(name + ' is defined more than once');
+                console.warn(id + ' is defined more than once');
                 return;
             }
-            Utils.createModule(name, mix({
-                name: name,
+            Utils.createModule(id, mix({
+                id: id,
                 status: Loader.Status.LOADED,
                 factory: factory
             }, config));
@@ -512,7 +512,7 @@ var modulex = (function (undefined) {
         },
 
         /**
-         * get package url
+         * get package uri
          */
         getBase: function () {
             return this.base;
@@ -563,12 +563,29 @@ var modulex = (function (undefined) {
         /**
          * name of this module
          */
-        self.name = undefined;
+        self.id = undefined;
 
         /**
          * factory of this module
          */
         self.factory = undefined;
+
+        /**
+         * user config
+         *
+         *  modulex.config('modules',{
+         *      x: {
+         *          y:1
+         *      }
+         *  })
+         *
+         *  x.js:
+         *
+         *  modulex.add(function(require, exports, module){
+         *      console.log(module.config().y);
+         *  });
+         */
+        self.config = undefined;
 
         // lazy initialize and commonjs module format
         self.cjs = 1;
@@ -577,9 +594,9 @@ var modulex = (function (undefined) {
 
         self.waits = {};
 
-        var require = self._require = function (moduleName) {
-            if (typeof moduleName === 'string') {
-                var requiresModule = self.resolve(moduleName);
+        var require = self._require = function (id) {
+            if (typeof id === 'string') {
+                var requiresModule = self.resolve(id);
                 Utils.initModules(requiresModule.getNormalizedModules());
                 return requiresModule.getExports();
             } else {
@@ -589,31 +606,15 @@ var modulex = (function (undefined) {
 
         require.async = function (mods) {
             for (var i = 0; i < mods.length; i++) {
-                mods[i] = self.resolve(mods[i]).name;
+                mods[i] = self.resolve(mods[i]).id;
             }
             var args = makeArray(arguments);
             args[0] = mods;
             mx.use.apply(mx, args);
         };
 
-        require.resolve = function (relativeName) {
-            return self.resolve(relativeName).getUrl();
-        };
-
-        require.toUrl = function (path) {
-            var url = self.getUrl();
-            var pathIndex = url.indexOf('//');
-            if (pathIndex === -1) {
-                pathIndex = 0;
-            } else {
-                pathIndex = url.indexOf('/', pathIndex + 2);
-                if (pathIndex === -1) {
-                    pathIndex = 0;
-                }
-            }
-            var rest = url.substring(pathIndex);
-            path = Utils.normalizePath(rest, path);
-            return url.substring(0, pathIndex) + path;
+        require.toUrl = function (relativeId) {
+            return self.resolve(relativeId).getUri();
         };
 
         require.load = mx.getScript;
@@ -624,7 +625,11 @@ var modulex = (function (undefined) {
 
         constructor: Module,
 
-        config: function (cfg) {
+        config: function () {
+            return this.config;
+        },
+
+        reset: function (cfg) {
             var self = this;
             mix(self, cfg);
             // module definition changes requires
@@ -633,12 +638,12 @@ var modulex = (function (undefined) {
             }
         },
 
-        require: function (moduleName) {
-            return this.resolve(moduleName).getExports();
+        require: function (id) {
+            return this.resolve(id).getExports();
         },
 
-        resolve: function (relativeName) {
-            return createModule(Utils.normalizePath(this.name, relativeName));
+        resolve: function (relativeId) {
+            return createModule(Utils.normalizePath(this.id, relativeId));
         },
 
         add: function (loader) {
@@ -668,7 +673,7 @@ var modulex = (function (undefined) {
             var self = this;
             var v = self.type;
             if (!v) {
-                if (Utils.endsWith(self.name, '.css')) {
+                if (Utils.endsWith(self.id, '.css')) {
                     v = 'css';
                 } else {
                     v = 'js';
@@ -678,24 +683,20 @@ var modulex = (function (undefined) {
             return v;
         },
 
-        getExports: function () {
-            return this.getNormalizedModules()[0].exports;
-        },
-
         getAlias: function () {
             var self = this;
-            var name = self.name;
+            var id = self.id;
             if (self.normalizedAlias) {
                 return self.normalizedAlias;
             }
             var alias = getShallowAlias(self);
             var ret = [];
-            if (alias[0] === name) {
+            if (alias[0] === id) {
                 ret = alias;
             } else {
                 for (var i = 0, l = alias.length; i < l; i++) {
                     var aliasItem = alias[i];
-                    if (aliasItem && aliasItem !== name) {
+                    if (aliasItem && aliasItem !== id) {
                         var mod = createModule(aliasItem);
                         var normalAlias = mod.getAlias();
                         if (normalAlias) {
@@ -722,15 +723,19 @@ var modulex = (function (undefined) {
         },
 
         /**
-         * Get the path url of current module if load dynamically
+         * Get the path uri of current module if load dynamically
          * @return {String}
          */
-        getUrl: function () {
+        getUri: function () {
             var self = this;
-            if (!self.url) {
-                self.url = Utils.normalizeSlash(mx.Config.resolveModFn(self));
+            if (!self.uri) {
+                self.uri = Utils.normalizeSlash(mx.Config.resolveModFn(self));
             }
-            return self.url;
+            return self.uri;
+        },
+
+        getExports: function () {
+            return this.getNormalizedModules()[0].exports;
         },
 
         /**
@@ -740,21 +745,21 @@ var modulex = (function (undefined) {
         getPackage: function () {
             var self = this;
             if (!('packageInfo' in self)) {
-                var name = self.name;
+                var id = self.id;
                 // absolute path
-                if (startsWith(name, '/') ||
-                    startsWith(name, 'http://') ||
-                    startsWith(name, 'https://') ||
-                    startsWith(name, 'file://')) {
+                if (startsWith(id, '/') ||
+                    startsWith(id, 'http://') ||
+                    startsWith(id, 'https://') ||
+                    startsWith(id, 'file://')) {
                     self.packageInfo = null;
                     return;
                 }
                 var packages = Config.packages;
-                var modNameSlash = self.name + '/';
+                var modIdSlash = self.id + '/';
                 var pName = '';
                 var p;
                 for (p in packages) {
-                    if (startsWith(modNameSlash, p + '/') && p.length > pName.length) {
+                    if (startsWith(modIdSlash, p + '/') && p.length > pName.length) {
                         pName = p;
                     }
                 }
@@ -839,12 +844,17 @@ var modulex = (function (undefined) {
                         exports = self.callFactory();
                     } catch (e) {
                         self.status = ERROR;
-                        if (self.onInitError || Config.onModInitError) {
-                            if (self.onInitError) {
-                                self.onInitError(e, self);
+                        if (self.onError || Config.onModuleError) {
+                            var error = {
+                                type: 'init',
+                                exception: e,
+                                module: self
+                            };
+                            if (self.onError) {
+                                self.onError(error);
                             }
-                            if (Config.onModInitError) {
-                                Config.onModInitError(e, self);
+                            if (Config.onModuleError) {
+                                Config.onModuleError(error);
                             }
                         } else {
                             setTimeout(function () {
@@ -914,30 +924,30 @@ var modulex = (function (undefined) {
         }
     };
 
-    function pluginAlias(name) {
-        var index = name.indexOf('!');
+    function pluginAlias(id) {
+        var index = id.indexOf('!');
         if (index !== -1) {
-            var pluginName = name.substring(0, index);
-            name = name.substring(index + 1);
-            var Plugin = createModule(pluginName).initRecursive().exports || {};
+            var pluginId = id.substring(0, index);
+            id = id.substring(index + 1);
+            var Plugin = createModule(pluginId).initRecursive().getExports() || {};
             if (Plugin.alias) {
-                name = Plugin.alias(mx, name, pluginName);
+                id = Plugin.alias(mx, id, pluginId);
             }
         }
-        return name;
+        return id;
     }
 
     function normalizeRequires(requires, self) {
         requires = requires || [];
         var l = requires.length;
         for (var i = 0; i < l; i++) {
-            requires[i] = self.resolve(requires[i]).name;
+            requires[i] = self.resolve(requires[i]).id;
         }
         return requires;
     }
 
     function getShallowAlias(mod) {
-        var name = mod.name;
+        var id = mod.id;
         var packageInfo;
         var alias = mod.alias;
         if (typeof alias === 'string') {
@@ -948,10 +958,10 @@ var modulex = (function (undefined) {
         }
         packageInfo = mod.getPackage();
         if (packageInfo && packageInfo.alias) {
-            alias = packageInfo.alias(name);
+            alias = packageInfo.alias(id);
         }
         alias = mod.alias = alias || [
-            pluginAlias(name)
+            pluginAlias(id)
         ];
         return alias;
     }
@@ -1006,14 +1016,14 @@ var modulex = (function (undefined) {
 
     // single thread is ok
     function cssPoll() {
-        for (var url in monitors) {
-            var callbackObj = monitors[url];
+        for (var uri in monitors) {
+            var callbackObj = monitors[uri];
             var node = callbackObj.node;
             if (isCssLoaded(node)) {
                 if (callbackObj.callback) {
                     callbackObj.callback.call(node);
                 }
-                delete monitors[url];
+                delete monitors[uri];
             }
         }
         if (Utils.isEmptyObject(monitors)) {
@@ -1075,9 +1085,9 @@ var modulex = (function (undefined) {
      *
      * for example:
      *      @example
-     *      modulex.getScript(url, success, charset);
+     *      modulex.getScript(uri, success, charset);
      *      // or
-     *      modulex.getScript(url, {
+     *      modulex.getScript(uri, {
      *          charset: string
      *          success: fn,
      *          error: fn,
@@ -1086,7 +1096,7 @@ var modulex = (function (undefined) {
      *
      * Note 404/500 status in ie<9 will trigger success callback.
      *
-     * @param {String} url resource's url
+     * @param {String} uri resource's uri
      * @param {Function|Object} [success] success callback or config
      * @param {Function} [success.success] success callback
      * @param {Function} [success.error] error callback
@@ -1096,11 +1106,11 @@ var modulex = (function (undefined) {
      * @return {HTMLElement} script/style node
      * @member modulex
      */
-    mx.getScript = function (url, success, charset) {
-        // can not use modulex.Uri, url can not be encoded for some url
+    mx.getScript = function (uri, success, charset) {
+        // can not use modulex.Uri, uri can not be encoded for some uri
         // eg: /??dom.js,event.js , ? , should not be encoded
         var config = success;
-        var css = Utils.endsWith(url, '.css');
+        var css = Utils.endsWith(uri, '.css');
         var error, timeout, attrs, callbacks, timer;
         if (typeof config === 'object') {
             success = config.success;
@@ -1113,7 +1123,7 @@ var modulex = (function (undefined) {
             if (doc.getElementsByTagName('style').length + doc.getElementsByTagName('link').length >= 31) {
                 setTimeout(function () {
                     throw new Error('style and link\'s number is more than 31.' +
-                        'ie < 10 can not insert link: ' + url);
+                        'ie < 10 can not insert link: ' + uri);
                 }, 0);
                 if (error) {
                     error();
@@ -1121,7 +1131,7 @@ var modulex = (function (undefined) {
                 return;
             }
         }
-        callbacks = jsCssCallbacks[url] = jsCssCallbacks[url] || [];
+        callbacks = jsCssCallbacks[uri] = jsCssCallbacks[uri] || [];
         callbacks.push([success, error]);
         if (callbacks.length > 1) {
             return callbacks.node;
@@ -1142,12 +1152,12 @@ var modulex = (function (undefined) {
             node.charset = charset;
         }
         if (css) {
-            node.href = url;
+            node.href = uri;
             node.rel = 'stylesheet';
             // can not set, else test fail
             // node.media = 'async';
         } else {
-            node.src = url;
+            node.src = uri;
             node.async = true;
         }
         callbacks.node = node;
@@ -1155,12 +1165,12 @@ var modulex = (function (undefined) {
             var index = error;
             var fn;
             clearTimer();
-            Utils.each(jsCssCallbacks[url], function (callback) {
+            Utils.each(jsCssCallbacks[uri], function (callback) {
                 if ((fn = callback[index])) {
                     fn.call(node);
                 }
             });
-            delete jsCssCallbacks[url];
+            delete jsCssCallbacks[uri];
         };
         var useNative = 'onload' in node;
         // onload for webkit 535.23  Firefox 9.0
@@ -1245,18 +1255,18 @@ var modulex = (function (undefined) {
 
     // how to load mods by path
     Config.loadModsFn = function (rs, config) {
-        mx.getScript(rs.url, config);
+        mx.getScript(rs.uri, config);
     };
 
-    // how to get mod url
+    // how to get mod uri
     Config.resolveModFn = function (mod) {
-        var name = mod.name;
-        var filter, t, url;
+        var id = mod.id;
+        var filter, t, uri;
         // deprecated! do not use path config
         var subPath = mod.path;
         var packageInfo = mod.getPackage();
         if (!packageInfo) {
-            return name;
+            return id;
         }
         var packageBase = packageInfo.getBase();
         var packageName = packageInfo.name;
@@ -1264,35 +1274,35 @@ var modulex = (function (undefined) {
         var suffix = '.' + extname;
         if (!subPath) {
             // special for css module
-            name = name.replace(/\.css$/, '');
+            id = id.replace(/\.css$/, '');
             filter = packageInfo.getFilter() || '';
 
             if (typeof filter === 'function') {
-                subPath = filter(name, extname);
+                subPath = filter(id, extname);
             } else if (typeof filter === 'string') {
                 if (filter) {
                     filter = '-' + filter;
                 }
-                subPath = name + filter + suffix;
+                subPath = id + filter + suffix;
             }
         }
         // core package
         if (packageName === 'core') {
-            url = packageBase + subPath;
-        } else if (name === packageName) {
+            uri = packageBase + subPath;
+        } else if (id === packageName) {
             // packageName: a/y use('a/y');
             // do not use this on production, can not be combo ed with other modules from same package
-            url = packageBase.substring(0, packageBase.length - 1) + filter + suffix;
+            uri = packageBase.substring(0, packageBase.length - 1) + filter + suffix;
         } else {
             subPath = subPath.substring(packageName.length + 1);
-            url = packageBase + subPath;
+            uri = packageBase + subPath;
         }
 
         if ((t = mod.getTag())) {
             t += suffix;
-            url += '?t=' + t;
+            uri += '?t=' + t;
         }
-        return url;
+        return uri;
     };
 
     configFns.requires = shortcut('requires');
@@ -1328,12 +1338,12 @@ var modulex = (function (undefined) {
 
     configFns.modules = function (modules) {
         if (modules) {
-            Utils.each(modules, function (modCfg, modName) {
-                var url = modCfg.url;
-                if (url) {
-                    modCfg.url = normalizePath(url);
+            Utils.each(modules, function (modCfg, id) {
+                var uri = modCfg.uri;
+                if (uri) {
+                    modCfg.uri = normalizePath(uri);
                 }
-                Utils.createModule(modName, modCfg);
+                Utils.createModule(id, modCfg);
             });
         }
     };
@@ -1418,7 +1428,7 @@ var modulex = (function (undefined) {
                     successList.push(rs);
                     if (mod && currentMod) {
                         // standard browser(except ie9) fire load after modulex.add immediately
-                        addModule(mod.name, currentMod.factory, currentMod.config);
+                        addModule(mod.id, currentMod.factory, currentMod.config);
                         currentMod = undefined;
                     }
                     complete();
@@ -1434,12 +1444,12 @@ var modulex = (function (undefined) {
                 if (mod.getType() === 'css') {
                     mod = undefined;
                 } else if (oldIE) {
-                    startLoadModName = mod.name;
+                    startLoadModId = mod.id;
                     if ('@DEBUG@') {
                         startLoadModTime = +new Date();
                     }
                     config.attrs = {
-                        'data-mod-name': mod.name
+                        'data-mod-id': mod.id
                     };
                 }
             }
@@ -1462,7 +1472,7 @@ var modulex = (function (undefined) {
     }
 
     var currentMod;
-    var startLoadModName;
+    var startLoadModId;
     var startLoadModTime;
 
     function checkRequire(config, factory) {
@@ -1483,7 +1493,7 @@ var modulex = (function (undefined) {
         return config;
     }
 
-    ComboLoader.add = function (name, factory, config, argsLen) {
+    ComboLoader.add = function (id, factory, config, argsLen) {
         // modulex.add('xx',[],function(){});
         if (argsLen === 3 && Utils.isArray(factory)) {
             var tmp = factory;
@@ -1494,18 +1504,18 @@ var modulex = (function (undefined) {
             };
         }
         // modulex.add(function(){}), modulex.add('a'), modulex.add(function(){},{requires:[]})
-        if (typeof name === 'function' || argsLen === 1) {
+        if (typeof id === 'function' || argsLen === 1) {
             config = factory;
-            factory = name;
+            factory = id;
             config = checkRequire(config, factory);
             if (oldIE) {
                 // http://groups.google.com/group/commonjs/browse_thread/thread/5a3358ece35e688e/43145ceccfb1dc02#43145ceccfb1dc02
-                name = findModuleNameByInteractive();
-                addModule(name, factory, config);
-                startLoadModName = null;
+                id = findModuleIdByInteractive();
+                addModule(id, factory, config);
+                startLoadModId = null;
                 startLoadModTime = 0;
             } else {
-                // standard browser associates name with definition when onload
+                // standard browser associates id with definition when onload
                 currentMod = {
                     factory: factory,
                     config: config
@@ -1514,19 +1524,19 @@ var modulex = (function (undefined) {
         } else {
             // modulex.add('x',function(){},{requires:[]})
             if (oldIE) {
-                startLoadModName = null;
+                startLoadModId = null;
                 startLoadModTime = 0;
             } else {
                 currentMod = undefined;
             }
             config = checkRequire(config, factory);
-            addModule(name, factory, config);
+            addModule(id, factory, config);
         }
     };
 
-    function findModuleNameByInteractive() {
-        var scripts = document.getElementsByTagName('script'),
-            re, i, name, script;
+    function findModuleIdByInteractive() {
+        var scripts = document.getElementsByTagName('script');
+        var re, i, id, script;
 
         for (i = scripts.length - 1; i >= 0; i--) {
             script = scripts[i];
@@ -1537,16 +1547,16 @@ var modulex = (function (undefined) {
         }
 
         if (re) {
-            name = re.getAttribute('data-mod-name');
+            id = re.getAttribute('data-mod-id');
         } else {
             // sometimes when read module file from cache,
             // interactive status is not triggered
             // module code is executed right after inserting into dom
             // i has to preserve module name before insert module script into dom,
             // then get it back here
-            name = startLoadModName;
+            id = startLoadModId;
         }
-        return name;
+        return id;
     }
 
     var debugRemoteModules;
@@ -1557,7 +1567,7 @@ var modulex = (function (undefined) {
                 var ms = [];
                 each(rs.mods, function (m) {
                     if (m.status === LOADED) {
-                        ms.push(m.name);
+                        ms.push(m.id);
                     }
                 });
             });
@@ -1586,16 +1596,16 @@ var modulex = (function (undefined) {
     // ??editor/plugin/x,editor/plugin/b
     // =>
     // editor/plugin/??x,b
-    function getUrlConsiderCommonPrefix(commonPrefix, currentComboUrls, basePrefix, comboPrefix, comboSep, suffix) {
-        if (commonPrefix && currentComboUrls.length > 1) {
+    function getUriConsiderCommonPrefix(commonPrefix, currentComboUris, basePrefix, comboPrefix, comboSep, suffix) {
+        if (commonPrefix && currentComboUris.length > 1) {
             var commonPrefixLen = commonPrefix.length;
-            var currentUrls = [];
-            for (var i = 0; i < currentComboUrls.length; i++) {
-                currentUrls[i] = currentComboUrls[i].substring(commonPrefixLen);
+            var currentUris = [];
+            for (var i = 0; i < currentComboUris.length; i++) {
+                currentUris[i] = currentComboUris[i].substring(commonPrefixLen);
             }
-            return basePrefix + commonPrefix + comboPrefix + currentUrls.join(comboSep) + suffix;
+            return basePrefix + commonPrefix + comboPrefix + currentUris.join(comboSep) + suffix;
         } else {
-            return basePrefix + comboPrefix + currentComboUrls.join(comboSep) + suffix;
+            return basePrefix + comboPrefix + currentComboUris.join(comboSep) + suffix;
         }
     }
 
@@ -1605,21 +1615,21 @@ var modulex = (function (undefined) {
          */
         use: function (allMods) {
             var self = this;
-            var comboUrls;
+            var comboUris;
             var timeout = Config.timeout;
 
-            comboUrls = self.getComboUrls(allMods);
+            comboUris = self.getComboUris(allMods);
 
             // load css first to avoid page blink
-            if (comboUrls.css) {
-                loadScripts(comboUrls.css, function (success, error) {
+            if (comboUris.css) {
+                loadScripts(comboUris.css, function (success, error) {
                     if ('@DEBUG@') {
                         debugRemoteModules(success);
                     }
 
                     each(success, function (one) {
                         each(one.mods, function (mod) {
-                            addModule(mod.name, Utils.noop);
+                            addModule(mod.id, Utils.noop);
                             // notify all loader instance
                             mod.flush();
                         });
@@ -1627,9 +1637,20 @@ var modulex = (function (undefined) {
 
                     each(error, function (one) {
                         each(one.mods, function (mod) {
-                            var msg = mod.name + ' is not loaded! can not find module in url: ' + one.url;
+                            var msg = mod.id + ' is not loaded! can not find module in uri: ' + one.uri;
                             console.error(msg);
                             mod.status = ERROR;
+                            var error = {
+                                type: 'load',
+                                exception: msg,
+                                module: mod
+                            };
+                            if (mod.onError) {
+                                mod.onError(error);
+                            }
+                            if (Config.onModuleError) {
+                                Config.onModuleError(error);
+                            }
                             // notify all loader instance
                             mod.flush();
                         });
@@ -1638,20 +1659,20 @@ var modulex = (function (undefined) {
             }
 
             // jss css download in parallel
-            if (comboUrls.js) {
-                loadScripts(comboUrls.js, function (success) {
+            if (comboUris.js) {
+                loadScripts(comboUris.js, function (success) {
                     if ('@DEBUG@') {
                         debugRemoteModules(success);
                     }
 
-                    each(comboUrls.js, function (one) {
+                    each(comboUris.js, function (one) {
                         each(one.mods, function (mod) {
                             // fix #111
                             // https://github.com/kissyteam/modulex/issues/111
                             if (!mod.factory) {
-                                var msg = mod.name +
-                                    ' is not loaded! can not find module in url: ' +
-                                    one.url;
+                                var msg = mod.id +
+                                    ' is not loaded! can not find module in uri: ' +
+                                    one.uri;
                                 console.error(msg);
                                 mod.status = ERROR;
                             }
@@ -1681,7 +1702,7 @@ var modulex = (function (undefined) {
 
             for (i = 0; i < unloadedMods.length; i++) {
                 mod = unloadedMods[i];
-                m = mod.name;
+                m = mod.id;
 
                 if (cache[m]) {
                     continue;
@@ -1740,7 +1761,7 @@ var modulex = (function (undefined) {
         getComboMods: function (mods) {
             var i, tmpMods, mod, packageInfo, type,
                 tag, charset, packageBase,
-                packageName, group, modUrl;
+                packageName, group, modUri;
             var l = mods.length;
             var groups = {
                 /*
@@ -1761,7 +1782,7 @@ var modulex = (function (undefined) {
             for (i = 0; i < l; ++i) {
                 mod = mods[i];
                 type = mod.getType();
-                modUrl = mod.getUrl();
+                modUri = mod.getUri();
                 packageInfo = mod.getPackage();
 
                 if (packageInfo) {
@@ -1771,7 +1792,7 @@ var modulex = (function (undefined) {
                     tag = packageInfo.getTag();
                     group = packageInfo.getGroup();
                 } else {
-                    packageBase = mod.name;
+                    packageBase = mod.id;
                 }
 
                 if (packageInfo && packageInfo.isCombine() && group) {
@@ -1819,18 +1840,18 @@ var modulex = (function (undefined) {
         },
 
         /**
-         * Get combo urls
+         * Get combo uris
          */
-        getComboUrls: function (mods) {
+        getComboUris: function (mods) {
             var comboPrefix = Config.comboPrefix;
             var comboSep = Config.comboSep;
             var comboRes = {};
             var maxFileNum = Config.comboMaxFileNum;
-            var maxUrlLength = Config.comboMaxUrlLength;
+            var maxUriLength = Config.comboMaxUriLength;
             var comboMods = this.getComboMods(mods);
 
-            function processSamePrefixUrlMods(type, basePrefix, sendMods) {
-                var currentComboUrls = [];
+            function processSamePrefixUriMods(type, basePrefix, sendMods) {
+                var currentComboUris = [];
                 var currentComboMods = [];
                 var tag = sendMods.tag;
                 var charset = sendMods.charset;
@@ -1841,30 +1862,30 @@ var modulex = (function (undefined) {
                 var res = [];
 
                 /*jshint loopfunc:true*/
-                function pushComboUrl(sentUrl) {
+                function pushComboUri(sentUri) {
                     //noinspection JSReferencingMutableVariableFromClosure
                     res.push({
                         combine: 1,
-                        url: sentUrl,
+                        uri: sentUri,
                         charset: charset,
                         mods: currentComboMods
                     });
                 }
 
-                function getSentUrl() {
-                    return getUrlConsiderCommonPrefix(commonPrefix, currentComboUrls,
+                function getSentUri() {
+                    return getUriConsiderCommonPrefix(commonPrefix, currentComboUris,
                         basePrefix, comboPrefix, comboSep, suffix);
                 }
 
                 for (var i = 0; i < sendMods.length; i++) {
                     var currentMod = sendMods[i];
-                    var url = currentMod.getUrl();
+                    var uri = currentMod.getUri();
                     if (!currentMod.getPackage() || !currentMod.getPackage().isCombine() ||
                         // use(x/y) packageName: x/y ...
-                        !Utils.startsWith(url, basePrefix)) {
+                        !Utils.startsWith(uri, basePrefix)) {
                         res.push({
                             combine: 0,
-                            url: url,
+                            uri: uri,
                             charset: charset,
                             mods: [currentMod]
                         });
@@ -1872,8 +1893,8 @@ var modulex = (function (undefined) {
                     }
 
                     // ignore query parameter
-                    var subPath = url.slice(baseLen).replace(/\?.*$/, '');
-                    currentComboUrls.push(subPath);
+                    var subPath = uri.slice(baseLen).replace(/\?.*$/, '');
+                    currentComboUris.push(subPath);
                     currentComboMods.push(currentMod);
 
                     if (commonPrefix === undefined) {
@@ -1885,18 +1906,18 @@ var modulex = (function (undefined) {
                         }
                     }
 
-                    if (currentComboUrls.length > maxFileNum || getSentUrl().length > maxUrlLength) {
-                        currentComboUrls.pop();
+                    if (currentComboUris.length > maxFileNum || getSentUri().length > maxUriLength) {
+                        currentComboUris.pop();
                         currentComboMods.pop();
-                        pushComboUrl(getSentUrl());
-                        currentComboUrls = [];
+                        pushComboUri(getSentUri());
+                        currentComboUris = [];
                         currentComboMods = [];
                         commonPrefix = undefined;
                         i--;
                     }
                 }
-                if (currentComboUrls.length) {
-                    pushComboUrl(getSentUrl());
+                if (currentComboUris.length) {
+                    pushComboUri(getSentUri());
                 }
 
                 comboRes[type].push.apply(comboRes[type], res);
@@ -1906,11 +1927,11 @@ var modulex = (function (undefined) {
             var normals = comboMods.normals;
             var groups = comboMods.groups;
 
-            // generate combo urls
+            // generate combo uris
             for (type in normals) {
                 comboRes[type] = comboRes[type] || [];
                 for (prefix in normals[type]) {
-                    processSamePrefixUrlMods(type, prefix, normals[type][prefix]);
+                    processSamePrefixUriMods(type, prefix, normals[type][prefix]);
                 }
             }
 
@@ -1918,7 +1939,7 @@ var modulex = (function (undefined) {
                 comboRes[type] = comboRes[type] || [];
                 for (group in groups[type]) {
                     for (prefix in groups[type][group]) {
-                        processSamePrefixUrlMods(type, prefix, groups[type][group][prefix]);
+                        processSamePrefixUriMods(type, prefix, groups[type][group][prefix]);
                     }
                 }
             }
@@ -2009,8 +2030,8 @@ var modulex = (function (undefined) {
 
     Utils.mix(mx, {
         // internal usage
-        getModule: function (modName) {
-            return createModule(modName);
+        getModule: function (id) {
+            return createModule(id);
         },
 
         // internal usage
@@ -2020,7 +2041,7 @@ var modulex = (function (undefined) {
 
         /**
          * Registers a module with the modulex global.
-         * @param {String} name module name.
+         * @param {String} id module id.
          * it must be set if combine is true in {@link modulex#config}
          * @param {Function} factory module definition function that is used to return
          * exports of this module
@@ -2037,13 +2058,13 @@ var modulex = (function (undefined) {
          *          requires:['xx']
          *      });
          */
-        add: function (name, factory, cfg) {
-            ComboLoader.add(name, factory, cfg, arguments.length);
+        add: function (id, factory, cfg) {
+            ComboLoader.add(id, factory, cfg, arguments.length);
         },
 
         /**
          * initialize one or more modules
-         * @param {String|String[]} modNames moduleNames. 1-n modules to bind(use comma to separate)
+         * @param {String|String[]} modIds 1-n modules to bind(use comma to separate)
          * @param {Function} success callback function executed
          * when modulex has the required functionality.
          * @param {modulex} success.mx modulex instance
@@ -2054,11 +2075,11 @@ var modulex = (function (undefined) {
          *      // loads and initialize overlay dd and its dependencies
          *      modulex.use(['overlay','dd'], function(mx, Overlay){});
          */
-        use: function (modNames, success) {
+        use: function (modIds, success) {
             var loader, error;
             var tryCount = 0;
-            if (typeof modNames === 'string') {
-                modNames = modNames.split(/\s*,\s*/);
+            if (typeof modIds === 'string') {
+                modIds = modIds.split(/\s*,\s*/);
             }
             if (typeof success === 'object') {
                 //noinspection JSUnresolvedVariable
@@ -2066,7 +2087,7 @@ var modulex = (function (undefined) {
                 //noinspection JSUnresolvedVariable
                 success = success.success;
             }
-            var mods = Utils.createModules(modNames);
+            var mods = Utils.createModules(modIds);
             var unloadedMods = [];
             Utils.each(mods, function (mod) {
                 unloadedMods.push.apply(unloadedMods, mod.getNormalizedModules());
@@ -2076,7 +2097,7 @@ var modulex = (function (undefined) {
             function processError(errorList, action) {
                 console.error('modulex: ' + action + ' the following modules error');
                 console.error(Utils.map(errorList, function (e) {
-                    return e.name;
+                    return e.id;
                 }));
                 if (error) {
                     if ('@DEBUG@') {
@@ -2147,22 +2168,21 @@ var modulex = (function (undefined) {
 
         /**
          * get module exports from modulex module cache
-         * @param {String} moduleName module name
+         * @param {String} id module id
          * @member modulex
          * @return {*} exports of specified module
          */
-        require: function (moduleName) {
-            var requiresModule = createModule(moduleName);
-            return requiresModule.getExports();
+        require: function (id) {
+            return createModule(id).getExports();
         },
 
         /**
          * undefine a module
-         * @param {String} moduleName module name
+         * @param {String} id module id
          * @member modulex
          */
-        undef: function (moduleName) {
-            var requiresModule = createModule(moduleName);
+        undef: function (id) {
+            var requiresModule = createModule(id);
             var mods = requiresModule.getNormalizedModules();
             Utils.each(mods, function (m) {
                 m.undef();
@@ -2187,9 +2207,9 @@ var modulex = (function (undefined) {
     if (doc && doc.getElementsByTagName) {
         // will transform base to absolute path
         mx.config(Utils.mix({
-            // 2k(2048) url length
-            comboMaxUrlLength: 2000,
-            // file limit number for a single combo url
+            // 2k(2048) uri length
+            comboMaxUriLength: 2000,
+            // file limit number for a single combo uri
             comboMaxFileNum: 40
         }));
     }
@@ -2200,8 +2220,8 @@ var modulex = (function (undefined) {
  * @author yiminghe@gmail.com
  */
 modulex.add('i18n', {
-    alias: function (mx, name) {
-        return name + '/i18n/' + mx.Config.lang;
+    alias: function (mx, id) {
+        return id + '/i18n/' + mx.Config.lang;
     }
 });/**
  * @ignore
@@ -2214,22 +2234,22 @@ modulex.add('i18n', {
     var fs = require('fs');
     var Utils = mx.Loader.Utils;
     var vm = require('vm');
-    mx.getScript = function (url, success, charset) {
+    mx.getScript = function (uri, success, charset) {
         var error;
         if (typeof success === 'object') {
             charset = success.charset;
             error = success.error;
             success = success.success;
         }
-        if (Utils.endsWith(url, '.css')) {
-            console.warn('node js can not load css: ' + url);
+        if (Utils.endsWith(uri, '.css')) {
+            console.warn('node js can not load css: ' + uri);
             if (success) {
                 success();
             }
             return;
         }
-        if (!fs.existsSync(url)) {
-            var e = 'can not find file ' + url;
+        if (!fs.existsSync(uri)) {
+            var e = 'can not find file ' + uri;
             console.error(e);
             if (error) {
                 error(e);
@@ -2239,19 +2259,19 @@ modulex.add('i18n', {
         try {
             // async is controlled by async option in use
             // sync load in getScript, same as cached load in browser environment
-            var mod = fs.readFileSync(url, charset);
+            var mod = fs.readFileSync(uri, charset);
             // code in runInThisContext unlike eval can not access local scope
             // noinspection JSUnresolvedFunction
-            // use path, or else use url will error in nodejs debug mode
-            var factory = vm.runInThisContext('(function(modulex, requireNode){' + mod + '})', url);
-            factory(mx, function (moduleName) {
-                return require(Utils.normalizePath(url, moduleName));
+            // use path, or else use uri will error in nodejs debug mode
+            var factory = vm.runInThisContext('(function(modulex, requireNode){' + mod + '})', uri);
+            factory(mx, function (id) {
+                return require(Utils.normalizePath(uri, id));
             });
             if (success) {
                 success();
             }
         } catch (e) {
-            console.error('in file: ' + url);
+            console.error('in file: ' + uri);
             console.error(e.stack);
             if (error) {
                 error(e);
@@ -2266,9 +2286,9 @@ modulex.add('i18n', {
     });
 
     // require synchronously in node js
-    mx.nodeRequire = function (modName) {
+    mx.nodeRequire = function (id) {
         var ret = [];
-        mx.use([modName], function () {
+        mx.use([id], function () {
             ret = arguments;
         });
         return ret[0];

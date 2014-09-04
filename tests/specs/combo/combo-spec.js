@@ -109,12 +109,12 @@ describe('ComboLoader', function () {
 
         var r;
         r = l.calculate(Utils.createModules(['test/a', 'test/h']));
-        var c = l.getComboUrls(r);
-        expect(c.js[0].url).to.be.equal('http://a/??a.js,b.js,d.js,f.js,g.js,e.js,c.js,h.js,m.js');
+        var c = l.getComboUris(r);
+        expect(c.js[0].uri).to.be.equal('http://a/??a.js,b.js,d.js,f.js,g.js,e.js,c.js,h.js,m.js');
 
     });
 
-    it('should trunk url by comboMaxFileNum config rightly', function () {
+    it('should trunk uri by comboMaxFileNum config rightly', function () {
         var comboMaxFileNum = mx.config('comboMaxFileNum');
 
         mx.config('comboMaxFileNum', 2);
@@ -138,17 +138,17 @@ describe('ComboLoader', function () {
 
         var r;
         r = l.calculate(Utils.createModules(['a/a', 'a/b']));
-        var c = l.getComboUrls(r);
+        var c = l.getComboUris(r);
         var js = c.js;
         expect(js.length).to.be.equal(3);
-        expect(js[0].url).to.be.equal('http://a/??a.js,b.js');
-        expect(js[1].url).to.be.equal('http://a/??d.js,e.js');
-        expect(js[2].url).to.be.equal('http://a/??c.js');
+        expect(js[0].uri).to.be.equal('http://a/??a.js,b.js');
+        expect(js[1].uri).to.be.equal('http://a/??d.js,e.js');
+        expect(js[2].uri).to.be.equal('http://a/??c.js');
 
         mx.config('comboMaxFileNum', comboMaxFileNum);
     });
 
-    it('should trunk url by comboMaxUrlLength automatically', function () {
+    it('should trunk uri by comboMaxUriLength automatically', function () {
         mx.config('comboMaxFileNum', 9999);
 
         var x = {};
@@ -174,11 +174,11 @@ describe('ComboLoader', function () {
         }
         var r;
         r = l.calculate(Utils.createModules(ret));
-        var c = l.getComboUrls(r);
+        var c = l.getComboUris(r);
         var cjs = c.js;
         expect(cjs.length).to.be.equal(5);
         mx.Loader.Utils.each(cjs, function (j) {
-            expect(j.url.length).not.to.above(mx.Config.comboMaxUrlLength);
+            expect(j.uri.length).not.to.above(mx.Config.comboMaxUriLength);
         });
     });
 
@@ -202,10 +202,10 @@ describe('ComboLoader', function () {
 
         var loader = new mx.Loader.ComboLoader();
         var mods = loader.calculate(Utils.createModules(['tests/a']));
-        var urls = loader.getComboUrls(mods);
+        var uris = loader.getComboUris(mods);
         var host = location.host;
 
-        expect(urls.js[0].url)
+        expect(uris.js[0].uri)
             .to.be.equal('http://' + host + '/tests/specs/combo/' +
                 'tests/??a.js,b.js,c.js');
 
@@ -299,13 +299,13 @@ describe('ComboLoader', function () {
 
         var allMods = loader.calculate(Utils.createModules(['timestamp/y']));
 
-        var comboUrls = loader.getComboUrls(allMods);
+        var comboUris = loader.getComboUris(allMods);
 
-        var jss = comboUrls.js;
+        var jss = comboUris.js;
 
-        expect(jss[0].url).to.be.equal('http://' + host + '/tests/specs/timestamp/y.js');
-        expect(jss[1].url).to.be.equal('http://' + host + '/tests/specs/timestamp/x.js');
-        expect(jss[2].url).to.be.equal('http://' + host + '/tests/specs/timestamp/z.js');
+        expect(jss[0].uri).to.be.equal('http://' + host + '/tests/specs/timestamp/y.js');
+        expect(jss[1].uri).to.be.equal('http://' + host + '/tests/specs/timestamp/x.js');
+        expect(jss[2].uri).to.be.equal('http://' + host + '/tests/specs/timestamp/z.js');
     });
 
     it('should load mod not config', function (done) {
@@ -354,9 +354,9 @@ describe('ComboLoader', function () {
         });
         var loader = new mx.Loader.ComboLoader();
         var mods = loader.calculate(Utils.createModules(['t/a/b/a', 't/a/b/b', 't/a/b/c']));
-        var urls = loader.getComboUrls(mods);
+        var uris = loader.getComboUris(mods);
         var host = location.host;
-        expect(urls.js[0].url)
+        expect(uris.js[0].uri)
             .to.be.equal('http://' + host + '/t/a/b/??a.js,b.js,c.js');
     });
 });

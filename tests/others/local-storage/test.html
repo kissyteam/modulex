@@ -2,9 +2,9 @@
 <script>
     var mx = modulex;
     (function () {
-        function xhr(url, success) {
+        function xhr(uri, success) {
             var req = new XMLHttpRequest();
-            req.open('get', url, true);
+            req.open('get', uri, true);
             req.onload = function () {
                 success(req.responseText);
             };
@@ -12,7 +12,7 @@
         }
 
         modulex.config('loadModsFn', function (rs, config) {
-            var path = rs.url, code;
+            var path = rs.uri, code;
             if (false && (code = localStorage.getItem(path))) {
                 eval(code);
                 config.success();

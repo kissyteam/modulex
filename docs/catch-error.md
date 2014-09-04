@@ -54,12 +54,13 @@ modulex.use('c', {
 
 ### catch error in hooks
 
-modulex provides `onModInitError` as hook into module lifecycle to catch initializing error:
+modulex provides `onModuleError` as hook into module lifecycle to catch loading and initializing error:
 ```
 modulex.config({
-    onModInitError:function(e,mod){
-        // e === 1
-        // mod.name === 'b'
+    onModuleError:function(error){
+        // error.type === 'init' or 'load'
+        // error.exception === 1
+        // error.module.name === 'b'
     }
 });
 

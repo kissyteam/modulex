@@ -20,7 +20,7 @@ describe('support system.ondemand', function () {
         modulex.config('modules', {
             'p-c/b': {
                 requires: ['./c'],
-                url: '/tests/specs/system-ondemand/a.js'
+                uri: '/tests/specs/system-ondemand/a.js'
             }
         });
 

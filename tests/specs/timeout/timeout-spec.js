@@ -22,7 +22,7 @@ describe('timeout', function () {
         mx.config({
             modules: {
                 'timeout/use': {
-                    url: '/tests/specs/timeout/use.jss?' + mx.Loader.Utils.now()
+                    uri: '/tests/specs/timeout/use.jss?' + mx.Loader.Utils.now()
                 }
             }
         });
@@ -47,7 +47,7 @@ describe('timeout', function () {
             },
             modules: {
                 'timeout/r2': {
-                    url: '/tests/specs/timeout/r2.jss?' + mx.Loader.Utils.now()
+                    uri: '/tests/specs/timeout/r2.jss?' + mx.Loader.Utils.now()
                 }
             }
         });

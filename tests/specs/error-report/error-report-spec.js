@@ -67,10 +67,10 @@ var run = function (combine) {
                     expect(error1).to.be.equal(undefined);
                     expect(success2).to.be.equal(undefined);
                     expect(error2.length).to.be.equal(combine ? 2 : 1);
-                    expect(error2[0].name).to.be.equal(combine ? 'report/s3' : 'report/s4');
+                    expect(error2[0].id).to.be.equal(combine ? 'report/s3' : 'report/s4');
                     expect(error2[0].status).to.be.equal(mx.Loader.Status.ERROR);
                     if (combine) {
-                        expect(error2[1].name).to.be.equal('report/s4');
+                        expect(error2[1].id).to.be.equal('report/s4');
                         expect(error2[1].status).to.be.equal(mx.Loader.Status.ERROR);
                     }
                 } catch (e) {

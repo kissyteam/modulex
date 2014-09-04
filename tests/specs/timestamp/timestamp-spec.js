@@ -35,8 +35,8 @@ describe('timestamp for individual module works', function () {
         });
 
         r1.promise.then(function () {
-            expect(mx.Loader.Utils.endsWith(mods['timestamp/x'].url, 'b.js')).to.be.equal(true);
-            expect(mx.Loader.Utils.endsWith(mods['timestamp/z'].url, 'z.js')).to.be.equal(true);
+            expect(mx.Loader.Utils.endsWith(mods['timestamp/x'].uri, 'b.js')).to.be.equal(true);
+            expect(mx.Loader.Utils.endsWith(mods['timestamp/z'].uri, 'z.js')).to.be.equal(true);
             expect(mods['timestamp/x'].getTag()).to.be.equal('b');
             expect(mods['timestamp/z'].getTag()).to.be.equal('z');
             expect(window.TIMESTAMP_X).to.be.equal(1);
@@ -96,8 +96,8 @@ describe('timestamp for individual module works', function () {
         });
 
         r1.promise.then(function () {
-            expect(mx.Loader.Utils.endsWith(mods['timestamp/x'].url, 'q.js')).to.be.equal(true);
-            expect(mx.Loader.Utils.endsWith(mods['timestamp/z'].url, 'z.js')).to.be.equal(true);
+            expect(mx.Loader.Utils.endsWith(mods['timestamp/x'].uri, 'q.js')).to.be.equal(true);
+            expect(mx.Loader.Utils.endsWith(mods['timestamp/z'].uri, 'z.js')).to.be.equal(true);
             expect(mods['timestamp/x'].getTag()).to.be.equal('q');
             expect(mods['timestamp/z'].getTag()).to.be.equal('z');
             expect(window.TIMESTAMP_X).to.be.equal(1);
