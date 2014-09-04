@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Thu, 04 Sep 2014 04:47:57 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Thu, 04 Sep 2014 10:17:32 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Thu, 04 Sep 2014 04:47:57 GMT',
+        __BUILD_TIME: 'Thu, 04 Sep 2014 10:17:32 GMT',
 
         /**
          * modulex Environment.
