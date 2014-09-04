@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1 style="text-align: center">modulex tests</h1>
+
 <div id='mocha'></div>
 <script src="/node_modules/node-jscover/lib/front-end/header.js"></script>
 <script src="/node_modules/node-jscover/lib/front-end/jscoverage-branch.js"></script>
@@ -28,7 +29,7 @@
         var build = location.search.indexOf('build') !== -1;
         var files;
         if (build) {
-            files = ['/build/modulex-debug.js'];
+            files = ['/build/modulex-debug.js', '/build/import-style-debug.js'];
         } else {
             files = ['modulex',
                 'utils', 'data-structure',
