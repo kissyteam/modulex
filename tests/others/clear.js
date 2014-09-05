@@ -11,8 +11,8 @@ modulex.clearLoader = function () {
         delete mods[keys[i]];
     }
     self.config({
-        onModInitError: 0,
-        afterModInit: 0,
+        onModuleError: 0,
+        afterModuleInit: 0,
         // global config
         tag: 0,
         group: 0,

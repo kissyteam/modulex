@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Fri, 05 Sep 2014 03:39:48 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Fri, 05 Sep 2014 06:40:16 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Fri, 05 Sep 2014 03:39:48 GMT',
+        __BUILD_TIME: 'Fri, 05 Sep 2014 06:40:16 GMT',
 
         /**
          * modulex Environment.
@@ -885,8 +885,8 @@ var modulex = (function (undefined) {
             if (self.afterInit) {
                 self.afterInit(self);
             }
-            if (Config.afterModInit) {
-                Config.afterModInit(self);
+            if (Config.afterModuleInit) {
+                Config.afterModuleInit(self);
             }
             return 1;
         },
