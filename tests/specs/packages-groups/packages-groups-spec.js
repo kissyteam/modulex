@@ -173,7 +173,6 @@ describe('modules and groups', function () {
 
     });
 
-
     it('can skip cross origin package combo', function () {
         if (location.hostname !== 'localhost') {
             return;

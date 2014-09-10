@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Fri, 05 Sep 2014 06:40:16 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Wed, 10 Sep 2014 04:58:45 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Fri, 05 Sep 2014 06:40:16 GMT',
+        __BUILD_TIME: 'Wed, 10 Sep 2014 04:58:45 GMT',
 
         /**
          * modulex Environment.
@@ -1313,6 +1313,9 @@ var modulex = (function (undefined) {
 
     configFns.packages = function (config) {
         var packages = Config.packages;
+        if (config === undefined) {
+            return packages;
+        }
         if (config) {
             Utils.each(config, function (cfg, key) {
                 // object type
@@ -1328,13 +1331,11 @@ var modulex = (function (undefined) {
                 }
             });
             return undefined;
-        } else if (config === false) {
+        } else {
             Config.packages = {
                 core: packages.core
             };
             return undefined;
-        } else {
-            return packages;
         }
     };
 

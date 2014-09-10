@@ -11,11 +11,11 @@ modulex.clearLoader = function () {
         delete mods[keys[i]];
     }
     self.config({
-        onModuleError: 0,
-        afterModuleInit: 0,
+        onModuleError: false,
+        afterModuleInit: false,
         // global config
-        tag: 0,
-        group: 0,
-        packages: 0
+        tag: false,
+        group: false,
+        packages: false
     });
 };
