@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Wed, 10 Sep 2014 04:58:45 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Thu, 11 Sep 2014 07:33:56 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Wed, 10 Sep 2014 04:58:45 GMT',
+        __BUILD_TIME: 'Thu, 11 Sep 2014 07:33:56 GMT',
 
         /**
          * modulex Environment.
@@ -735,7 +735,8 @@ var modulex = (function (undefined) {
         },
 
         getExports: function () {
-            return this.getNormalizedModules()[0].exports;
+            var normalizedModules = this.getNormalizedModules();
+            return normalizedModules[0] && normalizedModules[0].exports;
         },
 
         /**
