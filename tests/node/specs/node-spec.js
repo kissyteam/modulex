@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+var expect = require('expect.js');
 var modulex = require('../../../build/modulex-nodejs');
 var path = require('path');
 
@@ -12,7 +12,7 @@ describe('modulex', function () {
         modulex.use(['test/m1'], function (m1) {
             var ee;
             try {
-                expect(m1).to.be.equal(2);
+                expect(m1).to.be(2);
             } catch (e) {
                 ee = e;
             }
@@ -26,6 +26,6 @@ describe('modulex', function () {
                 base: path.resolve(__dirname, '../fixture')
             }
         });
-        expect(modulex.nodeRequire('test2/m1')).to.be.equal(2);
+        expect(modulex.nodeRequire('test2/m1')).to.be(2);
     });
 });
