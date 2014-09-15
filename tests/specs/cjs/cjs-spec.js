@@ -28,7 +28,7 @@ describe('it support commonjs require', function () {
         });
         mx.use(['amd/a'], function (a) {
             expect(a).to.be.equal(3);
-            expect(window.cjsTest).to.deep.equal([3, 2, 4, 6]);
+            expect(window.cjsTest).to.eql([3, 2, 4, 6]);
             done();
         });
     });
@@ -42,7 +42,7 @@ describe('it support commonjs require', function () {
         });
         mx.use(['cjs/a'], function (a) {
             expect(a).to.be.equal(3);
-            expect(window.cjsTest).to.deep.equal([ 2, 3, 4, 6]);
+            expect(window.cjsTest).to.eql([ 2, 3, 4, 6]);
             done();
         });
     });

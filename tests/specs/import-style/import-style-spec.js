@@ -24,11 +24,11 @@ describe('importStyle', function () {
             }
         });
         var uris = modulex.importStyle(['a/a1.css', 'b/b1.css'], true).css;
-        expect(uris.length).to.equal(3);
-        expect(uris[0].uri).to.equal('http://localhost:8000/a/??a1.css,a2.css');
-        expect(uris[1].uri).to.equal('http://localhost:8000/b/b1.css');
-        expect(uris[2].uri).to.equal('http://localhost:8000/b/b2.css');
-        expect(modulex.Env.mods['a/a3'].status).to.equal(modulex.Loader.Status.UNLOADED);
-        expect(modulex.Env.mods['a/a1.css'].status).to.equal(modulex.Loader.Status.INITIALIZED);
+        expect(uris.length).to.be(3);
+        expect(uris[0].uri).to.be('http://localhost:8000/a/??a1.css,a2.css');
+        expect(uris[1].uri).to.be('http://localhost:8000/b/b1.css');
+        expect(uris[2].uri).to.be('http://localhost:8000/b/b2.css');
+        expect(modulex.Env.mods['a/a3'].status).to.be(modulex.Loader.Status.UNLOADED);
+        expect(modulex.Env.mods['a/a1.css'].status).to.be(modulex.Loader.Status.INITIALIZED);
     });
 });

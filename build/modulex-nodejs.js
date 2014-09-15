@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Mon, 15 Sep 2014 11:39:33 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Mon, 15 Sep 2014 12:07:10 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Mon, 15 Sep 2014 11:39:33 GMT',
+        __BUILD_TIME: 'Mon, 15 Sep 2014 12:07:10 GMT',
 
         /**
          * modulex Environment.
@@ -471,14 +471,6 @@ var modulex = (function (undefined) {
     var createModule = Utils.createModule;
     var mix = Utils.mix;
 
-    function makeArray(arr) {
-        var ret = [];
-        for (var i = 0; i < arr.length; i++) {
-            ret[i] = arr[i];
-        }
-        return ret;
-    }
-
     function checkGlobalIfNotExist(self, property) {
         return property in self ? self[property] : Config[property];
     }
@@ -545,13 +537,11 @@ var modulex = (function (undefined) {
 
     Loader.Package = Package;
 
-    function async(mods) {
+    function async(self, mods, callback) {
         for (var i = 0; i < mods.length; i++) {
-            mods[i] = this.resolve(mods[i]).id;
+            mods[i] = self.resolve(mods[i]).id;
         }
-        var args = makeArray(arguments);
-        args[0] = mods;
-        mx.use.apply(mx, args);
+        mx.use(mods, callback);
     }
 
     /**
@@ -603,13 +593,13 @@ var modulex = (function (undefined) {
 
         self.waits = {};
 
-        var require = self._require = function (id) {
+        var require = self._require = function (id, callback) {
             if (typeof id === 'string') {
                 var requiresModule = self.resolve(id);
                 Utils.initModules(requiresModule.getNormalizedModules());
                 return requiresModule.getExports();
             } else {
-                async.apply(require, arguments);
+                async(self, id, callback);
             }
         };
 
@@ -851,6 +841,7 @@ var modulex = (function (undefined) {
                                 exception: e,
                                 module: self
                             };
+                            self.error = error;
                             if (self.onError) {
                                 self.onError(error);
                             }
@@ -920,8 +911,9 @@ var modulex = (function (undefined) {
 
         undef: function () {
             this.status = Status.UNLOADED;
-            delete this.factory;
-            delete this.exports;
+            this.error = null;
+            this.factory = null;
+            this.exports = null;
         }
     };
 
@@ -1649,6 +1641,7 @@ var modulex = (function (undefined) {
                                 exception: msg,
                                 module: mod
                             };
+                            mod.error = error;
                             if (mod.onError) {
                                 mod.onError(error);
                             }
@@ -1679,6 +1672,18 @@ var modulex = (function (undefined) {
                                     one.uri;
                                 console.error(msg);
                                 mod.status = ERROR;
+                                var error = {
+                                    type: 'load',
+                                    exception: msg,
+                                    module: mod
+                                };
+                                mod.error = error;
+                                if (mod.onError) {
+                                    mod.onError(error);
+                                }
+                                if (Config.onModuleError) {
+                                    Config.onModuleError(error);
+                                }
                             }
                             // notify all loader instance
                             mod.flush();
@@ -2126,6 +2131,7 @@ var modulex = (function (undefined) {
             function loadReady() {
                 ++tryCount;
                 var errorList = [];
+                // get error from last round of load
                 unloadedMods = loader.calculate(unloadedMods, errorList);
                 allUnLoadedMods = allUnLoadedMods.concat(unloadedMods);
                 var unloadModsLen = unloadedMods.length;
@@ -2140,7 +2146,7 @@ var modulex = (function (undefined) {
                                 errorList.push(m);
                             }
                         });
-                        processError(errorList, 'initialize');
+                        processError(errorList, 'init');
                     } else if (success) {
                         if ('@DEBUG@') {
                             success.apply(mx, Utils.getModulesExports(mods));

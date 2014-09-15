@@ -19,8 +19,10 @@ describe('module init error', function () {
             success: function () {
 
             }, error: function (e1, e2) {
-                expect(e2.id).to.equal('err/a-b-c');
-                expect(e1.id).to.equal('err/a-d');
+                expect(e2.id).to.be('err/a-b-c');
+                expect(e1.id).to.be('err/a-d');
+                expect(e2.error.type).to.be('init');
+                expect(e1.error.type).to.be('init');
                 done();
             }});
     });

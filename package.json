@@ -8,8 +8,8 @@
   "main": "build/modulex-nodejs.js",
   "devDependencies": {
     "body-parser": "^1.7.0",
-    "chai": "^1.9.1",
     "combo-handler": "^1.0.0",
+    "expect.js": "^0.3.1",
     "express": "^4.8.7",
     "gulp": "^3.8.7",
     "gulp-clone": "^1.0.0",

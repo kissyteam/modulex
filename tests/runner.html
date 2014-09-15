@@ -12,13 +12,12 @@
 <script src="/node_modules/node-jscover/lib/front-end/jscoverage-branch.js"></script>
 <script src='/node_modules/jquery/dist/jquery.js'></script>
 <script src='/node_modules/q/q.js'></script>
-<script src='/node_modules/chai/chai.js'></script>
+<script src='/node_modules/expect.js/index.js'></script>
 <script src='/node_modules/mocha/mocha.js'></script>
 <script src='/node_modules/node-jscover/lib/reporters/mocha/console.js'></script>
 <script src='/node_modules/node-jscover-coveralls/lib/reports/mocha.js'></script>
 <script>
     mocha.setup('bdd');
-    var expect = chai.expect;
     if (location.href.indexOf('__testling') !== -1) {
         mocha.reporter('tap');
     }

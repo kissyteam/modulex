@@ -7,7 +7,7 @@ var serveIndex = require('serve-index');
 var comboHandler = require('combo-handler');
 var path = require('path');
 var app = express();
-var cwd = process.cwd();
+var cwd = require('path').normalize(process.cwd());
 var bodyParser = require('body-parser');
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
