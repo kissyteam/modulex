@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Thu, 11 Sep 2014 07:33:56 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Mon, 15 Sep 2014 11:39:33 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Thu, 11 Sep 2014 07:33:56 GMT',
+        __BUILD_TIME: 'Mon, 15 Sep 2014 11:39:33 GMT',
 
         /**
          * modulex Environment.
@@ -545,6 +545,15 @@ var modulex = (function (undefined) {
 
     Loader.Package = Package;
 
+    function async(mods) {
+        for (var i = 0; i < mods.length; i++) {
+            mods[i] = this.resolve(mods[i]).id;
+        }
+        var args = makeArray(arguments);
+        args[0] = mods;
+        mx.use.apply(mx, args);
+    }
+
     /**
      * @class modulex.Loader.Module
      */
@@ -600,17 +609,8 @@ var modulex = (function (undefined) {
                 Utils.initModules(requiresModule.getNormalizedModules());
                 return requiresModule.getExports();
             } else {
-                require.async.apply(require, arguments);
+                async.apply(require, arguments);
             }
-        };
-
-        require.async = function (mods) {
-            for (var i = 0; i < mods.length; i++) {
-                mods[i] = self.resolve(mods[i]).id;
-            }
-            var args = makeArray(arguments);
-            args[0] = mods;
-            mx.use.apply(mx, args);
         };
 
         require.toUrl = function (relativeId) {
