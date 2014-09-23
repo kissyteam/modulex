@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Tue, 23 Sep 2014 14:09:01 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Tue, 23 Sep 2014 16:09:25 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Tue, 23 Sep 2014 14:09:01 GMT',
+        __BUILD_TIME: 'Tue, 23 Sep 2014 16:09:25 GMT',
 
         /**
          * modulex Environment.
@@ -610,8 +610,16 @@ var modulex = (function (undefined) {
             }
         };
 
-        require.toUrl = function (relativeId) {
-            return self.resolve(relativeId).getUri();
+        require.toUrl = function (relativeUrl) {
+            var url = self.getUri();
+            var prefix = '';
+            var suffix = url;
+            var index = url.indexOf('//');
+            if (index !== -1) {
+                prefix = url.slice(0, index + 2);
+                suffix = url.slice(index + 2);
+            }
+            return prefix + Utils.normalizePath(suffix, relativeUrl);
         };
 
         require.load = mx.getScript;

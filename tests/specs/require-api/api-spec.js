@@ -28,8 +28,8 @@ describe('support require api in modulex.add', function () {
             Q.all([ret1.promise, ret2.promise]).then(function (v) {
                 var ee;
                 try {
-                    expect(v[0].css).to.be.equal('http://' + location.host + '/tests/specs/require-api/x.css?t=2.css');
-                    expect(v[0].swf).to.be.equal('http://' + location.host + '/tests/specs/require-api/x.swf?t=2.swf');
+                    expect(v[0].css).to.be.equal('http://' + location.host + '/tests/specs/require-api/x.css');
+                    expect(v[0].swf).to.be.equal('http://' + location.host + '/tests/specs/require-api/x.swf');
                     expect(v[1]).to.be.equal(2);
                 } catch (e) {
                     ee = e;
