@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Mon, 15 Sep 2014 12:07:10 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Tue, 23 Sep 2014 14:09:01 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Mon, 15 Sep 2014 12:07:10 GMT',
+        __BUILD_TIME: 'Tue, 23 Sep 2014 14:09:01 GMT',
 
         /**
          * modulex Environment.
@@ -277,6 +277,13 @@ var modulex = (function (undefined) {
 
     mix(Utils, {
         mix: mix,
+
+        getSuffix: function (str) {
+            var m = str.match(/\.(\w+)$/);
+            if (m) {
+                return m[1];
+            }
+        },
 
         noop: function () {
         },
@@ -663,10 +670,14 @@ var modulex = (function (undefined) {
             var self = this;
             var v = self.type;
             if (!v) {
-                if (Utils.endsWith(self.id, '.css')) {
+                var id = self.id;
+                if (Utils.endsWith(id, '.css')) {
                     v = 'css';
-                } else {
+
+                } else if (Utils.endsWith(id, '.js')) {
                     v = 'js';
+                } else {
+                    v = Utils.getSuffix(id) || 'js';
                 }
                 self.type = v;
             }
@@ -1268,8 +1279,9 @@ var modulex = (function (undefined) {
         var extname = mod.getType();
         var suffix = '.' + extname;
         if (!subPath) {
-            // special for css module
-            id = id.replace(/\.css$/, '');
+            if (Utils.endsWith(id, suffix)) {
+                id = id.slice(0, -suffix.length);
+            }
             filter = packageInfo.getFilter() || '';
 
             if (typeof filter === 'function') {

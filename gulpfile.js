@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var saucelabsRunner = require('saucelabs-runner');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 var footer = require('gulp-footer');
@@ -61,6 +60,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('saucelabs', function () {
+    var saucelabsRunner = require('saucelabs-runner');
     saucelabsRunner([
         {
             testname: 'modulex',

@@ -18,7 +18,7 @@ if(!window.callPhantom) {
 
             $('<div id="suffix-test"></div>').appendTo('body');
 
-            mx.use(['suffix/a.tpl'], function (A) {
+            mx.use(['suffix/a-tpl'], function (A) {
                 var ee;
                 try {
                     expect(A).to.be.equal(1);
