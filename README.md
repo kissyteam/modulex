@@ -37,7 +37,7 @@ modulex.add(function(require,exports,module){
 or use define function
 
 ``` javascript
-var defined = modulex.add;
+var define = modulex.add;
 define(function(require,exports,module){
 });
 ```
