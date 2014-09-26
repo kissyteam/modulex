@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Tue, 23 Sep 2014 16:09:25 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Fri, 26 Sep 2014 13:14:48 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Tue, 23 Sep 2014 16:09:25 GMT',
+        __BUILD_TIME: 'Fri, 26 Sep 2014 13:14:48 GMT',
 
         /**
          * modulex Environment.
@@ -58,10 +58,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.3.1' will replace with current version when compressing.
+         * NOTICE: '1.3.2' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.3.1',
+        version: '1.3.2',
 
         /**
          * set modulex configuration
@@ -1509,13 +1509,27 @@ var modulex = (function (undefined) {
         return config;
     }
 
+    function adaptRequirejs(requires) {
+        var ret = [];
+        var i, r, len;
+        for (i = 0, len = requires.length; i < len; i++) {
+            r = requires[i];
+            if (r === 'exports' || r === 'module' || r === 'require') {
+
+            } else {
+                ret.push(r);
+            }
+        }
+        return ret;
+    }
+
     ComboLoader.add = function (id, factory, config, argsLen) {
         // modulex.add('xx',[],function(){});
         if (argsLen === 3 && Utils.isArray(factory)) {
             var tmp = factory;
             factory = config;
             config = {
-                requires: tmp,
+                requires: adaptRequirejs(tmp),
                 cjs: 1
             };
         }

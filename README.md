@@ -53,8 +53,11 @@ modulex.add(function(X){
 
 ### use module
 
+can also load requirejs commonjs style module
+
 ```javascript
-modulex.use(['x','u'],function(X,U){
+var require = modulex.use;
+require(['x','u'],function(X,U){
 });
 ```
 

@@ -1,4 +1,4 @@
-modulex.add(function(require,exports,module){
-   module.exports= '3';
+modulex.add(function (require, exports, module) {
+    module.exports = '3';
     cjsTest.push(5);
 });
