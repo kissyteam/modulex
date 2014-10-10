@@ -11,11 +11,11 @@ describe('modules and groups', function () {
 
     beforeEach(function () {
         modulex.clearLoader();
-        modulex.config('combine', true);
+        require.config('combine', true);
     });
 
     it('combo packages', function () {
-        modulex.config({
+        require.config({
             packages: {
                 'pkg-a': {
                     group: 'my',
@@ -47,7 +47,7 @@ describe('modules and groups', function () {
     });
 
     it('works', function (done) {
-        modulex.config({
+        require.config({
             packages: {
                 'pkg-a': {
                     group: 'my',
@@ -68,7 +68,7 @@ describe('modules and groups', function () {
             }
         });
 
-        modulex.use(['pkg-a/a'], function (r) {
+        require(['pkg-a/a'], function (r) {
             expect(r).to.be.equal(5);
             done();
         });
@@ -77,7 +77,7 @@ describe('modules and groups', function () {
     it('combo packages which have no combo prefix', function () {
         var l = new ComboLoader();
 
-        modulex.config({
+        require.config({
             packages: {
                 'pkg-a': {
                     group: 'my',
@@ -106,7 +106,7 @@ describe('modules and groups', function () {
     it('combo packages with different charset', function () {
         var l = new ComboLoader();
 
-        modulex.config({
+        require.config({
             packages: {
                 'pkg-a': {
                     group: 'my',
@@ -137,7 +137,7 @@ describe('modules and groups', function () {
     });
 
     it('can perform 3 package combo', function () {
-        modulex.config({
+        require.config({
             group: 'my',
             packages: {
                 'pkg-a': {
@@ -179,7 +179,7 @@ describe('modules and groups', function () {
         }
 
         var uri = 'http://localhost:9999/src/loader/tests/specs/packages-groups';
-        modulex.config({
+        require.config({
             group: 'my',
             packages: {
                 'pkg-a': {

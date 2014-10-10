@@ -19,7 +19,7 @@ http://docs.kissyui.com/5.0/api/classes/Loader.html
 ### config environment
 
 ```javascript
-modulex.config({
+require.config({
     packages: {},
     modules: {}
 });
@@ -30,14 +30,6 @@ modulex.config({
 #### commonjs style
 
 ```javascript
-modulex.add(function(require,exports,module){
-});
-```
-
-or use define function
-
-``` javascript
-var define = modulex.add;
 define(function(require,exports,module){
 });
 ```
@@ -45,7 +37,7 @@ define(function(require,exports,module){
 #### amd style
 
 ```javascript
-modulex.add(function(X){
+define(function(X){
 },{
     requires:['x']
 });
@@ -56,9 +48,24 @@ modulex.add(function(X){
 can also load requirejs commonjs style module
 
 ```javascript
-var require = modulex.use;
 require(['x','u'],function(X,U){
 });
+```
+
+### noConflict
+
+can use modulex.noConflict() to give up global require and define variable.
+
+``` javascript
+var require = global.require;
+var define = global.define;
+global.require = modulex.use;
+global.require.config = modulex.config;
+global.define = modulex.add;
+mx.noConflict = function () {
+    global.require = require;
+    global.define = define;
+};
 ```
 
 ## guide

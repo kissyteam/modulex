@@ -8,7 +8,7 @@ describe('it support commonjs require', function () {
     beforeEach(function () {
         modulex.clearLoader();
         window.cjsTest = [];
-        modulex.config('combine', false);
+        require.config('combine', false);
     });
 
     afterEach(function () {

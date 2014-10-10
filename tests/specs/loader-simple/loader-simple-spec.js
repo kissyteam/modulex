@@ -11,7 +11,7 @@
         describe('loader-simple ' + (combine ? 'at combo mode' : ''), function () {
             beforeEach(function () {
                 modulex.clearLoader();
-                modulex.config('combine', !!combine);
+                require.config('combine', !!combine);
             });
 
             it(' modulex.requirenot to attach', function () {
@@ -26,7 +26,7 @@
             });
 
             it('should load and attach custom mods correctly', function (done) {
-                modulex.config({
+                require.config({
                     packages: {
                         '1.2': {
                             tag: mx.Loader.Utils.now(),

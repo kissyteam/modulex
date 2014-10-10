@@ -3,7 +3,7 @@ var run = function (combine) {
     describe("modulex Loader alias" + (combine ? ' at combo mode' : ''), function () {
         beforeEach(function () {
             modulex.clearLoader();
-            modulex.config('combine', !!combine);
+            require.config('combine', !!combine);
         });
 
         it('works for package alias', function (done) {
@@ -11,7 +11,7 @@ var run = function (combine) {
                 'alias-a/x': ['alias-a/b', 'alias-a/c'],
                 'alias-a/d': ['alias-a/d/e', 'alias-a/d/f']
             };
-            modulex.config({
+            require.config({
                 packages: {
                     'alias-a': {
                         base: '/tests/specs/alias/alias-a',
@@ -21,7 +21,7 @@ var run = function (combine) {
                     }
                 }
             });
-            modulex.use(['alias-a/x'], function (X) {
+            require(['alias-a/x'], function (X) {
                 var ee;
                 try {
                     expect(X).to.be.equal('alias-a/b');
@@ -37,7 +37,7 @@ var run = function (combine) {
                 'alias-a/x': ['alias-a/b', 'alias-a/c'],
                 'alias-a/d': ['alias-a/d/e', 'alias-a/d/f']
             };
-            modulex.config({
+            require.config({
                 alias: modules,
                 packages: {
                     'alias-a': {
@@ -45,14 +45,14 @@ var run = function (combine) {
                     }
                 }
             });
-            modulex.use(['alias-a/x'], function (X) {
+            require(['alias-a/x'], function (X) {
                 expect(X).to.be.equal('alias-a/b');
                 done();
             });
         });
 
         it('alias works for module', function (done) {
-            modulex.config({
+            require.config({
                 packages: {
                     'alias-a': {
                         base: '/tests/specs/alias/alias-a'
@@ -71,7 +71,7 @@ var run = function (combine) {
                 }
             });
 
-            modulex.use(['alias-a/x'], function (X) {
+            require(['alias-a/x'], function (X) {
                 expect(X).to.be.equal('alias-a/b');
                 done();
             });

@@ -21,7 +21,7 @@ describe('core package', function () {
                 }
             }
         });
-        modulex.use(['t', 'core-package-test/t'], function (coreT, t) {
+        require(['t', 'core-package-test/t'], function (coreT, t) {
             expect(coreT).to.be.equal(1);
             expect(t).to.be.equal(2);
             done();

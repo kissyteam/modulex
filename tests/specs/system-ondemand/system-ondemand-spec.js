@@ -6,18 +6,18 @@
 describe('support system.ondemand', function () {
     beforeEach(function () {
         modulex.clearLoader();
-        modulex.config('combine', false);
+        require.config('combine', false);
     });
 
     // https://gist.github.com/wycats/51c96e3adcdb3a68cbc3
     it('provide similar functionality', function (done) {
-        modulex.config('packages', {
+        require.config('packages', {
             'p-c': {
                 base: '/tests/specs/system-ondemand/'
             }
         });
 
-        modulex.config('modules', {
+        require.config('modules', {
             'p-c/b': {
                 requires: ['./c'],
                 uri: '/tests/specs/system-ondemand/a.js'
@@ -26,7 +26,7 @@ describe('support system.ondemand', function () {
 
         var ret = 0;
 
-        modulex.use(['p-c/a'], function (a) {
+        require(['p-c/a'], function (a) {
             expect(a).to.be.equal(4);
             ret++;
             if (ret === 2) {
@@ -37,7 +37,7 @@ describe('support system.ondemand', function () {
         //setTimeout(function(){
 
         // known issue, if combine:true second request will be ??a.js,c.js
-        modulex.use(['p-c/b'], function (b) {
+        require(['p-c/b'], function (b) {
             expect(b).to.be.equal(3);
             ret++;
             if (ret === 2) {

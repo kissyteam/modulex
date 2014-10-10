@@ -1,13 +1,13 @@
-describe('support require api in modulex.add', function () {
+describe('support require api in define', function () {
     beforeEach(function () {
         modulex.clearLoader();
-        modulex.config({
+        require.config({
             combine: false
         });
     });
 
     it('async and toUrl works', function (done) {
-        modulex.config('packages', {
+        require.config('packages', {
             't': {
                 tag: 2,
                 base: '/tests/specs/require-api'
@@ -16,7 +16,7 @@ describe('support require api in modulex.add', function () {
         var ret1 = Q.defer();
         var ret2 = Q.defer();
 
-        modulex.use(['t/t1', 't/t2'], function (t1, t2) {
+        require(['t/t1', 't/t2'], function (t1, t2) {
             t1.init(function (tt1) {
                 ret1.resolve(tt1);
             });

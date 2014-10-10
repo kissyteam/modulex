@@ -9,11 +9,11 @@
         describe('loader-cyclic ' + (combine ? 'at combo mode' : ''), function () {
             beforeEach(function () {
                 modulex.clearLoader();
-                modulex.config('combine', !!combine);
+                require.config('combine', !!combine);
             });
 
             it('can load indirect circular dependency', function (done) {
-                modulex.config({
+                require.config({
                     packages: {
                         'circular-dependency': {
                             base: '/tests/specs/circular-dependency'
@@ -21,7 +21,7 @@
                     }
                 });
 
-                modulex.use(['circular-dependency/a'], function (a) {
+                require(['circular-dependency/a'], function (a) {
                     var ret = a.get();
                     expect(ret).to.be.equal('caba');
                     done();
@@ -29,7 +29,7 @@
             });
 
             it('can load direct circular dependency', function (done) {
-                modulex.config({
+                require.config({
                     packages: {
                         'circular-dependency': {
                             base: '/tests/specs/circular-dependency'
@@ -37,7 +37,7 @@
                     }
                 });
 
-                modulex.use(['circular-dependency/a1'], function (a) {
+                require(['circular-dependency/a1'], function (a) {
                     var ret = a.b();
                     expect(ret).to.be.equal(3);
                     done();

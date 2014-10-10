@@ -4,7 +4,7 @@
 describe('css-combo', function () {
     beforeEach(function () {
         modulex.clearLoader();
-        modulex.config('combine', true);
+        require.config('combine', true);
     });
 
     it('works for css and js', function (done) {
@@ -13,7 +13,7 @@ describe('css-combo', function () {
             '<div class="test1"></div>' +
             '</div>').appendTo('body');
 
-        modulex.config({
+        require.config({
             packages: {
                 x: {
                     base: '/tests/specs/css-combo/x'
@@ -29,7 +29,7 @@ describe('css-combo', function () {
             }
         });
 
-        modulex.use(['x/x1'], function (X1) {
+        require(['x/x1'], function (X1) {
             expect(X1).to.be.equal(2);
 
             expect($('.test1').css('font-size')).to.be.equal('20px');
@@ -48,7 +48,7 @@ describe('css-combo', function () {
             '<div class="test1"></div>' +
             '</div>').appendTo('body');
 
-        modulex.config({
+        require.config({
 
             packages: {
                 x: {
@@ -66,7 +66,7 @@ describe('css-combo', function () {
             }
         });
 
-        modulex.use(['x/x1'], function (X1) {
+        require(['x/x1'], function (X1) {
             expect(X1).to.be.equal(2);
 
             expect($('.test1').css('font-size')).to.be.equal('20px');

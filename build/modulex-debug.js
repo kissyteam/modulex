@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Fri, 26 Sep 2014 13:14:48 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Fri, 10 Oct 2014 07:43:43 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Fri, 26 Sep 2014 13:14:48 GMT',
+        __BUILD_TIME: 'Fri, 10 Oct 2014 07:43:43 GMT',
 
         /**
          * modulex Environment.
@@ -2258,6 +2258,19 @@ var modulex = (function (undefined) {
             // file limit number for a single combo uri
             comboMaxFileNum: 40
         }));
+    }
+
+    if (typeof global === 'undefined' && typeof window !== 'undefined') {
+        var win = window;
+        var require = win.require;
+        win.require = modulex.use;
+        win.require.config = modulex.config;
+        var define = win.define;
+        win.define = modulex.add;
+        mx.noConflict = function () {
+            win.require = require;
+            win.define = define;
+        };
     }
 })(modulex);
 /**

@@ -1,3 +1,3 @@
-modulex.add(function(require){
+define(function(require){
    require('./a-b-c');
 });

@@ -1,3 +1,3 @@
-modulex.add('alias-a/d/f', function (mx) {
+define('alias-a/d/f', function (mx) {
     return 'alias-a/d/f';
 });

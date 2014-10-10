@@ -4,13 +4,13 @@ describe('timestamp for individual module works', function () {
 
     beforeEach(function () {
         modulex.clearLoader();
-        modulex.config('combine', false);
+        require.config('combine', false);
     });
 
     it('works and avoid repeated loading', function (done) {
         var mods = modulex.Env.mods;
 
-        modulex.config({
+        require.config({
             packages: {
                 'timestamp': {
                     tag: 'a',
@@ -30,7 +30,7 @@ describe('timestamp for individual module works', function () {
 
         var r1 = Q.defer();
 
-        modulex.use(['timestamp/x'], function () {
+        require(['timestamp/x'], function () {
            r1.resolve();
         });
 
@@ -45,7 +45,7 @@ describe('timestamp for individual module works', function () {
         var r2 = Q.defer();
 
         r1.promise.then(function () {
-            modulex.use(['timestamp/y'], function () {
+            require(['timestamp/y'], function () {
                 r2.resolve();
             });
         });
@@ -64,7 +64,7 @@ describe('timestamp for individual module works', function () {
 
         var mods = modulex.Env.mods;
 
-        modulex.config({
+        require.config({
             packages: {
                 'timestamp': {
                     tag: 'a',
@@ -82,7 +82,7 @@ describe('timestamp for individual module works', function () {
             }
         });
 
-        modulex.config('modules', {
+        require.config('modules', {
             'timestamp/x': {
                 tag: 'q'
             }
@@ -91,7 +91,7 @@ describe('timestamp for individual module works', function () {
         var r1 = Q.defer();
         var r2 = Q.defer();
 
-        modulex.use(['timestamp/x'], function () {
+        require(['timestamp/x'], function () {
            r1.resolve();
         });
 
@@ -104,7 +104,7 @@ describe('timestamp for individual module works', function () {
         });
 
         r1.promise.then(function () {
-            modulex.use(['timestamp/y'], function () {
+            require(['timestamp/y'], function () {
                 r2.resolve();
             });
         });

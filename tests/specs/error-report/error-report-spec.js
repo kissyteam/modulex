@@ -4,11 +4,11 @@ var run = function (combine) {
 
         beforeEach(function () {
             modulex.clearLoader();
-            modulex.config('combine', !!combine);
+            require.config('combine', !!combine);
         });
 
         it('should works', function (done) {
-            modulex.config({
+            require.config({
                 'packages': {
                     'report': {
                         base: '/tests/specs/error-report/' +
@@ -18,7 +18,7 @@ var run = function (combine) {
             });
 
             if (combine) {
-                modulex.config('modules', {
+                require.config('modules', {
                     'report/s1': {
                         requires: ['./s2']
                     },
@@ -33,7 +33,7 @@ var run = function (combine) {
 
             var r1 = Q.defer();
 
-            modulex.use(['report/s1'], {
+            require(['report/s1'], {
                 success: function () {
                     success1 = arguments;
                     r1.resolve();
@@ -48,7 +48,7 @@ var run = function (combine) {
             var error2;
             var r2 = Q.defer();
 
-            modulex.use(['report/s3'], {
+            require(['report/s3'], {
                 success: function () {
                     success2 = arguments;
                     r2.resolve();

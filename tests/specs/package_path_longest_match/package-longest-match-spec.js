@@ -6,7 +6,7 @@ describe('loader package', function () {
 
     beforeEach(function () {
         modulex.clearLoader();
-        modulex.config('combine', false);
+        require.config('combine', false);
     });
 
     it('longest match works', function (done) {

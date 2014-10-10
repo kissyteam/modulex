@@ -1,2 +1,2 @@
-modulex.add("timestamp/z", function () {
+define("timestamp/z", function () {
 })

@@ -1,3 +1,3 @@
-modulex.add("y/y",function(){
+define("y/y",function(){
    return 2;
 });

@@ -1,3 +1,3 @@
-modulex.add('t/t', function () {
+define('t/t', function () {
     return 1;
 });

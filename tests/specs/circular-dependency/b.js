@@ -1,4 +1,4 @@
-modulex.add('circular-dependency/b', function (require, exports) {
+define('circular-dependency/b', function (require, exports) {
     var c = require('./c');
     exports.b = 'b';
     exports.get = function () {

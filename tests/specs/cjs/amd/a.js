@@ -1,4 +1,4 @@
-modulex.add(function(b){
+define(function(b){
     cjsTest.push(2);
     cjsTest.push(4);
     cjsTest.push(6);

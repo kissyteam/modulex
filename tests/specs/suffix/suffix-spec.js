@@ -4,11 +4,11 @@ if(!window.callPhantom) {
 
         beforeEach(function () {
             modulex.clearLoader();
-            modulex.config('combine', false);
+            require.config('combine', false);
         });
 
         it('can load mod with a suffix when simple loader', function (done) {
-            modulex.config({
+            require.config({
                 packages: {
                     suffix: {
                         base: '/tests/specs/suffix'

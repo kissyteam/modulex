@@ -1,3 +1,3 @@
-modulex.add("tests/c", function () {
+define("tests/c", function () {
     return 1;
 });

@@ -5,11 +5,11 @@ describe('mod with suffix combo', function () {
     var mx = modulex;
     beforeEach(function () {
         modulex.clearLoader();
-        modulex.config('combine', true);
+        require.config('combine', true);
     });
 
     it('can load mod with a suffix when combo loader', function (done) {
-        modulex.config({
+        require.config({
             packages: {
                 suffix: {
                     base: '/tests/specs/suffix'

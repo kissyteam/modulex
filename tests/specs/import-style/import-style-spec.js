@@ -4,7 +4,7 @@ describe('importStyle', function () {
     });
 
     it('works', function () {
-        modulex.config({
+        require.config({
             'packages': {
                 'a': {
                     combine: true,

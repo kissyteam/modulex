@@ -1,3 +1,3 @@
-modulex.add("z/z",function(){
+define("z/z",function(){
    return 1;
 });

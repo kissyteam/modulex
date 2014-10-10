@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Fri, 26 Sep 2014 13:14:48 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Fri, 10 Oct 2014 07:43:43 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Fri, 26 Sep 2014 13:14:48 GMT',
+        __BUILD_TIME: 'Fri, 10 Oct 2014 07:43:43 GMT',
 
         /**
          * modulex Environment.
@@ -2259,6 +2259,19 @@ var modulex = (function (undefined) {
             comboMaxFileNum: 40
         }));
     }
+
+    if (typeof global === 'undefined' && typeof window !== 'undefined') {
+        var win = window;
+        var require = win.require;
+        win.require = modulex.use;
+        win.require.config = modulex.config;
+        var define = win.define;
+        win.define = modulex.add;
+        mx.noConflict = function () {
+            win.require = require;
+            win.define = define;
+        };
+    }
 })(modulex);
 /**
  * @ignore
@@ -2309,10 +2322,9 @@ modulex.add('i18n', {
             // code in runInThisContext unlike eval can not access local scope
             // noinspection JSUnresolvedFunction
             // use path, or else use uri will error in nodejs debug mode
-            var factory = vm.runInThisContext('(function(modulex, requireNode){' + mod + '})', uri);
-            factory(mx, function (id) {
-                return require(Utils.normalizePath(uri, id));
-            });
+            var define = useDefine ? ', define' : '';
+            var factory = vm.runInThisContext('(function(modulex' + define + '){' + mod + '})', uri);
+            factory(mx, mx.add);
             if (success) {
                 success();
             }
@@ -2346,4 +2358,9 @@ modulex.add('i18n', {
             base: __dirname
         }
     });
+
+    var useDefine = 1;
+    mx.noConflict = function () {
+        useDefine = 0;
+    };
 })(modulex);

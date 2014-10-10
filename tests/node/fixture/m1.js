@@ -1,3 +1,3 @@
-modulex.add(function(require){
+define(function(require){
     return require('./m2')+1;
 });

@@ -6,12 +6,12 @@ var run = function (combine) {
     describe('simple config for package works ' + (combine ? 'at combo mode' : ''), function () {
         beforeEach(function () {
             modulex.clearLoader();
-            modulex.config('combine', !!combine);
+            require.config('combine', !!combine);
         });
 
         it('works', function (done) {
             var mods = modulex.Env.mods;
-            modulex.config({
+            require.config({
                 packages: {
                     t: {
                         base: '/tests/specs/package/t'
@@ -19,7 +19,7 @@ var run = function (combine) {
                 }
             });
 
-            modulex.use(['t/t'], function (t) {
+            require(['t/t'], function (t) {
                 expect(t).to.be.equal(1);
                 expect(mods['t/t'].exports).to.be.equal(1);
                 done();
@@ -35,7 +35,7 @@ var run = function (combine) {
                 }
             });
 
-            modulex.use(['t'], function (T) {
+            require(['t'], function (T) {
                 expect(T).to.be.equal(2);
                 done();
             });

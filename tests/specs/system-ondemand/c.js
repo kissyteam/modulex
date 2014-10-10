@@ -1,2 +1,2 @@
 
-modulex.add('p-c/c', 2);
+define('p-c/c', 2);

@@ -1,4 +1,4 @@
-modulex.add("timestamp/x",function(){
+define("timestamp/x",function(){
     window.TIMESTAMP_X=window.TIMESTAMP_X||0;
     window.TIMESTAMP_X++;
     return window.TIMESTAMP_X;

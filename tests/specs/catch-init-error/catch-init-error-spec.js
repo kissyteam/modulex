@@ -2,7 +2,7 @@ describe('module init error', function () {
     beforeEach(function () {
         modulex.clearLoader();
         modulex.Config.debug = 0;
-        modulex.config({
+        require.config({
             onModuleError: function () {
             },
             'packages': {
@@ -15,7 +15,7 @@ describe('module init error', function () {
         modulex.Config.debug = 1;
     });
     it('will catch module initialize error', function (done) {
-        modulex.use('err/a', {
+        require('err/a', {
             success: function () {
 
             }, error: function (e1, e2) {

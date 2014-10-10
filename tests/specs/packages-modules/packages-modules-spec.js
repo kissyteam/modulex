@@ -6,11 +6,11 @@
 describe('modules and packages', function () {
     beforeEach(function () {
         modulex.clearLoader();
-        modulex.config('combine', true);
+        require.config('combine', true);
     });
 
     it('does not depend on order', function (done) {
-        modulex.config({
+        require.config({
             'modules': {
                 'x/x': {
                     requires: ['x/y']
@@ -18,20 +18,20 @@ describe('modules and packages', function () {
             }
         });
 
-        modulex.config('packages', {
+        require.config('packages', {
             x: {
                 base: '/tests/specs/packages-modules/x'
             }
         });
 
-        modulex.use(['x/x'], function (X) {
+        require(['x/x'], function (X) {
             expect(X).to.be.equal(8);
             done();
         });
     });
 
     it('package can has same path', function (done) {
-        modulex.config({
+        require.config({
             packages: {
                 y: {
                     base: '/tests/specs/packages-modules/y'
@@ -42,7 +42,7 @@ describe('modules and packages', function () {
             }
         });
 
-        modulex.use(['y/y', 'z/z'], function (y, z) {
+        require(['y/y', 'z/z'], function (y, z) {
             try {
                 expect(y).to.be.equal(2);
                 expect(z).to.be.equal(1);

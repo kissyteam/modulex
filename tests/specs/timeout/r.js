@@ -1,4 +1,4 @@
-modulex.add(function(){
+define(function(){
 
 },{
     requires:['timeout/r2']

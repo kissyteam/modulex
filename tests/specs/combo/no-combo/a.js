@@ -1,4 +1,4 @@
-modulex.add(function(n){
+define(function(n){
     return n+1;
 },{
     requires:['./b']

@@ -1,4 +1,4 @@
-modulex.add("timestamp/y", function (X) {
+define("timestamp/y", function (X) {
     return X;
 }, {
     requires:["./x"]

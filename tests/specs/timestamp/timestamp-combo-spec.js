@@ -19,7 +19,7 @@ describe("timestamp for individual module works in combine mode", function () {
     });
 
     it("works theoretically", function () {
-        modulex.config({
+        require.config({
             packages: {
                 'timestamp': {
                     tag: 'a',
@@ -48,7 +48,7 @@ describe("timestamp for individual module works in combine mode", function () {
 
     it("works practically", function (done) {
         window.TIMESTAMP_X = 0;
-        modulex.config({
+        require.config({
             packages: {
                 'timestamp': {
                     tag: 'a',
@@ -77,7 +77,7 @@ describe("timestamp for individual module works in combine mode", function () {
 
     it("works theoretically when package has no combo", function () {
         window.TIMESTAMP_X = 0;
-        modulex.config({
+        require.config({
             packages: {
                 'timestamp': {
                     combine: false,
@@ -114,7 +114,7 @@ describe("timestamp for individual module works in combine mode", function () {
 
     it("works practically when package has no combo", function (done) {
         window.TIMESTAMP_X = 0;
-        modulex.config({
+        require.config({
             packages: {
                 'timestamp': {
                     combine: false,

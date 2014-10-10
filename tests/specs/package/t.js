@@ -1,3 +1,3 @@
-modulex.add('t',function(){
+define('t',function(){
     return 2;
 });
