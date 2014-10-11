@@ -18,7 +18,7 @@ describe('module init error', function () {
         require('err/a', {
             success: function () {
 
-            }, error: function (e1, e2) {
+            }, error: function (e2, e1) {
                 expect(e2.id).to.be('err/a-b-c');
                 expect(e1.id).to.be('err/a-d');
                 expect(e2.error.type).to.be('init');

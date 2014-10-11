@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Fri, 10 Oct 2014 07:43:43 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Sat, 11 Oct 2014 11:21:53 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Fri, 10 Oct 2014 07:43:43 GMT',
+        __BUILD_TIME: 'Sat, 11 Oct 2014 11:21:53 GMT',
 
         /**
          * modulex Environment.
@@ -58,10 +58,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.3.2' will replace with current version when compressing.
+         * NOTICE: '1.5.0' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.3.2',
+        version: '1.5.0',
 
         /**
          * set modulex configuration
@@ -160,6 +160,7 @@ var modulex = (function (undefined) {
 (function (mx) {
     var Loader = mx.Loader;
     var Env = mx.Env;
+    var Status = Loader.Status;
     var mods = Env.mods;
     var map = Array.prototype.map;
     var host = Env.host;
@@ -326,6 +327,27 @@ var modulex = (function (undefined) {
 
         now: Date.now || function () {
             return +new Date();
+        },
+
+        collectErrors: function (mods, errorList, cache) {
+            var i, m, mod, modStatus;
+            cache = cache || {};
+            errorList = errorList || [];
+            for (i = 0; i < mods.length; i++) {
+                mod = mods[i];
+                m = mod.id;
+                if (cache[m]) {
+                    continue;
+                }
+                cache[m] = 1;
+                modStatus = mod.status;
+                if (modStatus === Status.ERROR) {
+                    errorList.push(mod);
+                    continue;
+                }
+                Utils.collectErrors(mod.getNormalizedRequiredModules(), errorList, cache);
+            }
+            return errorList;
         },
 
         each: each,
@@ -2067,7 +2089,6 @@ var modulex = (function (undefined) {
     var defaultComboSep = ',';
     var Loader = mx.Loader;
     var Utils = Loader.Utils;
-    var Status = Loader.Status;
     var createModule = Utils.createModule;
     var ComboLoader = Loader.ComboLoader;
 
@@ -2137,7 +2158,6 @@ var modulex = (function (undefined) {
             Utils.each(mods, function (mod) {
                 unloadedMods.push.apply(unloadedMods, mod.getNormalizedModules());
             });
-            var normalizedMods = unloadedMods;
 
             function processError(errorList, action) {
                 console.error('modulex: ' + action + ' the following modules error');
@@ -2157,30 +2177,23 @@ var modulex = (function (undefined) {
                             }, 0);
                         }
                     }
+                    error = null;
                 }
             }
-
-            var allUnLoadedMods = [];
 
             function loadReady() {
                 ++tryCount;
                 var errorList = [];
                 // get error from last round of load
-                unloadedMods = loader.calculate(unloadedMods, errorList);
-                allUnLoadedMods = allUnLoadedMods.concat(unloadedMods);
-                var unloadModsLen = unloadedMods.length;
+                // important! can not replace unloadedMods with nextToLoadMods
+                var nextToLoadMods = loader.calculate(unloadedMods, errorList);
                 if (errorList.length) {
+                    // note: at combo mode  a depends b if b error, then a error two, only return a
                     processError(errorList, 'load');
                 } else if (loader.isCompleteLoading()) {
-                    var isInitSuccess = Utils.initModules(normalizedMods);
+                    var isInitSuccess = Utils.initModules(unloadedMods);
                     if (!isInitSuccess) {
-                        errorList = [];
-                        Utils.each(allUnLoadedMods, function (m) {
-                            if (m.status === Status.ERROR) {
-                                errorList.push(m);
-                            }
-                        });
-                        processError(errorList, 'init');
+                        processError(Utils.collectErrors(unloadedMods), 'init');
                     } else if (success) {
                         if ('@DEBUG@') {
                             success.apply(mx, Utils.getModulesExports(mods));
@@ -2194,12 +2207,13 @@ var modulex = (function (undefined) {
                                 }, 0);
                             }
                         }
+                        success = null;
                     }
                 } else {
                     // in case all of its required mods is loading by other loaders
                     loader.callback = loadReady;
-                    if (unloadModsLen) {
-                        loader.use(unloadedMods);
+                    if (nextToLoadMods.length) {
+                        loader.use(nextToLoadMods);
                     }
                 }
             }
