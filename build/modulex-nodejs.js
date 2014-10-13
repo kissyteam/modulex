@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Mon, 13 Oct 2014 09:55:20 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Mon, 13 Oct 2014 10:17:37 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Mon, 13 Oct 2014 09:55:20 GMT',
+        __BUILD_TIME: 'Mon, 13 Oct 2014 10:17:37 GMT',
 
         /**
          * modulex Environment.
@@ -2250,31 +2250,6 @@ var modulex = (function (undefined) {
         }
     });
 
-    mx.config({
-        comboPrefix: defaultComboPrefix,
-        comboSep: defaultComboSep,
-        charset: 'utf-8',
-        filter: '',
-        lang: 'zh-cn'
-    });
-    mx.config('packages', {
-        core: {
-            filter: '@DEBUG@' ? 'debug' : '',
-            base: '.'
-        }
-    });
-
-    // ejecta
-    if (doc && doc.getElementsByTagName) {
-        // will transform base to absolute path
-        mx.config(Utils.mix({
-            // 2k(2048) uri length
-            comboMaxUriLength: 2000,
-            // file limit number for a single combo uri
-            comboMaxFileNum: 40
-        }, getBaseInfo()));
-    }
-
     function returnJson(s) {
         /*jshint evil:true*/
         return (new Function('return ' + s))();
@@ -2354,6 +2329,32 @@ var modulex = (function (undefined) {
             }
         }
         return null;
+    }
+
+    mx.config({
+        comboPrefix: defaultComboPrefix,
+        comboSep: defaultComboSep,
+        charset: 'utf-8',
+        filter: '',
+        lang: 'zh-cn'
+    });
+
+    mx.config('packages', {
+        core: {
+            filter: '@DEBUG@' ? 'debug' : '',
+            base: '.'
+        }
+    });
+
+    // ejecta
+    if (doc && doc.getElementsByTagName) {
+        // will transform base to absolute path
+        mx.config(Utils.mix({
+            // 2k(2048) uri length
+            comboMaxUriLength: 2000,
+            // file limit number for a single combo uri
+            comboMaxFileNum: 40
+        }, getBaseInfo()));
     }
 
     if (typeof global === 'undefined' && typeof window !== 'undefined') {
