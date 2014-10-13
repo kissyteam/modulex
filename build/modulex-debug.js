@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Sat, 11 Oct 2014 11:21:53 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Mon, 13 Oct 2014 09:55:20 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Sat, 11 Oct 2014 11:21:53 GMT',
+        __BUILD_TIME: 'Mon, 13 Oct 2014 09:55:20 GMT',
 
         /**
          * modulex Environment.
@@ -2263,6 +2263,7 @@ var modulex = (function (undefined) {
             base: '.'
         }
     });
+
     // ejecta
     if (doc && doc.getElementsByTagName) {
         // will transform base to absolute path
@@ -2271,7 +2272,88 @@ var modulex = (function (undefined) {
             comboMaxUriLength: 2000,
             // file limit number for a single combo uri
             comboMaxFileNum: 40
-        }));
+        }, getBaseInfo()));
+    }
+
+    function returnJson(s) {
+        /*jshint evil:true*/
+        return (new Function('return ' + s))();
+    }
+
+    function getBaseInfoFromOneScript(script) {
+        var baseReg = /^(.*)(modulex)(?:-debug|)?\.js[^/]*/i;
+        var baseTestReg = /(modulex)(?:-debug|)?\.js/i;
+        // can not use KISSY.Uri
+        // /??x.js,dom.js for tbcdn
+        var src = script.src || '';
+        var name;
+        if (!src.match(baseTestReg) && !(name = script.getAttribute('data-modulex'))) {
+            return 0;
+        }
+
+        if (name) {
+            baseReg = new RegExp('^(.*)(' + name + ')(?:-debug|)?\\.js[^/]*', 'i');
+        }
+
+        var baseInfo = script.getAttribute('data-config');
+
+        if (baseInfo) {
+            baseInfo = returnJson(baseInfo);
+        } else {
+            baseInfo = {};
+        }
+
+        var comboPrefix = baseInfo.comboPrefix || defaultComboPrefix;
+        var comboSep = baseInfo.comboSep || defaultComboSep;
+
+        var parts, base;
+        var index = src.indexOf(comboPrefix);
+
+        // no combo
+        if (index === -1) {
+            base = src.replace(baseReg, '$1');
+        } else {
+            base = src.substring(0, index);
+            if (base.charAt(base.length - 1) !== '/') {
+                base += '/';
+            }
+            parts = src.substring(index + comboPrefix.length).split(comboSep);
+            for (var i = 0, l = parts.length; i < l; i++) {
+                var part = parts[i];
+                if (part.match(baseTestReg)) {
+                    base += part.replace(baseReg, '$1');
+                    break;
+                }
+            }
+        }
+
+        baseInfo.base = baseInfo.base || base;
+
+        return baseInfo;
+    }
+
+    /**
+     * get base from modulex
+     * @ignore
+     *
+     * for example:
+     *      @example
+     *      http://x.com/modulex.js
+     *      note about custom combo rules, such as yui3:
+     *      combo-prefix='combo?' combo-sep='&'
+     */
+    function getBaseInfo() {
+        // get base from current script file path
+        // notice: timestamp
+        var scripts = doc.getElementsByTagName('script');
+        var i, info;
+
+        for (i = scripts.length - 1; i >= 0; i--) {
+            if ((info = getBaseInfoFromOneScript(scripts[i]))) {
+                return info;
+            }
+        }
+        return null;
     }
 
     if (typeof global === 'undefined' && typeof window !== 'undefined') {

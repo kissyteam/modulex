@@ -173,6 +173,7 @@ describe('ComboLoader', function () {
             ret.push('y' + i);
         }
         var r;
+        debugger
         r = l.calculate(Utils.createModules(ret));
         var c = l.getComboUris(r);
         var cjs = c.js;

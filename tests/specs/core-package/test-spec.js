@@ -8,6 +8,10 @@ describe('core package', function () {
         });
     });
 
+    it('infer base', function () {
+        expect(mx.config('base')).to.be(mx.Config.debug ? 'http://localhost:8000/lib/' : 'http://localhost:8000/build/');
+    });
+
     it('can set individually', function (done) {
         mx.config({
             base: '/tests/specs/core-package',
