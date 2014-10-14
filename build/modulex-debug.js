@@ -26,11 +26,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Mon, 13 Oct 2014 10:17:37 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Tue, 14 Oct 2014 02:42:41 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Mon, 13 Oct 2014 10:17:37 GMT',
+        __BUILD_TIME: 'Tue, 14 Oct 2014 02:42:41 GMT',
 
         /**
          * modulex Environment.
@@ -58,10 +58,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.5.0' will replace with current version when compressing.
+         * NOTICE: '1.6.0' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.5.0',
+        version: '1.6.0',
 
         /**
          * set modulex configuration
@@ -2255,35 +2255,23 @@ var modulex = (function (undefined) {
         return (new Function('return ' + s))();
     }
 
-    function getBaseInfoFromOneScript(script) {
-        var baseReg = /^(.*)(modulex)(?:-debug|)?\.js[^/]*/i;
-        var baseTestReg = /(modulex)(?:-debug|)?\.js/i;
-        // can not use KISSY.Uri
-        // /??x.js,dom.js for tbcdn
+    function getBaseInfoFromOneScript(script, name) {
+        var baseReg = new RegExp('^(.*)(' + name + ')(?:-debug|)?\\.js[^/]*', 'i');
+        var baseTestReg = new RegExp('(' + name + ')(?:-debug|)?\\.js', 'i');
         var src = script.src || '';
-        var name;
-        if (!src.match(baseTestReg) && !(name = script.getAttribute('data-modulex'))) {
+        if (!src.match(baseTestReg)) {
             return 0;
         }
-
-        if (name) {
-            baseReg = new RegExp('^(.*)(' + name + ')(?:-debug|)?\\.js[^/]*', 'i');
-        }
-
         var baseInfo = script.getAttribute('data-config');
-
         if (baseInfo) {
             baseInfo = returnJson(baseInfo);
         } else {
             baseInfo = {};
         }
-
         var comboPrefix = baseInfo.comboPrefix || defaultComboPrefix;
         var comboSep = baseInfo.comboSep || defaultComboSep;
-
         var parts, base;
         var index = src.indexOf(comboPrefix);
-
         // no combo
         if (index === -1) {
             base = src.replace(baseReg, '$1');
@@ -2301,9 +2289,7 @@ var modulex = (function (undefined) {
                 }
             }
         }
-
         baseInfo.base = baseInfo.base || base;
-
         return baseInfo;
     }
 
@@ -2317,14 +2303,14 @@ var modulex = (function (undefined) {
      *      note about custom combo rules, such as yui3:
      *      combo-prefix='combo?' combo-sep='&'
      */
-    function getBaseInfo() {
+    function getBaseInfo(name) {
         // get base from current script file path
         // notice: timestamp
         var scripts = doc.getElementsByTagName('script');
         var i, info;
 
         for (i = scripts.length - 1; i >= 0; i--) {
-            if ((info = getBaseInfoFromOneScript(scripts[i]))) {
+            if ((info = getBaseInfoFromOneScript(scripts[i], name))) {
                 return info;
             }
         }
@@ -2338,6 +2324,11 @@ var modulex = (function (undefined) {
         filter: '',
         lang: 'zh-cn'
     });
+
+    mx.init = function (cfg) {
+        var name = cfg.name;
+        mx.config(getBaseInfo(name));
+    };
 
     mx.config('packages', {
         core: {
@@ -2354,7 +2345,7 @@ var modulex = (function (undefined) {
             comboMaxUriLength: 2000,
             // file limit number for a single combo uri
             comboMaxFileNum: 40
-        }, getBaseInfo()));
+        }, getBaseInfo('modulex')));
     }
 
     if (typeof global === 'undefined' && typeof window !== 'undefined') {
