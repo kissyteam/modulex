@@ -1,3 +1,8 @@
+/*
+Copyright 2014, modulex@1.6.2
+MIT Licensed
+build time: Thu, 16 Oct 2014 07:22:55 GMT
+*/
 /**
  * A module registration and load library.
  *
@@ -26,11 +31,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Tue, 14 Oct 2014 02:42:41 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Thu, 16 Oct 2014 07:22:57 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Tue, 14 Oct 2014 02:42:41 GMT',
+        __BUILD_TIME: 'Thu, 16 Oct 2014 07:22:57 GMT',
 
         /**
          * modulex Environment.
@@ -58,10 +63,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.6.0' will replace with current version when compressing.
+         * NOTICE: '1.6.2' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.6.0',
+        version: '1.6.2',
 
         /**
          * set modulex configuration

@@ -29,11 +29,28 @@ gulp.task('lint', function () {
         .pipe(jscs());
 });
 
+gulp.task('tag', function (done) {
+    var cp = require('child_process');
+    var version = packageInfo.version;
+    cp.exec('git tag ' + version + ' | git push origin ' + version + ':' + version + ' | git push origin master:master', done);
+});
+
+var wrapper = require('gulp-wrapper');
+var date = new Date();
+var header = ['/*',
+        'Copyright ' + date.getFullYear() + ', ' + packageInfo.name + '@' + packageInfo.version,
+        packageInfo.license + ' Licensed',
+        'build time: ' + (date.toGMTString()),
+    '*/', ''].join('\n');
+
 gulp.task('default', ['lint'], function () {
     var concatFile = gulp.src(files)
         .pipe(replace(/@VERSION@/g, packageInfo.version))
         .pipe(replace(/@TIMESTAMP@/g, new Date().toUTCString()))
         .pipe(concat('modulex-debug.js'))
+        .pipe(wrapper({
+                    header: header
+                }))
         .pipe(gulp.dest('./build'));
 
     var concatFile2 = concatFile.pipe(clone());
@@ -49,6 +66,9 @@ gulp.task('default', ['lint'], function () {
 
     gulp.src('lib/import-style.js')
         .pipe(rename('import-style-debug.js'))
+        .pipe(wrapper({
+                    header: header
+                }))
         .pipe(gulp.dest('./build'))
         .pipe(uglify())
         .pipe(rename('import-style.js'))

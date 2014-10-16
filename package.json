@@ -1,6 +1,6 @@
 {
   "name": "modulex",
-  "version": "1.6.0",
+  "version": "1.6.2",
   "author": "yiminghe <yiminghe@gmail.com>",
   "engines": {
     "node": "~0.10"
@@ -31,6 +31,7 @@
     "precommit-hook": "^1.0.7",
     "q": "^1.0.1",
     "saucelabs-runner": "^1.0.1",
+    "gulp-wrapper": "^0.1.5",
     "serve-index": "^1.2.0",
     "serve-static": "^1.5.3"
   },
@@ -39,6 +40,7 @@
   ],
   "scripts": {
     "lint": "gulp lint",
+     "publish": "gulp tag",
     "test": "node ./node_modules/mocha/bin/mocha tests/node/specs",
     "browser-test": "mocha-phantomjs http://localhost:8000/tests/runner.html",
     "browser-test-cover": "mocha-phantomjs -R node_modules/node-jscover/lib/reporters/mocha/console http://localhost:8000/tests/runner.html?coverage",
