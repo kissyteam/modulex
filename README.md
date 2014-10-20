@@ -14,7 +14,7 @@ A module registration and load library
 
 ## api
 
-http://docs.kissyui.com/5.0/api/classes/Loader.html
+http://docs.kissyui.com/5.0/api/classes/Modulex.html
 
 ### config environment
 
@@ -52,6 +52,19 @@ require(['x','u'],function(X,U){
 });
 ```
 
+### use module inside define
+
+```javascript
+define(function(require,exports){
+    exports.onClick = function(){
+        var z = ['mod/z'];
+        require(z, function(Z){
+            // TODO with z
+        });
+    };
+});
+```
+
 ### noConflict
 
 can use modulex.noConflict() to give up global require and define variable.
@@ -70,7 +83,7 @@ mx.noConflict = function () {
 
 ## guide
 
-http://docs.kissyui.com/5.0/guides/loader/index.html
+http://docs.kissyui.com/5.0/guides/modulex/index.html
 
 ## contribution
 
