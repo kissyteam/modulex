@@ -1,7 +1,7 @@
 /*
-Copyright 2014, modulex@1.6.2
+Copyright 2014, modulex@1.6.3
 MIT Licensed
-build time: Thu, 16 Oct 2014 07:22:55 GMT
+build time: Fri, 31 Oct 2014 03:44:07 GMT
 */
 /**
  * A module registration and load library.
@@ -21,21 +21,35 @@ build time: Thu, 16 Oct 2014 07:22:55 GMT
 /* exported modulex */
 /* jshint -W079 */
 var modulex = (function (undefined) {
-    function noop() {
-    }
-
-    if (typeof console === 'undefined') {
-        this.console = {log: noop, error: noop, warn: noop};
-    }
+    // Console-polyfill. MIT license.
+// https://github.com/paulmillr/console-polyfill
+// Make it safe to do console.log() always.
+    (function (con) {
+        'use strict';
+        var prop, method;
+        var empty = {};
+        var dummy = function () {
+        };
+        var properties = 'memory'.split(',');
+        var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+            'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+            'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+        while ((prop = properties.pop())) {
+            con[prop] = con[prop] || empty;
+        }
+        while ((method = methods.pop())) {
+            con[method] = con[method] || dummy;
+        }
+    })(this.console = this.console || {}); // Using `this` for web workers.
 
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Thu, 16 Oct 2014 07:22:57 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Fri, 31 Oct 2014 03:44:08 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Thu, 16 Oct 2014 07:22:57 GMT',
+        __BUILD_TIME: 'Fri, 31 Oct 2014 03:44:08 GMT',
 
         /**
          * modulex Environment.
@@ -63,10 +77,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.6.2' will replace with current version when compressing.
+         * NOTICE: '1.6.3' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.6.2',
+        version: '1.6.3',
 
         /**
          * set modulex configuration

@@ -1,6 +1,6 @@
 {
   "name": "modulex",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "author": "yiminghe <yiminghe@gmail.com>",
   "engines": {
     "node": "~0.10"
