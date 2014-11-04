@@ -1,7 +1,7 @@
 /*
-Copyright 2014, modulex@1.6.3
+Copyright 2014, modulex@1.6.4
 MIT Licensed
-build time: Fri, 31 Oct 2014 03:44:07 GMT
+build time: Tue, 04 Nov 2014 03:57:54 GMT
 */
 /**
  * A module registration and load library.
@@ -45,11 +45,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Fri, 31 Oct 2014 03:44:08 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Tue, 04 Nov 2014 03:57:55 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Fri, 31 Oct 2014 03:44:08 GMT',
+        __BUILD_TIME: 'Tue, 04 Nov 2014 03:57:55 GMT',
 
         /**
          * modulex Environment.
@@ -77,10 +77,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.6.3' will replace with current version when compressing.
+         * NOTICE: '1.6.4' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.6.3',
+        version: '1.6.4',
 
         /**
          * set modulex configuration
@@ -240,8 +240,8 @@ var modulex = (function (undefined) {
     }
 
     var uriReg = /http(s)?:\/\/([^/]+)(?::(\d+))?/;
-    var commentRegExp = /(\/\*([\s\mx]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
-    var requireRegExp = /[^.'"]\s*require\s*\((['"])([^)]+)\1\)/g;
+    var commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
+    var requireRegExp = /[^.]\s*require\s*\(\s*["']([^'"\s]+)["']\s*\)/g;
 
     function normalizeId(id) {
         // 'x/' 'x/y/z/'
@@ -602,6 +602,9 @@ var modulex = (function (undefined) {
          */
         self.exports = undefined;
 
+        // es6 compatible
+        self.module = self;
+
         /**
          * status of current modules
          */
@@ -778,10 +781,15 @@ var modulex = (function (undefined) {
          */
         getUri: function () {
             var self = this;
+            // es6: this.module.url
             if (!self.uri) {
                 self.uri = Utils.normalizeSlash(mx.Config.resolveModFn(self));
             }
             return self.uri;
+        },
+
+        getUrl: function () {
+            return this.getUri();
         },
 
         getExports: function () {
@@ -1023,6 +1031,10 @@ var modulex = (function (undefined) {
 
     Loader.Module = Module;
 })(modulex);
+/**
+ * refer:
+ * - es6 module: http://www.2ality.com/2014/09/es6-modules-final.html
+ */
 
 /**
  * @ignore
