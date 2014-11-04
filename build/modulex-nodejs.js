@@ -1,7 +1,7 @@
 /*
-Copyright 2014, modulex@1.6.5
+Copyright 2014, modulex@1.6.6
 MIT Licensed
-build time: Tue, 04 Nov 2014 04:01:56 GMT
+build time: Tue, 04 Nov 2014 04:20:45 GMT
 */
 /**
  * A module registration and load library.
@@ -45,11 +45,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Tue, 04 Nov 2014 04:01:57 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Tue, 04 Nov 2014 04:20:46 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Tue, 04 Nov 2014 04:01:57 GMT',
+        __BUILD_TIME: 'Tue, 04 Nov 2014 04:20:46 GMT',
 
         /**
          * modulex Environment.
@@ -77,10 +77,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.6.5' will replace with current version when compressing.
+         * NOTICE: '1.6.6' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.6.5',
+        version: '1.6.6',
 
         /**
          * set modulex configuration
@@ -725,11 +725,8 @@ var modulex = (function (undefined) {
                 var id = self.id;
                 if (Utils.endsWith(id, '.css')) {
                     v = 'css';
-
-                } else if (Utils.endsWith(id, '.js')) {
-                    v = 'js';
                 } else {
-                    v = Utils.getSuffix(id) || 'js';
+                    v = 'js';
                 }
                 self.type = v;
             }
@@ -1344,7 +1341,6 @@ var modulex = (function (undefined) {
                 id = id.slice(0, -suffix.length);
             }
             filter = packageInfo.getFilter() || '';
-
             if (typeof filter === 'function') {
                 subPath = filter(id, extname);
             } else if (typeof filter === 'string') {
