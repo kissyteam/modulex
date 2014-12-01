@@ -1,7 +1,7 @@
 /*
-Copyright 2014, modulex@1.6.6
+Copyright 2014, modulex@1.7.0
 MIT Licensed
-build time: Tue, 04 Nov 2014 04:20:45 GMT
+build time: Mon, 01 Dec 2014 10:28:00 GMT
 */
 /**
  * A module registration and load library.
@@ -45,11 +45,11 @@ var modulex = (function (undefined) {
     var mx = {
         /**
          * The build time of the library.
-         * NOTICE: 'Tue, 04 Nov 2014 04:20:46 GMT' will replace with current timestamp when compressing.
+         * NOTICE: 'Mon, 01 Dec 2014 10:28:01 GMT' will replace with current timestamp when compressing.
          * @private
          * @type {String}
          */
-        __BUILD_TIME: 'Tue, 04 Nov 2014 04:20:46 GMT',
+        __BUILD_TIME: 'Mon, 01 Dec 2014 10:28:01 GMT',
 
         /**
          * modulex Environment.
@@ -77,10 +77,10 @@ var modulex = (function (undefined) {
 
         /**
          * The version of the library.
-         * NOTICE: '1.6.6' will replace with current version when compressing.
+         * NOTICE: '1.7.0' will replace with current version when compressing.
          * @type {String}
          */
-        version: '1.6.6',
+        version: '1.7.0',
 
         /**
          * set modulex configuration
@@ -285,8 +285,8 @@ var modulex = (function (undefined) {
     }
 
     var isArray = Array.isArray || function (obj) {
-        return Object.prototype.toString.call(obj) === '[object Array]';
-    };
+            return Object.prototype.toString.call(obj) === '[object Array]';
+        };
 
     function mix(to, from) {
         for (var i in from) {
@@ -318,7 +318,7 @@ var modulex = (function (undefined) {
                 for (var i = 0; i < len; i++) {
                     var el = typeof arr === 'string' ? arr.charAt(i) : arr[i];
                     if (el ||
-                        //ie<9 in invalid when typeof arr == string
+                            //ie<9 in invalid when typeof arr == string
                         i in arr) {
                         res[i] = fn.call(context || this, el, i, arr);
                     }
@@ -741,6 +741,7 @@ var modulex = (function (undefined) {
             }
             var alias = getShallowAlias(self);
             var ret = [];
+            // implies no alias or else circular alias ...
             if (alias[0] === id) {
                 ret = alias;
             } else {
@@ -808,7 +809,7 @@ var modulex = (function (undefined) {
                     startsWith(id, 'https://') ||
                     startsWith(id, 'file://')) {
                     self.packageInfo = null;
-                    return;
+                    return self.packageInfo;
                 }
                 var packages = Config.packages;
                 var modIdSlash = self.id + '/';
@@ -882,7 +883,7 @@ var modulex = (function (undefined) {
                         Utils.map(self.getRequiredModules(), function (m) {
                             return m.getExports();
                         })
-                    )
+                )
             );
         },
 
@@ -1017,8 +1018,19 @@ var modulex = (function (undefined) {
             return alias;
         }
         packageInfo = mod.getPackage();
-        if (packageInfo && packageInfo.alias) {
-            alias = packageInfo.alias(id);
+
+        if (packageInfo) {
+            var main;
+            // support main in package config
+            if (packageInfo.name === id && (main = packageInfo.main)) {
+                id += '/';
+                if (main.charAt(0) !== '.') {
+                    main = './' + main;
+                }
+                alias = [Utils.normalizePath(id, main)];
+            } else if (packageInfo.alias) {
+                alias = packageInfo.alias(id);
+            }
         }
         alias = mod.alias = alias || [
             pluginAlias(id)

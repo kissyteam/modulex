@@ -1,7 +1,7 @@
 /*
-Copyright 2014, modulex@1.6.6
+Copyright 2014, modulex@1.7.0
 MIT Licensed
-build time: Tue, 04 Nov 2014 04:20:45 GMT
+build time: Mon, 01 Dec 2014 10:28:00 GMT
 */
 /**
  * use document.write to load external css files in block loading ways.

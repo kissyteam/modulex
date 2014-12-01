@@ -26,6 +26,23 @@ var run = function (combine) {
             });
         });
 
+        it.only('support main config', function (done) {
+            require.config({
+                packages: {
+                    t: {
+                        base: '/tests/specs/package/t',
+                        main: 't'
+                    }
+                }
+            });
+            var mods = modulex.Env.mods;
+            require(['t'], function (t) {
+                expect(t).to.be(1);
+                expect(mods['t/t'].exports).to.be(1);
+                done();
+            });
+        });
+
         it('allows use package directly', function (done) {
             mx.config({
                 packages: {
