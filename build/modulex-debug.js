@@ -1,7 +1,7 @@
 /*
-Copyright 2014, modulex@1.7.2
+Copyright 2014, modulex@1.7.3
 MIT Licensed
-build time: Thu, 04 Dec 2014 19:53:51 GMT
+build time: Thu, 04 Dec 2014 20:24:54 GMT
 */
 /**
  * A module registration and load library.
@@ -45,11 +45,11 @@ var modulex = (function (undefined) {
   var mx = {
     /**
      * The build time of the library.
-     * NOTICE: 'Thu, 04 Dec 2014 19:53:51 GMT' will replace with current timestamp when compressing.
+     * NOTICE: 'Thu, 04 Dec 2014 20:24:55 GMT' will replace with current timestamp when compressing.
      * @private
      * @type {String}
      */
-    __BUILD_TIME: 'Thu, 04 Dec 2014 19:53:51 GMT',
+    __BUILD_TIME: 'Thu, 04 Dec 2014 20:24:55 GMT',
 
     /**
      * modulex Environment.
@@ -77,10 +77,10 @@ var modulex = (function (undefined) {
 
     /**
      * The version of the library.
-     * NOTICE: '1.7.2' will replace with current version when compressing.
+     * NOTICE: '1.7.3' will replace with current version when compressing.
      * @type {String}
      */
-    version: '1.7.2',
+    version: '1.7.3',
 
     /**
      * set modulex configuration
@@ -938,20 +938,26 @@ var modulex = (function (undefined) {
       if (self.packageInfo === undefined) {
         var id = self.id;
         // absolute path does not belong to any package
-        if (startsWith(id, '/') ||
-          startsWith(id, 'http://') ||
-          startsWith(id, 'https://') ||
-          startsWith(id, 'file://')) {
-          self.packageInfo = null;
-          return self.packageInfo;
-        }
         var packages = Config.packages;
         var modIdSlash = self.id + '/';
         var pName = '';
         var p;
         for (p in packages) {
-          if (startsWith(modIdSlash, p + '/') && p.length > pName.length) {
+          var pWithSlash = p;
+          if (!Utils.endsWith(pWithSlash, '/')) {
+            pWithSlash += '/';
+          }
+          if (startsWith(modIdSlash, pWithSlash) && p.length > pName.length) {
             pName = p;
+          }
+        }
+        if (!packages[pName]) {
+          if (startsWith(id, '/') ||
+            startsWith(id, 'http://') ||
+            startsWith(id, 'https://') ||
+            startsWith(id, 'file://')) {
+            self.packageInfo = null;
+            return self.packageInfo;
           }
         }
         self.packageInfo = packages[pName] || packages.core;
@@ -1531,7 +1537,13 @@ var modulex = (function (undefined) {
     if (config) {
       Utils.each(config, function (cfg, key) {
         // object type
-        var name = cfg.name = cfg.name || key;
+        var name = cfg.name || key;
+        if (Utils.startsWith(name, '/')) {
+          name = location.protocol + '//' + location.host + name;
+        } else if (Utils.startsWith(name, './') || Utils.startsWith(name, '../')) {
+          name = Utils.normalizePath(location.href, name);
+        }
+        cfg.name = name;
         var base = cfg.base || cfg.path;
         if (base) {
           cfg.base = normalizePath(base, true);
