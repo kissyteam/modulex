@@ -1,7 +1,7 @@
 /*
-Copyright 2014, modulex@1.7.3
+Copyright 2014, modulex@1.7.4
 MIT Licensed
-build time: Thu, 04 Dec 2014 20:24:54 GMT
+build time: Thu, 04 Dec 2014 20:34:09 GMT
 */
 /**
  * A module registration and load library.
@@ -45,11 +45,11 @@ var modulex = (function (undefined) {
   var mx = {
     /**
      * The build time of the library.
-     * NOTICE: 'Thu, 04 Dec 2014 20:24:55 GMT' will replace with current timestamp when compressing.
+     * NOTICE: 'Thu, 04 Dec 2014 20:34:10 GMT' will replace with current timestamp when compressing.
      * @private
      * @type {String}
      */
-    __BUILD_TIME: 'Thu, 04 Dec 2014 20:24:55 GMT',
+    __BUILD_TIME: 'Thu, 04 Dec 2014 20:34:10 GMT',
 
     /**
      * modulex Environment.
@@ -77,10 +77,10 @@ var modulex = (function (undefined) {
 
     /**
      * The version of the library.
-     * NOTICE: '1.7.3' will replace with current version when compressing.
+     * NOTICE: '1.7.4' will replace with current version when compressing.
      * @type {String}
      */
-    version: '1.7.3',
+    version: '1.7.4',
 
     /**
      * set modulex configuration
@@ -1542,6 +1542,9 @@ var modulex = (function (undefined) {
           name = location.protocol + '//' + location.host + name;
         } else if (Utils.startsWith(name, './') || Utils.startsWith(name, '../')) {
           name = Utils.normalizePath(location.href, name);
+        }
+        if (Utils.endsWith(name, '/')) {
+          name = name.slice(0, -1);
         }
         cfg.name = name;
         var base = cfg.base || cfg.path;
