@@ -26,7 +26,7 @@ var run = function (combine) {
             });
         });
 
-        it.only('support main config', function (done) {
+        it('support main config', function (done) {
             require.config({
                 packages: {
                     t: {
