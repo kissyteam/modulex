@@ -1,7 +1,7 @@
 /*
-Copyright 2014, modulex@1.7.1
+Copyright 2014, modulex@1.7.2
 MIT Licensed
-build time: Thu, 04 Dec 2014 19:15:28 GMT
+build time: Thu, 04 Dec 2014 19:53:51 GMT
 */
 /**
  * A module registration and load library.
@@ -45,11 +45,11 @@ var modulex = (function (undefined) {
   var mx = {
     /**
      * The build time of the library.
-     * NOTICE: 'Thu, 04 Dec 2014 19:15:29 GMT' will replace with current timestamp when compressing.
+     * NOTICE: 'Thu, 04 Dec 2014 19:53:51 GMT' will replace with current timestamp when compressing.
      * @private
      * @type {String}
      */
-    __BUILD_TIME: 'Thu, 04 Dec 2014 19:15:29 GMT',
+    __BUILD_TIME: 'Thu, 04 Dec 2014 19:53:51 GMT',
 
     /**
      * modulex Environment.
@@ -77,10 +77,10 @@ var modulex = (function (undefined) {
 
     /**
      * The version of the library.
-     * NOTICE: '1.7.1' will replace with current version when compressing.
+     * NOTICE: '1.7.2' will replace with current version when compressing.
      * @type {String}
      */
-    version: '1.7.1',
+    version: '1.7.2',
 
     /**
      * set modulex configuration
@@ -332,6 +332,9 @@ var modulex = (function (undefined) {
   var requireRegExp = /[^.'"]\s*require\s*\((['"])([^)]+)\1\)/g;
 
   function normalizeId(id) {
+    if (id.charAt(0) === '/') {
+      id = location.protocol + '//' + location.host + id;
+    }
     // 'x/' 'x/y/z/'
     if (id.charAt(id.length - 1) === '/') {
       id += 'index';
@@ -543,9 +546,9 @@ var modulex = (function (undefined) {
 
     // get a module from cache or create a module instance
     createModule: function (id, cfg) {
+      id = normalizeId(id);
       var module = mods[id];
       if (!module) {
-        id = normalizeId(id);
         module = mods[id];
       }
       if (module) {
@@ -2327,6 +2330,12 @@ var modulex = (function (undefined) {
         error = success.error;
         //noinspection JSUnresolvedVariable
         success = success.success;
+      }
+      for (var i = 0; i < modIds.length; i++) {
+        var modId = modIds[i];
+        if (Utils.startsWith(modId, './') || Utils.startsWith(modId, '../')) {
+          modIds[i] = Utils.normalizePath(location.href, modId);
+        }
       }
       var mods = Utils.createModules(modIds);
       var unloadedMods = [];
