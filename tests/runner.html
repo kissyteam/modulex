@@ -77,7 +77,7 @@
         if (window.mochaPhantomJS) {
             runner = mochaPhantomJS.run();
         } else {
-            runner = mocha.run();
+            window.mochaRunner = runner = mocha.run();
         }
         if (isCoverage) {
             window.nodeJsCoverCoveralls(runner);
