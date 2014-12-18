@@ -42,6 +42,7 @@
     "port": 8000
   },
   "scripts": {
+    "start": "node --harmony server",
     "lint": "gulp lint",
     "publish": "gulp tag",
     "saucelabs": "DEBUG=saucelabs-runner gulp saucelabs",
