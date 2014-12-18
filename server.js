@@ -26,6 +26,6 @@ app.use(serveIndex(cwd, {
     view: 'details'
 }));
 app.use(serveStatic(cwd));
-var port = process.env.PORT || 8000;
+var port = process.env.npm_package_config_port;
 app.listen(port);
 gutil.log('server start at ' + port);
