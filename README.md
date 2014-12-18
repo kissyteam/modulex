@@ -8,9 +8,9 @@ A module registration and load library
 [![Coverage Status](https://coveralls.io/repos/kissyteam/modulex/badge.png?branch=master)](https://coveralls.io/r/kissyteam/modulex?branch=master)
 [![Dependency Status](https://gemnasium.com/kissyteam/modulex.png)](https://gemnasium.com/kissyteam/modulex)
 [![Bower version](https://badge.fury.io/bo/modulex.svg)](http://badge.fury.io/bo/modulex)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/modulex)](https://saucelabs.com/u/modulex)
 
-[![browser support](https://ci.testling.com/kissyteam/modulex.png)](https://ci.testling.com/kissyteam/modulex)
-
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/modulex.svg)](https://saucelabs.com/u/modulex)
 
 ## api
 

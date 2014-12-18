@@ -18,9 +18,6 @@
 <script src='/node_modules/node-jscover-coveralls/lib/reports/mocha.js'></script>
 <script>
     mocha.setup('bdd');
-    if (location.href.indexOf('__testling') !== -1) {
-        mocha.reporter('tap');
-    }
 </script>
 <script>
     var isCoverage = location.search.indexOf('coverage') !== -1;
