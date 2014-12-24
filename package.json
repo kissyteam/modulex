@@ -21,6 +21,7 @@
     "gulp-replace": "^0.4.0",
     "gulp-uglify": "^0.3.1",
     "gulp-util": "^3.0.0",
+    "gulp-wrapper": "^0.1.5",
     "jquery": "^1.11.1",
     "jshint": "^2.5.5",
     "jshint-stylish": "^0.4.0",
@@ -31,7 +32,6 @@
     "precommit-hook": "^1.0.7",
     "q": "^1.0.1",
     "saucelabs-runner": "2.x",
-    "gulp-wrapper": "^0.1.5",
     "serve-index": "^1.2.0",
     "serve-static": "^1.5.3"
   },

@@ -23,6 +23,7 @@
     var isCoverage = location.search.indexOf('coverage') !== -1;
     (function () {
         var build = location.search.indexOf('build') !== -1;
+        var i;
         var files;
         if (build) {
             files = ['/build/modulex-debug.js', '/build/import-style-debug.js'];
@@ -32,9 +33,10 @@
                 'css-onload', 'get-script',
                 'configs', 'combo-loader',
                 'init', 'i18n', 'import-style'];
-            files.forEach(function (f, i) {
+            for (i = 0; i < files.length; i++) {
+                var f = files[i];
                 files[i] = '../lib/' + f + (isCoverage ? '-coverage' : '') + '.js';
-            });
+            }
         }
         files = files.concat([
             '/tests/others/clear.js',
@@ -63,7 +65,7 @@
             '/tests/specs/timestamp/timestamp-spec.js',
             '/tests/specs/timestamp/timestamp-combo-spec.js'
         ]);
-        for (var i = 0; i < files.length; i++) {
+        for (i = 0; i < files.length; i++) {
             window.document.write('<script src="' + files[i] + '"' + '>' + '<' + '/script>');
         }
     })();

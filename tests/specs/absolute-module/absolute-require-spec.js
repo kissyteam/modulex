@@ -21,7 +21,7 @@ var run = function (combine) {
     });
 
     it("should works for http://", function (done) {
-      require(['http://localhost:8000/tests/specs/absolute-module/a.js'], function (a) {
+      require(['http://' + location.hostname + ':8000/tests/specs/absolute-module/a.js'], function (a) {
         expect(a).to.be(2);
         done();
       })
