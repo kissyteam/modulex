@@ -8,7 +8,7 @@ describe('timeout', function () {
         timeout = mx.config('timeout') || 0;
         mx.config({
             combine: false,
-            timeout: 1
+            timeout: 0.5
         });
     });
 

@@ -7,10 +7,8 @@
   },
   "main": "build/modulex-nodejs.js",
   "devDependencies": {
-    "body-parser": "^1.7.0",
-    "combo-handler": "^1.0.0",
+    "combo-handler": "~1.1.0",
     "expect.js": "^0.3.1",
-    "express": "^4.8.7",
     "gulp": "^3.8.7",
     "gulp-clone": "^1.0.0",
     "gulp-concat": "^2.3.4",
@@ -25,15 +23,17 @@
     "jquery": "^1.11.1",
     "jshint": "^2.5.5",
     "jshint-stylish": "^0.4.0",
+    "koa": "~0.14.0",
+    "koa-body": "~0.4.0",
+    "koa-node-jscover": "~1.1.1",
+    "koa-serve-index": "~1.0.1",
+    "koa-static": "~1.4.8",
     "mocha": "^1.21.4",
     "node-jscover": "^0.6.0",
     "node-jscover-coveralls": "^1.0.0",
-    "node-jscover-handler": "^1.0.0",
     "precommit-hook": "^1.0.7",
     "q": "^1.0.1",
-    "saucelabs-runner": "2.x",
-    "serve-index": "^1.2.0",
-    "serve-static": "^1.5.3"
+    "saucelabs-runner": "2.x"
   },
   "precommit": [
     "lint"

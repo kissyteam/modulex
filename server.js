@@ -1,31 +1,39 @@
-var gutil = require('gulp-util');
-var express = require('express');
-var jscoverHandler = require('node-jscover-handler');
-var jscoverCoveralls = require('node-jscover-coveralls');
-var serveStatic = require('serve-static');
-var serveIndex = require('serve-index');
-var comboHandler = require('combo-handler');
+var serve = require('koa-static');
+var cwd = process.cwd();
 var path = require('path');
-var app = express();
-var cwd = require('path').normalize(process.cwd());
-var bodyParser = require('body-parser');
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+var app = require('koa')();
+var fs = require('fs');
+var root = cwd;
+var serveIndex = require('koa-serve-index');
+var koaBody = require('koa-body');
+var jscoverHandler = require('koa-node-jscover');
+var jscoverCoveralls = require('node-jscover-coveralls/lib/koa');
+var comboHandler = require('combo-handler/lib/koa');
 app.use(comboHandler());
-app.use(jscoverCoveralls());
-app.use(function (req, res, next) {
-    if (path.extname(req.path) === '.jss') {
-        require(path.resolve(__dirname, req.path.substring(1)))(req, res);
-    } else {
-        next();
-    }
+app.use(function *(next) {
+  if (path.extname(this.path) === '.jss') {
+    var func = require(path.resolve(__dirname, this.path.substring(1))).call(this);
+    yield *func;
+  } else {
+    yield *next;
+  }
 });
-app.use(jscoverHandler());
-app.use(serveIndex(cwd, {
-    hidden: true,
-    view: 'details'
+// parse application/x-www-form-urlencoded
+app.use(koaBody());
+app.use(jscoverHandler({
+  jscover: require('node-jscover'),
+  next: function () {
+    return 1;
+  }
 }));
-app.use(serveStatic(cwd));
+app.use(jscoverCoveralls());
+app.use(serveIndex(root, {
+  hidden: true,
+  view: 'details'
+}));
+app.use(serve(root, {
+  hidden: true
+}));
 var port = process.env.npm_package_config_port;
 app.listen(port);
-gutil.log('server start at ' + port);
+console.log('server start at ' + port);

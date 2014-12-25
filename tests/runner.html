@@ -8,13 +8,8 @@
 <h1 style="text-align: center">modulex tests</h1>
 
 <div id='mocha'></div>
-<script src="/node_modules/node-jscover/lib/front-end/header.js"></script>
-<script src="/node_modules/node-jscover/lib/front-end/jscoverage-branch.js"></script>
-<script src='/node_modules/jquery/dist/jquery.js'></script>
-<script src='/node_modules/q/q.js'></script>
-<script src='/node_modules/expect.js/index.js'></script>
-<script src='/node_modules/mocha/mocha.js'></script>
-<script src='/node_modules/node-jscover/lib/reporters/mocha/console.js'></script>
+<script src='/node_modules/??jquery/dist/jquery.js,q/q.js,expect.js/index.js,mocha/mocha.js'></script>
+<script src="/node_modules/node-jscover/lib/??front-end/header.js,front-end/jscoverage-branch.js,reporters/mocha/console.js"></script>
 <script src='/node_modules/node-jscover-coveralls/lib/reports/mocha.js'></script>
 <script>
     mocha.setup('bdd');
@@ -22,56 +17,72 @@
 <script>
     var isCoverage = location.search.indexOf('coverage') !== -1;
     (function () {
+
+        function map(arr, fn) {
+            var ret = [];
+            for (var i = 0; i < arr.length; i++) {
+                ret[i] = fn(arr[i], i);
+            }
+            return ret;
+        }
+
         var build = location.search.indexOf('build') !== -1;
         var i;
-        var files;
+        var files = [];
         if (build) {
             files = ['/build/modulex-debug.js', '/build/import-style-debug.js'];
         } else {
-            files = ['modulex',
+            var sources = ['modulex',
                 'utils', 'data-structure',
                 'css-onload', 'get-script',
                 'configs', 'combo-loader',
                 'init', 'i18n', 'import-style'];
-            for (i = 0; i < files.length; i++) {
-                var f = files[i];
-                files[i] = '../lib/' + f + (isCoverage ? '-coverage' : '') + '.js';
-            }
+
+            files = map(sources, function (f) {
+                return '/lib/' + f + (isCoverage ? '-coverage' : '') + '.js';
+            })
         }
-        files = files.concat([
-            '/tests/others/clear.js',
-            '/tests/specs/core-package/test-spec.js',
-            '/tests/specs/catch-init-error/catch-init-error-spec.js',
-            '/tests/specs/add_require/add-require-spec.js',
-            '/tests/specs/absolute-module/absolute-require-spec.js',
-            '/tests/specs/alias/alias-spec.js',
-            '/tests/specs/circular-dependency/circular-dependency-spec.js',
-            '/tests/specs/cjs/cjs-spec.js',
-            '/tests/specs/combo/combo-spec.js',
-            '/tests/specs/css-combo/css-combo-spec.js',
-            '/tests/specs/error-report/error-report-spec.js',
-            '/tests/specs/filter/filter-spec.js',
-            '/tests/specs/loader-simple/loader-simple-spec.js',
-            '/tests/specs/package/package-spec.js',
-            '/tests/specs/package_path_longest_match/package-longest-match-spec.js',
-            '/tests/specs/packages-groups/packages-groups-spec.js',
-            '/tests/specs/packages-modules/packages-modules-spec.js',
-            '/tests/specs/require-api/api-spec.js',
-            '/tests/specs/suffix/suffix-spec.js',
-            '/tests/specs/suffix/suffix-combo-spec.js',
-            '/tests/specs/sync/sync-spec.js',
-            '/tests/specs/system-ondemand/system-ondemand-spec.js',
-            '/tests/specs/timeout/timeout-spec.js',
-            '/tests/specs/timestamp/timestamp-spec.js',
-            '/tests/specs/timestamp/timestamp-combo-spec.js'
-        ]);
+
+        files.push('/tests/others/clear.js');
+
+        var tests = [
+            'core-package/test-spec.js',
+            'catch-init-error/catch-init-error-spec.js',
+            'add_require/add-require-spec.js',
+            'absolute-module/absolute-require-spec.js',
+            'alias/alias-spec.js',
+            'circular-dependency/circular-dependency-spec.js',
+            'cjs/cjs-spec.js',
+            'combo/combo-spec.js',
+            'css-combo/css-combo-spec.js',
+            'error-report/error-report-spec.js',
+            'filter/filter-spec.js',
+            'loader-simple/loader-simple-spec.js',
+            'package/package-spec.js',
+            'package_path_longest_match/package-longest-match-spec.js',
+            'packages-groups/packages-groups-spec.js',
+            'packages-modules/packages-modules-spec.js',
+            'require-api/api-spec.js',
+            'suffix/suffix-spec.js',
+            'suffix/suffix-combo-spec.js',
+            'sync/sync-spec.js',
+            'system-ondemand/system-ondemand-spec.js',
+            'timeout/timeout-spec.js',
+            'timestamp/timestamp-spec.js',
+            'timestamp/timestamp-combo-spec.js'
+        ];
+
+        files = files.concat(tests.map(function (f) {
+            return '/tests/specs/' + f;
+        }));
+
         for (i = 0; i < files.length; i++) {
             window.document.write('<script src="' + files[i] + '"' + '>' + '<' + '/script>');
         }
     })();
 </script>
 <script>
-    (function () {
+    window.onload = function () {
         var runner;
         if (window.mochaPhantomJS) {
             runner = window.mochaRunner = mochaPhantomJS.run();
@@ -81,7 +92,7 @@
         if (isCoverage) {
             window.nodeJsCoverCoveralls(runner);
         }
-    })();
+    };
 </script>
 </body>
 </html>
