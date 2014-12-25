@@ -17,7 +17,6 @@
 <script>
     var isCoverage = location.search.indexOf('coverage') !== -1;
     (function () {
-
         function map(arr, fn) {
             var ret = [];
             for (var i = 0; i < arr.length; i++) {
@@ -72,7 +71,7 @@
             'timestamp/timestamp-combo-spec.js'
         ];
 
-        files = files.concat(tests.map(function (f) {
+        files = files.concat(map(tests,function (f) {
             return '/tests/specs/' + f;
         }));
 
