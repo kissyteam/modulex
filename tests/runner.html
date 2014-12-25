@@ -13,6 +13,7 @@
 <script src='/node_modules/node-jscover-coveralls/lib/reports/mocha.js'></script>
 <script>
     mocha.setup('bdd');
+    var mochaRunner = window.mochaRunner = null;
 </script>
 <script>
     var isCoverage = location.search.indexOf('coverage') !== -1;
@@ -71,7 +72,7 @@
             'timestamp/timestamp-combo-spec.js'
         ];
 
-        files = files.concat(map(tests,function (f) {
+        files = files.concat(map(tests, function (f) {
             return '/tests/specs/' + f;
         }));
 
@@ -84,9 +85,9 @@
     window.onload = function () {
         var runner;
         if (window.mochaPhantomJS) {
-            runner = window.mochaRunner = mochaPhantomJS.run();
+            mochaRunner = runner = window.mochaRunner = mochaPhantomJS.run();
         } else {
-            window.mochaRunner = runner = mocha.run();
+            mochaRunner = window.mochaRunner = runner = mocha.run();
         }
         if (isCoverage) {
             window.nodeJsCoverCoveralls(runner);
