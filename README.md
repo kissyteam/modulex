@@ -31,8 +31,7 @@ A module registration and load library
 ### prepare development environment
 
 * npm install
-* npm install -g gulp
-* gulp server
+* npm start
 
 ### modify code
 
