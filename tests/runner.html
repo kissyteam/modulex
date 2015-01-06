@@ -42,45 +42,36 @@
                 return '/lib/' + f + (isCoverage ? '-coverage' : '') + '.js';
             })
         }
-
-        files.push('/tests/others/clear.js');
-
-        var tests = [
-            'core-package/test-spec.js',
-            'catch-init-error/catch-init-error-spec.js',
-            'add_require/add-require-spec.js',
-            'absolute-module/absolute-require-spec.js',
-            'alias/alias-spec.js',
-            'circular-dependency/circular-dependency-spec.js',
-            'cjs/cjs-spec.js',
-            'combo/combo-spec.js',
-            'css-combo/css-combo-spec.js',
-            'error-report/error-report-spec.js',
-            'filter/filter-spec.js',
-            'loader-simple/loader-simple-spec.js',
-            'package/package-spec.js',
-            'package_path_longest_match/package-longest-match-spec.js',
-            'packages-groups/packages-groups-spec.js',
-            'packages-modules/packages-modules-spec.js',
-            'require-api/api-spec.js',
-            'suffix/suffix-spec.js',
-            'suffix/suffix-combo-spec.js',
-            'sync/sync-spec.js',
-            'system-ondemand/system-ondemand-spec.js',
-            'timeout/timeout-spec.js',
-            'timestamp/timestamp-spec.js',
-            'timestamp/timestamp-combo-spec.js'
-        ];
-
-        files = files.concat(map(tests, function (f) {
-            return '/tests/specs/' + f;
-        }));
-
         for (i = 0; i < files.length; i++) {
             window.document.write('<script src="' + files[i] + '"' + '>' + '<' + '/script>');
         }
     })();
 </script>
+<script src="/tests/others/clear.js"></script>
+<script src="/tests/specs/core-package/test-spec.js"></script>
+<script src="/tests/specs/catch-init-error/catch-init-error-spec.js"></script>
+<script src="/tests/specs/add_require/add-require-spec.js"></script>
+<script src="/tests/specs/absolute-module/absolute-require-spec.js"></script>
+<script src="/tests/specs/alias/alias-spec.js"></script>
+<script src="/tests/specs/circular-dependency/circular-dependency-spec.js"></script>
+<script src="/tests/specs/cjs/cjs-spec.js"></script>
+<script src="/tests/specs/combo/combo-spec.js"></script>
+<script src="/tests/specs/css-combo/css-combo-spec.js"></script>
+<script src="/tests/specs/error-report/error-report-spec.js"></script>
+<script src="/tests/specs/filter/filter-spec.js"></script>
+<script src="/tests/specs/loader-simple/loader-simple-spec.js"></script>
+<script src="/tests/specs/package/package-spec.js"></script>
+<script src="/tests/specs/package_path_longest_match/package-longest-match-spec.js"></script>
+<script src="/tests/specs/packages-groups/packages-groups-spec.js"></script>
+<script src="/tests/specs/packages-modules/packages-modules-spec.js"></script>
+<script src="/tests/specs/require-api/api-spec.js"></script>
+<script src="/tests/specs/suffix/suffix-spec.js"></script>
+<script src="/tests/specs/timestamp/timestamp-combo-spec.js"></script>
+<script src="/tests/specs/suffix/suffix-combo-spec.js"></script>
+<script src="/tests/specs/sync/sync-spec.js"></script>
+<script src="/tests/specs/system-ondemand/system-ondemand-spec.js"></script>
+<script src="/tests/specs/timeout/timeout-spec.js"></script>
+<script src="/tests/specs/timestamp/timestamp-spec.js"></script>
 <script>
     window.onload = function () {
         var runner;
