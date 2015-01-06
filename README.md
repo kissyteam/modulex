@@ -12,78 +12,18 @@ A module registration and load library
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/modulex.svg)](https://saucelabs.com/u/modulex)
 
-## api
+## docs
 
-http://docs.kissyui.com/5.0/api/classes/Modulex.html
+### en-use
 
-### config environment
+* api: https://github.com/kissyteam/modulex/blob/master/docs/en-us/api.md
+* how to catch error: https://github.com/kissyteam/modulex/blob/master/docs/en-us/tutorial/catch-error.md
 
-```javascript
-require.config({
-    packages: {},
-    modules: {}
-});
-```
+### 中文
 
-### register module
-
-#### commonjs style
-
-```javascript
-define(function(require,exports,module){
-});
-```
-
-#### amd style
-
-```javascript
-define(function(X){
-},{
-    requires:['x']
-});
-```
-
-### use module
-
-can also load requirejs commonjs style module
-
-```javascript
-require(['x','u'],function(X,U){
-});
-```
-
-### use module inside define
-
-```javascript
-define(function(require,exports){
-    exports.onClick = function(){
-        var z = ['mod/z'];
-        require(z, function(Z){
-            // TODO with z
-        });
-    };
-});
-```
-
-### noConflict
-
-can use modulex.noConflict() to give up global require and define variable.
-
-``` javascript
-var require = global.require;
-var define = global.define;
-global.require = modulex.use;
-global.require.config = modulex.config;
-global.define = modulex.add;
-mx.noConflict = function () {
-    global.require = require;
-    global.define = define;
-};
-```
-
-## guide
-
-http://docs.kissyui.com/5.0/guides/modulex/index.html
+* api: https://github.com/kissyteam/modulex/blob/master/docs/zh-cn/api.md
+* 总体介绍: https://github.com/kissyteam/modulex/blob/master/docs/zh-cn/tutorial/overview.md
+* importStyle 使用: https://github.com/kissyteam/modulex/blob/master/docs/zh-cn/tutorial/import-style.md
 
 ## contribution
 

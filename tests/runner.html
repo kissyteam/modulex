@@ -72,6 +72,7 @@
 <script src="/tests/specs/system-ondemand/system-ondemand-spec.js"></script>
 <script src="/tests/specs/timeout/timeout-spec.js"></script>
 <script src="/tests/specs/timestamp/timestamp-spec.js"></script>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
 <script>
     window.onload = function () {
         var runner;
@@ -83,6 +84,14 @@
         if (isCoverage) {
             window.nodeJsCoverCoveralls(runner);
         }
+
+        var timer = setInterval(function () {
+            if (window.mochaRunner && window.mochaRunner.stats.end) {
+                mochaRunner = window.mochaRunner = window.mochaRunner;
+                $.globalEval('window.mochaRunner = window.mochaRunner = mochaRunner;');
+                clearInterval(timer);
+            }
+        }, 100);
     };
 </script>
 </body>
