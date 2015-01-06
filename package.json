@@ -35,6 +35,7 @@
     "q": "^1.0.1",
     "saucelabs-runner": "2.x"
   },
+  "spm": {},
   "precommit": [
     "lint"
   ],

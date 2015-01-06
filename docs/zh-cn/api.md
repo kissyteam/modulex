@@ -15,23 +15,23 @@ define 函数可用 commonjs 规范或类 amd 规范来使用，kmd是类似amd�
 示例1：
 
 ```js
-    define('learn-modulex', ['node'], function(require, exports, module){
-        var $ = require('node');
-        module.exports = function(){
-            console.log('Hi, modulex');
-        }
-    });
+define('learn-modulex', ['node'], function(require, exports, module){
+    var $ = require('node');
+    module.exports = function(){
+        console.log('Hi, modulex');
+    }
+});
 ```
 示例2：
 开发阶段不写上模块名称name和模块依赖deps，在发布到线上前在使用 [gulp-kmc](https://www.npmjs.com/package/gulp-kmc)  来生成模块名称和提取模块依赖。
 
 ```js
-    define(function(require, exports, module){
-        var $ = require('node');
-        module.exports = function(){
-            console.log('Hi, modulex');
-        }
-    });
+define(function(require, exports, module){
+    var $ = require('node');
+    module.exports = function(){
+        console.log('Hi, modulex');
+    }
+});
 ```
 
 ### kmd规范写法，类似amd
@@ -45,13 +45,13 @@ define 函数可用 commonjs 规范或类 amd 规范来使用，kmd是类似amd�
 示例1：
 
 ```js
-    define('learnkissy', function($, Cookie){
-        return function(){
-            console.log('Hi, modulex');
-        }
-    },{
-        requires : ['node', 'cookie']
-    });
+define('learnkissy', function($, Cookie){
+    return function(){
+        console.log('Hi, modulex');
+    }
+},{
+    requires : ['node', 'cookie']
+});
 ```
 */
 
@@ -267,7 +267,7 @@ define(function(require, exports, module){
 
 use modulex.noConflict() to give up global require and define variable.
 
-``` javascript
+```js
 var require = global.require;
 var define = global.define;
 global.require = modulex.use;

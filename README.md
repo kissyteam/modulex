@@ -1,4 +1,5 @@
 # modulex
+---
 
 A module registration and load library
 
@@ -14,7 +15,7 @@ A module registration and load library
 
 ## docs
 
-### en-use
+### en-us
 
 * api: https://github.com/kissyteam/modulex/blob/master/docs/en-us/api.md
 * how to catch error: https://github.com/kissyteam/modulex/blob/master/docs/en-us/tutorial/catch-error.md

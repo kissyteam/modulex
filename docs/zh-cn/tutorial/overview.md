@@ -20,25 +20,29 @@ define 函数可用 cmd 规范或 类 amd 规范来使用，kmd是类似amd的�
 
 示例1：
 
-	define('learnkissy', ['node'], function(require, exports, module){
-		var $ = require('node');
+```js
+define('learnkissy', ['node'], function(require, exports, module){
+var $ = require('node');
 
-		module.exports = function(){
-			console.log('Hi, modulex');
-		}
-	});
+module.exports = function(){
+  console.log('Hi, modulex');
+}
+});
+```
 
 示例2：
 
 开发阶段不写上模块名称name和模块依赖deps，在发布到线上前在使用 [gulp-kmc](https://www.npmjs.com/package/gulp-kmc) 来生成模块名称和提取模块依赖。
 
-	define(function(require, exports, module){
-		var $ = require('node');
+```js
+define(function(require, exports, module){
+    var $ = require('node');
 
-		module.exports = function(){
-			console.log('Hi, modulex');
-		}
-	});
+    module.exports = function(){
+      console.log('Hi, modulex');
+    }
+});
+```
 
 #### kmd规范写法，类似amd
 
@@ -50,13 +54,15 @@ define 函数可用 cmd 规范或 类 amd 规范来使用，kmd是类似amd的�
 
 示例1：
 
-	define('learn-modulex', function($, Cookie){
-		return function(){
-			console.log('Hi, modulex');
-		}
-	},{
-		requires : ['node', 'cookie']
-	});
+```js
+define('learn-modulex', function($, Cookie){
+    return function(){
+      console.log('Hi, modulex');
+    }
+},{
+requires : ['node', 'cookie']
+});
+```
 
 ### 引用模块
 
@@ -67,23 +73,27 @@ define 函数可用 cmd 规范或 类 amd 规范来使用，kmd是类似amd的�
 
 示例：
 
-	require(['dom', 'anim'], function(Dom, Anim)){
-		//use Dom , Anim
-	}
+```js
+require(['dom', 'anim'], function(Dom, Anim)){
+//use Dom , Anim
+}
+```
 
 ### 在define中异步引用模块
 
 示例：
 
-	define(function(require, exports, module){
-		exports.onClick = function(){
-			var modsArr = ['mod/a', 'mod/b'];
-			require(modsArr, function(A, B){
-				//when mod/a , mod/b loaded...
-				//your code here
-			});
-		}
-	});
+```js
+define(function(require, exports, module){
+    exports.onClick = function(){
+      var modsArr = ['mod/a', 'mod/b'];
+      require(modsArr, function(A, B){
+        //when mod/a , mod/b loaded...
+        //your code here
+      });
+    }
+});
+```
 
 ### 让出define/require控制权
 
@@ -120,122 +130,134 @@ define 函数可用 cmd 规范或 类 amd 规范来使用，kmd是类似amd的�
 
 总配置范例概览：
 
-	require.config({
-		// 开启自动 combo 模式
-		combine:true,
-		// base 路径库内置模块的时间戳
-		tag:'2014',
-		// 整个类库的基准路径
-		base:'http://x.com/a',
-		packages:{
-		 x:{
-		     // x 包的基准路径
-		     base:'http://x.com/biz/',
-		     // x 包的时间戳
-		     tag:'x',
-		     // 加载的文件后面添加-debug。如 a.js -> a-debug.js
-		     filter : 'debug'
-		 },
-		 y:{
-		    // y 包的基准路径
-		    base:'http://x.com/biz/',
-		    // y 包不开启自动 combo
-		    combine:false
-		    // 不配置 tag，则取 base 路径内置模块的时间戳
-		 }
-		},
-		modules:{
-		 "x/b1":{
-		     // "x/b1" 模块的依赖信息
-		     requires:["x/b2","x/b3"]
-		 },
-		 "y/b2":{
-		     // y/b2 模块单独的时间戳
-		     tag:'234'
-		 }
-		}
-	});
+```js
+require.config({
+    // 开启自动 combo 模式
+    combine:true,
+    // base 路径库内置模块的时间戳
+    tag:'2014',
+    // 整个类库的基准路径
+    base:'http://x.com/a',
+    packages:{
+     x:{
+         // x 包的基准路径
+         base:'http://x.com/biz/',
+         // x 包的时间戳
+         tag:'x',
+         // 加载的文件后面添加-debug。如 a.js -> a-debug.js
+         filter : 'debug'
+     },
+     y:{
+        // y 包的基准路径
+        base:'http://x.com/biz/',
+        // y 包不开启自动 combo
+        combine:false
+        // 不配置 tag，则取 base 路径内置模块的时间戳
+     }
+    },
+    modules:{
+     "x/b1":{
+         // "x/b1" 模块的依赖信息
+         requires:["x/b2","x/b3"]
+     },
+     "y/b2":{
+         // y/b2 模块单独的时间戳
+         tag:'234'
+     }
+    }
+});
+```
 
 packages包配置示例：
 
-	require.config({
-		packages:{
-			// 包名
-			"tc": {
-				tag:"20141015", // 动态加载包内的模块js文件时,
-				             // 自动加上 ?t=20141015, 用于文件更新
-				base:"../", // 包的路径, 相对路径指相对于当前页面路径
-				charset:"gbk" // 包里模块文件编码格式
-			}
-		}
-	});
+```js
+require.config({
+    packages:{
+       // 包名
+       "tc": {
+         tag:"20141015", // 动态加载包内的模块js文件时,
+                      // 自动加上 ?t=20141015, 用于文件更新
+         base:"../", // 包的路径, 相对路径指相对于当前页面路径
+         charset:"gbk" // 包里模块文件编码格式
+       }
+    }
+});
+```
 
 group组介绍示例1：
 
 简单使用(如果想将多个包combo到一起，需要通过配置参数group来实现。例如，对于以下包进行combo：)
 
-	require.config({
-		packages:{
-		  "pkg-a": {
-		      base: "http://example.com/pkg-a",
-		      group: "group1",
-		      combine: true,
-		      tag: "20120222"
-		  },
-		  "pkg-b": {
-		      base: "http://example.com/pkg-b",
-		      group: "group1",
-		      combine: true,
-		      tag: "20130303"
-		  },
-		  "pkg-c": {
-		      base: "http://example.com/pkg-c",
-		      combine: true,
-		      tag: "20111111"
-		  }
-		}
-	})
+```js
+require.config({
+    packages:{
+      "pkg-a": {
+          base: "http://example.com/pkg-a",
+          group: "group1",
+          combine: true,
+          tag: "20120222"
+      },
+      "pkg-b": {
+          base: "http://example.com/pkg-b",
+          group: "group1",
+          combine: true,
+          tag: "20130303"
+      },
+      "pkg-c": {
+          base: "http://example.com/pkg-c",
+          combine: true,
+          tag: "20111111"
+      }
+    }
+})
+```
 
 由于pkg-a和pkg-b的group设置为”group1”，则KISSY会对这两个包的模块进行combo。而pkg-c则单独combo。产生URL如下：
 
-	http://example.com/??pkg-a/mod1.js,pkg-a/mod2.js,pkg-b/mod1.js,...?t=-389697156.js
-	http://example.com/pkg-c/??mod1.js,...?t=20111111.js
-
+```
+http://example.com/??pkg-a/mod1.js,pkg-a/mod2.js,pkg-b/mod1.js,...?t=-389697156.js
+http://example.com/pkg-c/??mod1.js,...?t=20111111.js
+```
 其中，时间戳?t=-389697156.js是根据pkg-a和pkg-b的时间戳tag来计算的。如果修改了其中一个包的时间戳，则combo后的时间戳也会变化。
 
 配置模块依赖示例：
 
 预注册模块：由于浏览器端加载脚本都是异步，因此如果模块之间有依赖，主逻辑只能在加载 A 模块后才知道并加载 A 的依赖。因此加载过程为串行。为了降低串行的性能损耗，config()可以预先注册模块的依赖关系，一次性加载模块和与之关联的依赖，比如
-	// 预注册模块依赖
-	require.config({
-		modules : {
-			'mod-a':{
-		        requires:['mod-b','mod-c']
-		    },
-		    'mod-b':{
-		        requires:['mod-d','mod-e']
-		    }
-		}
-	});
 
-	// 引用模块时，在配置了 combine:true 后，将会合并载入模块及其依赖
-	require(['mod-a', 'mod-b'], function(ModA,ModB){
-	    // 沙箱逻辑
-	});
+```js
+// 预注册模块依赖
+require.config({
+    modules : {
+      'mod-a':{
+            requires:['mod-b','mod-c']
+        },
+        'mod-b':{
+            requires:['mod-d','mod-e']
+        }
+    }
+});
+
+// 引用模块时，在配置了 combine:true 后，将会合并载入模块及其依赖
+require(['mod-a', 'mod-b'], function(ModA,ModB){
+  // 沙箱逻辑
+});
+```
 
 配置模块别名示例：
 
-	// 定义模块的别名
-	require.config({
-		modules : {
-			'mod-a':{
-		        alias:['mod-b/1.2'] // 数组长度为1
-		    }
-		}
-	});
+```js
+// 定义模块的别名
+require.config({
+    modules : {
+      'mod-a':{
+            alias:['mod-b/1.2'] // 数组长度为1
+        }
+    }
+});
 
-	// 正常使用模块
-	require(['mod-a'],function(ModA){ });
+// 正常使用模块
+require(['mod-a'],function(ModA){ });
+```
 
 ### `require.config(name, value)`
 
