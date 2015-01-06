@@ -87,9 +87,8 @@
 
         var timer = setInterval(function () {
             if (window.mochaRunner && window.mochaRunner.stats.end) {
-                mochaRunner = window.mochaRunner = window.mochaRunner;
-                $.globalEval('window.mochaRunner = window.mochaRunner = mochaRunner;');
-                clearInterval(timer);
+                $('<div id="__saucelabs_runner_failures">' + window.mochaRunner.stats.failures + '</div>').appendTo(document.body);
+                clearTimeout(timer);
             }
         }, 100);
     };
