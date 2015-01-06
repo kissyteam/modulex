@@ -46,7 +46,7 @@
     "start": "node --harmony server",
     "lint": "gulp lint",
     "publish": "gulp tag",
-    "saucelabs": "DEBUG=saucelabs-runner gulp saucelabs",
+    "saucelabs": "gulp saucelabs",
     "test": "node ./node_modules/mocha/bin/mocha tests/node/specs",
     "browser-test": "mocha-phantomjs http://localhost:$npm_package_config_port/tests/runner.html",
     "browser-test-cover": "mocha-phantomjs -R node_modules/node-jscover-coveralls/lib/reporters/mocha http://localhost:$npm_package_config_port/tests/runner.html?coverage",
