@@ -25,6 +25,7 @@ require('x/y') => /test/y.js
 
 ```js
 require.config({
+    combine:true,
     packages:{
         'x':{
             'base':'/test',
@@ -36,6 +37,29 @@ require.config({
 
 ```js
 require(['x/1','x/2']) => /test/??1.js,2.js
+```
+
+or set at package level
+
+```js
+require.config({
+    combine:true,
+    packages:{
+        'x':{
+            'base':'/test',
+            main:'main'
+        },
+        'y':{
+            'base':'/test2',
+            combine:false,
+            main:'main'
+        }
+    }
+});
+```
+
+```js
+require(['x/1','x/2','y/1','y/2']) => /test/??1.js,2.js and /test2/1.js and /test2/2.js
 ```
 
 #### modules dependencies
