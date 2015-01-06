@@ -10,9 +10,19 @@
 <div id='mocha'></div>
 <script src='/node_modules/??jquery/dist/jquery.js,q/q.js,expect.js/index.js,mocha/mocha.js'></script>
 <script src="/node_modules/node-jscover/lib/??front-end/header.js,front-end/jscoverage-branch.js,reporters/mocha/console.js"></script>
-<script src='/node_modules/node-jscover-coveralls/lib/reports/mocha.js'></script>
 <script>
-    mocha.setup('bdd');
+    (function () {
+        var reporter = mocha._reporter;
+        var DoneReporter = function (runner) {
+            reporter.call(this, runner);
+            runner.on('end', function () {
+                document.documentElement.setAttribute("__saucelabs_runner_failures", runner.stats.failures + "");
+            });
+        };
+        DoneReporter.prototype = reporter.prototype;
+        mocha.reporter(DoneReporter);
+        mocha.setup('bdd');
+    })();
 </script>
 <script>
     var isCoverage = location.search.indexOf('coverage') !== -1;
@@ -74,20 +84,10 @@
 <script>
     window.onload = function () {
         if (window.mochaPhantomJS) {
-            window.mochaRunner = mochaPhantomJS.run();
+            mochaPhantomJS.run();
         } else {
-            window.mochaRunner = mocha.run();
+            mocha.run();
         }
-        if (isCoverage) {
-            window.nodeJsCoverCoveralls(window.mochaRunner);
-        }
-
-        var timer = setInterval(function () {
-            if (window.mochaRunner && window.mochaRunner.stats.end) {
-                document.documentElement.setAttribute("__saucelabs_runner_failures", window.mochaRunner.stats.failures + "");
-                clearTimeout(timer);
-            }
-        }, 100);
     };
 </script>
 </body>
