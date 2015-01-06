@@ -21,7 +21,7 @@ define 函数可用 cmd 规范或 类 amd 规范来使用，kmd是类似amd的�
 示例1：
 
 ```js
-define('learnkissy', ['node'], function(require, exports, module){
+define('learn-modulex', ['node'], function(require, exports, module){
 var $ = require('node');
 
 module.exports = function(){
@@ -212,7 +212,7 @@ require.config({
 })
 ```
 
-由于pkg-a和pkg-b的group设置为”group1”，则KISSY会对这两个包的模块进行combo。而pkg-c则单独combo。产生URL如下：
+由于pkg-a和pkg-b的group设置为”group1”，则 modulex 会对这两个包的模块进行combo。而pkg-c则单独combo。产生URL如下：
 
 ```
 http://example.com/??pkg-a/mod1.js,pkg-a/mod2.js,pkg-b/mod1.js,...?t=-389697156.js

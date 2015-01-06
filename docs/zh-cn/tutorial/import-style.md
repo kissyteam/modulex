@@ -2,7 +2,7 @@
 
 ## 概述
 
-ImportStyle是KISSY的模块样式引入工具。 提供页面上使用的组件列表及组件的依赖关系，ImportStyle可以帮助你阻塞地加载所有依赖的样式。 如果你的应用需要颗粒化地做按需加载，ImportStyle会是非常顺手的工具。
+ImportStyle是 modulex 的模块样式引入工具。 提供页面上使用的组件列表及组件的依赖关系，ImportStyle可以帮助你阻塞地加载所有依赖的样式。 如果你的应用需要颗粒化地做按需加载，ImportStyle会是非常顺手的工具。
 
 ## 先决条件
 

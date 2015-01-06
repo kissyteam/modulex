@@ -45,7 +45,7 @@ define(function(require, exports, module){
 示例1：
 
 ```js
-define('learnkissy', function($, Cookie){
+define('learn-modulex', function($, Cookie){
     return function(){
         console.log('Hi, modulex');
     }
@@ -158,7 +158,7 @@ require.config({
 })
 ```
 
-由于pkg-a和pkg-b的group设置为”group1”，则KISSY会对这两个包的模块进行combo。而pkg-c则单独combo。产生URL如下：
+由于pkg-a和pkg-b的group设置为”group1”，则 modulex 会对这两个包的模块进行combo。而pkg-c则单独combo。产生URL如下：
 
 ```
 http://example.com/??pkg-a/mod1.js,pkg-a/mod2.js,pkg-b/mod1.js,...?t=-389697156.js
@@ -169,7 +169,7 @@ http://example.com/pkg-c/??mod1.js,...?t=20111111.js
 
 ### 容错
 
-极端情况下，即使要combo的包路径path没有统一的前缀，也没有关系，KISSY可以自动识别和容错，分别对两个包进行combo。例如：
+极端情况下，即使要combo的包路径path没有统一的前缀，也没有关系，modulex 可以自动识别和容错，分别对两个包进行combo。例如：
 
 ```js
 require.config({
