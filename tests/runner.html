@@ -13,7 +13,6 @@
 <script src='/node_modules/node-jscover-coveralls/lib/reports/mocha.js'></script>
 <script>
     mocha.setup('bdd');
-    var mochaRunner = window.mochaRunner = null;
 </script>
 <script>
     var isCoverage = location.search.indexOf('coverage') !== -1;
@@ -75,19 +74,18 @@
 <script src="/node_modules/jquery/dist/jquery.js"></script>
 <script>
     window.onload = function () {
-        var runner;
         if (window.mochaPhantomJS) {
-            mochaRunner = runner = window.mochaRunner = mochaPhantomJS.run();
+            window.mochaRunner = mochaPhantomJS.run();
         } else {
-            mochaRunner = window.mochaRunner = runner = mocha.run();
+            window.mochaRunner = mocha.run();
         }
         if (isCoverage) {
-            window.nodeJsCoverCoveralls(runner);
+            window.nodeJsCoverCoveralls(window.mochaRunner);
         }
 
         var timer = setInterval(function () {
             if (window.mochaRunner && window.mochaRunner.stats.end) {
-                $('<div id="__saucelabs_runner_failures">' + window.mochaRunner.stats.failures + '</div>').appendTo(document.body);
+                document.documentElement.setAttribute("__saucelabs_runner_failures", window.mochaRunner.stats.failures + "");
                 clearTimeout(timer);
             }
         }, 100);
