@@ -1,7 +1,7 @@
 /*
-Copyright 2015, modulex@1.7.6
+Copyright 2015, modulex@1.7.7
 MIT Licensed
-build time: Mon, 19 Jan 2015 11:54:23 GMT
+build time: Mon, 19 Jan 2015 11:57:11 GMT
 */
 /**
  * A module registration and load library.
@@ -45,11 +45,11 @@ var modulex = (function (undefined) {
   var mx = {
     /**
      * The build time of the library.
-     * NOTICE: 'Mon, 19 Jan 2015 11:54:24 GMT' will replace with current timestamp when compressing.
+     * NOTICE: 'Mon, 19 Jan 2015 11:57:12 GMT' will replace with current timestamp when compressing.
      * @private
      * @type {String}
      */
-    __BUILD_TIME: 'Mon, 19 Jan 2015 11:54:24 GMT',
+    __BUILD_TIME: 'Mon, 19 Jan 2015 11:57:12 GMT',
 
     /**
      * modulex Environment.
@@ -77,10 +77,10 @@ var modulex = (function (undefined) {
 
     /**
      * The version of the library.
-     * NOTICE: '1.7.6' will replace with current version when compressing.
+     * NOTICE: '1.7.7' will replace with current version when compressing.
      * @type {String}
      */
-    version: '1.7.6',
+    version: '1.7.7',
 
     /**
      * set modulex configuration
