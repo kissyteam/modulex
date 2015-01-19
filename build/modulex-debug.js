@@ -1,7 +1,7 @@
 /*
-Copyright 2014, modulex@1.7.4
+Copyright 2015, modulex@1.7.6
 MIT Licensed
-build time: Thu, 04 Dec 2014 20:34:09 GMT
+build time: Mon, 19 Jan 2015 11:54:23 GMT
 */
 /**
  * A module registration and load library.
@@ -45,11 +45,11 @@ var modulex = (function (undefined) {
   var mx = {
     /**
      * The build time of the library.
-     * NOTICE: 'Thu, 04 Dec 2014 20:34:10 GMT' will replace with current timestamp when compressing.
+     * NOTICE: 'Mon, 19 Jan 2015 11:54:24 GMT' will replace with current timestamp when compressing.
      * @private
      * @type {String}
      */
-    __BUILD_TIME: 'Thu, 04 Dec 2014 20:34:10 GMT',
+    __BUILD_TIME: 'Mon, 19 Jan 2015 11:54:24 GMT',
 
     /**
      * modulex Environment.
@@ -77,10 +77,10 @@ var modulex = (function (undefined) {
 
     /**
      * The version of the library.
-     * NOTICE: '1.7.4' will replace with current version when compressing.
+     * NOTICE: '1.7.6' will replace with current version when compressing.
      * @type {String}
      */
-    version: '1.7.4',
+    version: '1.7.6',
 
     /**
      * set modulex configuration
@@ -329,7 +329,7 @@ var modulex = (function (undefined) {
 
   var uriReg = /http(s)?:\/\/([^/]+)(?::(\d+))?/;
   var commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
-  var requireRegExp = /[^.'"]\s*require\s*\((['"])([^)]+)\1\)/g;
+  var requireRegExp = /[^.'"]\s*require\s*\(\s*(['"])([^)]+)\1\s*\)/g;
 
   function normalizeId(id) {
     if (id.charAt(0) === '/') {
@@ -603,6 +603,7 @@ var modulex = (function (undefined) {
     }
   });
 })(modulex);
+
 /**
  * @ignore
  * setup data structure for modulex loader
